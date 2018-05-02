@@ -1,12 +1,12 @@
-﻿using Person.Library.Abstracts;
-using Person.Library.Interfaces;
+﻿using ServiceHub.Person.Library.Abstracts;
+using ServiceHub.Person.Library.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System.Linq;
 using System.Threading.Tasks;
-using CM = Person.Context.Models;
+using CM = ServiceHub.Person.Context.Models;
 
-namespace Person.Service.Controllers
+namespace ServiceHub.Person.Service.Controllers
 {
     /// <summary>
     /// This Controller will extend AModelController abstract class, used for Person service.

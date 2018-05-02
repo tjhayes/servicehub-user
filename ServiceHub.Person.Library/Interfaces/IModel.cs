@@ -1,6 +1,6 @@
 using System;
 
-namespace Person.Library.Interfaces
+namespace ServiceHub.Person.Library.Interfaces
 {
     /// <summary>
     /// This is an interface for AModel where Apartment, Person, and Batch classes implements from.

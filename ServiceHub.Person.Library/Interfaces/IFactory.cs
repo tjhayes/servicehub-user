@@ -1,4 +1,4 @@
-namespace Person.Library.Interfaces
+namespace ServiceHub.Person.Library.Interfaces
 {
     public interface IFactory<TModel> where TModel : IModel
     {

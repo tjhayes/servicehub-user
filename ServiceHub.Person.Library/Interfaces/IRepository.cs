@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Person.Library.Interfaces
+namespace ServiceHub.Person.Library.Interfaces
 {
     /// <summary>
     /// This is an interface for AModelController which performs CRUD operations.

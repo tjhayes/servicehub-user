@@ -1,5 +1,5 @@
-﻿using Person.Service.Controllers;
-using CM = Person.Context.Models;
+﻿using ServiceHub.Person.Service.Controllers;
+using CM = ServiceHub.Person.Context.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using Library.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Person.TestSuite
+namespace ServiceHub.Person.TestSuite
 {
     public class PersonControllerTest
     {

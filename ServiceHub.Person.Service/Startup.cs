@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CM = Person.Context.Models;
+using CM = ServiceHub.Person.Context.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Person.Library.Interfaces;
+using ServiceHub.Person.Library.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
-using Person.Library.Models;
+using ServiceHub.Person.Library.Models;
 
-namespace Person.Service
+namespace ServiceHub.Person.Service
 {
     public class Startup
     {

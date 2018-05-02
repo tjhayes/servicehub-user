@@ -1,5 +1,5 @@
-﻿using Person.Library.Interfaces;
-using Person.Library.Models;
+﻿using ServiceHub.Person.Library.Interfaces;
+using ServiceHub.Person.Library.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -11,7 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Person.Library.Abstracts
+namespace ServiceHub.Person.Library.Abstracts
 {
     /// <summary>
     /// This abstract class implements IRepository interface.
