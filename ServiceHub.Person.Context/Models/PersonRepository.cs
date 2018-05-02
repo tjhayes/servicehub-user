@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Person.Library.Abstracts;
-using Person.Library.Interfaces;
-using Person.Library.Models;
+using ServiceHub.Person.Library.Abstracts;
+using ServiceHub.Person.Library.Interfaces;
+using ServiceHub.Person.Library.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
-namespace Person.Context.Models
+namespace ServiceHub.Person.Context.Models
 {
     public class PersonRepository : ARepository<Person>
     {

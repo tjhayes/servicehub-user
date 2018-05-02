@@ -14,7 +14,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Person.Library\Person.Library.csproj"/>
-    <ProjectReference Include="..\Person.Context\Person.Context.csproj"/>
+    <ProjectReference Include="..\ServiceHub.Person.Library\ServiceHub.Person.Library.csproj"/>
+    <ProjectReference Include="..\ServiceHub.Person.Context\ServiceHub.Person.Context.csproj"/>
   </ItemGroup>
 </Project>

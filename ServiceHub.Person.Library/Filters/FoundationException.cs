@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Person.Library.Filters
+namespace ServiceHub.Person.Library.Filters
 {
     public class FoundationException : Exception
     {

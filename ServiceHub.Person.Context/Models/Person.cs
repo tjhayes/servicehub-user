@@ -1,6 +1,6 @@
-﻿using Person.Library.Abstracts;
+﻿using ServiceHub.Person.Library.Abstracts;
 
-namespace Person.Context.Models
+namespace ServiceHub.Person.Context.Models
 {
     public class Person : AModel
     {

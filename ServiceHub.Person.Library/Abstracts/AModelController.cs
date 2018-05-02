@@ -1,11 +1,11 @@
-﻿using Person.Library.Interfaces;
+﻿using ServiceHub.Person.Library.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Person.Library.Abstracts
+namespace ServiceHub.Person.Library.Abstracts
 {
     /// <summary>
     /// This is a common controller used by PersonController, ApartmentController, or BatchController

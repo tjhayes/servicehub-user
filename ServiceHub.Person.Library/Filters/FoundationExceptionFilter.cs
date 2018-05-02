@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Http;
 using System.Web.Http.Filters;
 
-namespace Person.Library.Filters
+namespace ServiceHub.Person.Library.Filters
 {
     class FoundationExceptionFilter : ExceptionFilterAttribute
     {

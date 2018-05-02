@@ -1,7 +1,7 @@
-using Apartment.Service.Controllers;
-using Library.Abstracts;
-using Library.Interfaces;
-using Person.Service.Controllers;
+using ServiceHub.Apartment.Service.Controllers;
+using ServiceHub.Person.Library.Abstracts;
+using ServiceHub.Person.Library.Interfaces;
+using ServiceHub.Person.Service.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using ACM = Apartment.Context.Models;
-using PCM = Person.Context.Models;
+using ACM = ServiceHub.Apartment.Context.Models;
+using PCM = ServiceHub.Person.Context.Models;
 
-namespace Person.TestSuite
+namespace ServiceHub.Person.TestSuite
 {
     public class AModelControllerTest
     {

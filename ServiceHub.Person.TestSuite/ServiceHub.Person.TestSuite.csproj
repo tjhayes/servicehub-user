@@ -15,12 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Apartment.Context\Apartment.Context.csproj" />
-    <ProjectReference Include="..\Apartment.Service\Apartment.Service.csproj" />
-    <ProjectReference Include="..\Batch.Context\Batch.Context.csproj" />
-    <ProjectReference Include="..\Batch.Service\Batch.Service.csproj" />
-    <ProjectReference Include="..\Person.Context\Person.Context.csproj" />
-    <ProjectReference Include="..\Person.Service\Person.Service.csproj" />
+    <ProjectReference Include="..\ServiceHub.Person.Context\ServiceHub.Person.Context.csproj" />
+    <ProjectReference Include="..\ServiceHub.Person.Service\ServiceHub.Person.Service.csproj" />
   </ItemGroup>
 
 </Project>

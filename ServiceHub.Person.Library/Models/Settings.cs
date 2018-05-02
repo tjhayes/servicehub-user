@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Person.Library.Models
+namespace ServiceHub.Person.Library.Models
 {
     /// <summary>
     /// This class is used to get connectionstring name, database name, and collection name from appSettings.json file for MongoDB.
