@@ -3,7 +3,7 @@ using CM = ServiceHub.Person.Context.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Xunit;
 using ServiceHub.Person.Library.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace ServiceHub.Person.TestSuite
 {
     public class PersonControllerTest
     {
-        [Test]
+        [Fact]
         public void PersonGetByEmail()
         {
             var mockRepo = new Mock<IRepository<CM.Person>>();
@@ -32,10 +32,10 @@ namespace ServiceHub.Person.TestSuite
             var objectResult = result as OkObjectResult;
             var personResult = objectResult.Value as CM.Person;
 
-            Assert.AreEqual(newPerson.Email, personResult.Email);
+            Assert.Equal(newPerson.Email, personResult.Email);
         }
 
-        [Test]
+        [Fact]
         public void PersonGetByEmailShouldRespondNotFoundIfMissing()
         {
             var mockRepo = new Mock<IRepository<CM.Person>>();
@@ -53,7 +53,7 @@ namespace ServiceHub.Person.TestSuite
             IActionResult result = controller.GetByEmail("notfound@gmail.com").Result;
 
             var objectResult = result as NotFoundResult;
-            Assert.AreNotEqual("notfound@gmail.com", newPerson.Email);
+            Assert.NotEqual("notfound@gmail.com", newPerson.Email);
 
         }
     }
