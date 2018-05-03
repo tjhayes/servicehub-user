@@ -7,14 +7,14 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using PCM = ServiceHub.Person.Context.Models;
 
 namespace ServiceHub.Person.TestSuite
 {
     public class AModelControllerTest
     {
-        [Test]
+        [Fact]
         public void TestGetAll()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -32,10 +32,10 @@ namespace ServiceHub.Person.TestSuite
             IEnumerator<IModel> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
 
-            Assert.AreEqual(mockModel.Object.ModelId, enumerator.Current.ModelId);
+            Assert.Equal(mockModel.Object.ModelId, enumerator.Current.ModelId);
         }
 
-        [Test]
+        [Fact]
         public void TestGetById()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -50,10 +50,10 @@ namespace ServiceHub.Person.TestSuite
 
             OkObjectResult objectResult = result as OkObjectResult;
             var val = objectResult.Value as IModel;
-            Assert.AreEqual(mockModel.Object.ModelId, val.ModelId);
+            Assert.Equal(mockModel.Object.ModelId, val.ModelId);
         }
 
-        [Test]
+        [Fact]
         public void Create_DoesNotThrowException()
         {
             var mockRepo = new Mock<IRepository<AModel>>();
@@ -68,7 +68,7 @@ namespace ServiceHub.Person.TestSuite
             Assert.True(actual == expected);
         }
 
-        [Test]
+        [Fact]
         public void Controller_Update_Should_Work_With_Valid_Id()
         {
             // Arrange
@@ -86,10 +86,10 @@ namespace ServiceHub.Person.TestSuite
 
             // Assert
             Assert.NotNull(result);
-            Assert.AreEqual(expected.ToString(), result.ToString());
+            Assert.Equal(expected.ToString(), result.ToString());
         }
 
-        [Test]
+        [Fact]
         public void Controller_Update_Should_Not_Work_With_Invalid_Id()
         {
             // Arrange
@@ -107,10 +107,10 @@ namespace ServiceHub.Person.TestSuite
 
             // Assert
             Assert.NotNull(result);
-            Assert.AreEqual(expected.ToString(), result.ToString());
+            Assert.Equal(expected.ToString(), result.ToString());
         }
 
-        [Test]
+        [Fact]
         public void DeleteByIdShouldReturn204()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -127,12 +127,12 @@ namespace ServiceHub.Person.TestSuite
             var expected = new NoContentResult();//204
             var objectResult = result as NoContentResult;
 
-            Assert.AreEqual(expected.ToString(), objectResult.ToString());
+            Assert.Equal(expected.ToString(), objectResult.ToString());
             //verify delete method was called
             mockRepo.Verify(r => r.DeleteById(newModelId));
         }
 
-        [Test]
+        [Fact]
         public void DeleteByIdShouldReturn404()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -149,7 +149,7 @@ namespace ServiceHub.Person.TestSuite
             var expected = new NotFoundResult();//404
             var objectResult = result as NotFoundResult;
 
-            Assert.AreEqual(expected.ToString(), objectResult.ToString());
+            Assert.Equal(expected.ToString(), objectResult.ToString());
             //verify delete method was called
             mockRepo.Verify(r => r.DeleteById("4a84ca174bbfc73ea03e8bb2"));
         }
