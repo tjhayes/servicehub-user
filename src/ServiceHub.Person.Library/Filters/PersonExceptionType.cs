@@ -4,12 +4,10 @@ using System.Text;
 
 namespace ServiceHub.Person.Library.Filters
 {
-    public enum ExceptionCode
+    public enum PersonExceptionType
     {
-        OK,
-        NotFound,
-        Invalid,
-        Created,
-        AlreadyExists
+        Apartment,
+        Batch,
+        Person
     }
 }
