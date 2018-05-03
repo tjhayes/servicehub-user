@@ -1,4 +1,3 @@
-using ServiceHub.Apartment.Service.Controllers;
 using ServiceHub.Person.Library.Abstracts;
 using ServiceHub.Person.Library.Interfaces;
 using ServiceHub.Person.Service.Controllers;
@@ -8,15 +7,14 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xunit;
-using ACM = ServiceHub.Apartment.Context.Models;
+using NUnit.Framework;
 using PCM = ServiceHub.Person.Context.Models;
 
 namespace ServiceHub.Person.TestSuite
 {
     public class AModelControllerTest
     {
-        [Fact]
+        [Test]
         public void TestGetAll()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -34,10 +32,10 @@ namespace ServiceHub.Person.TestSuite
             IEnumerator<IModel> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
 
-            Assert.Equal(mockModel.Object.ModelId, enumerator.Current.ModelId);
+            Assert.AreEqual(mockModel.Object.ModelId, enumerator.Current.ModelId);
         }
 
-        [Fact]
+        [Test]
         public void TestGetById()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -52,25 +50,25 @@ namespace ServiceHub.Person.TestSuite
 
             OkObjectResult objectResult = result as OkObjectResult;
             var val = objectResult.Value as IModel;
-            Assert.Equal(mockModel.Object.ModelId, val.ModelId);
+            Assert.AreEqual(mockModel.Object.ModelId, val.ModelId);
         }
 
-        [Fact]
+        [Test]
         public void Create_DoesNotThrowException()
         {
             var mockRepo = new Mock<IRepository<AModel>>();
-            var testApartment = new ACM.Apartment();
-            mockRepo.Setup(repo => repo.Create(testApartment));
+            var testPerson = new PCM.Person();
+            mockRepo.Setup(repo => repo.Create(testPerson));
             var controller = new AModelController<AModel>(mockRepo.Object);
 
             int expected = StatusCodes.Status201Created;
-            int? actual = controller.CreatedAtAction("Post", testApartment).StatusCode;
+            int? actual = controller.CreatedAtAction("Post", testPerson).StatusCode;
 
             // todo: Verify that this actually happened.
             Assert.True(actual == expected);
         }
 
-        [Fact]
+        [Test]
         public void Controller_Update_Should_Work_With_Valid_Id()
         {
             // Arrange
@@ -88,10 +86,10 @@ namespace ServiceHub.Person.TestSuite
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(expected.ToString(), result.ToString());
+            Assert.AreEqual(expected.ToString(), result.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Controller_Update_Should_Not_Work_With_Invalid_Id()
         {
             // Arrange
@@ -109,10 +107,10 @@ namespace ServiceHub.Person.TestSuite
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(expected.ToString(), result.ToString());
+            Assert.AreEqual(expected.ToString(), result.ToString());
         }
 
-        [Fact]
+        [Test]
         public void DeleteByIdShouldReturn204()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -129,12 +127,12 @@ namespace ServiceHub.Person.TestSuite
             var expected = new NoContentResult();//204
             var objectResult = result as NoContentResult;
 
-            Assert.Equal(expected.ToString(), objectResult.ToString());
+            Assert.AreEqual(expected.ToString(), objectResult.ToString());
             //verify delete method was called
             mockRepo.Verify(r => r.DeleteById(newModelId));
         }
 
-        [Fact]
+        [Test]
         public void DeleteByIdShouldReturn404()
         {
             var mockRepo = new Mock<IRepository<IModel>>();
@@ -151,7 +149,7 @@ namespace ServiceHub.Person.TestSuite
             var expected = new NotFoundResult();//404
             var objectResult = result as NotFoundResult;
 
-            Assert.Equal(expected.ToString(), objectResult.ToString());
+            Assert.AreEqual(expected.ToString(), objectResult.ToString());
             //verify delete method was called
             mockRepo.Verify(r => r.DeleteById("4a84ca174bbfc73ea03e8bb2"));
         }
