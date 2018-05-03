@@ -6,10 +6,10 @@ namespace ServiceHub.Person.Library.Filters
 {
     public class PersonException : Exception
     {
-        public ExceptionType Type { get; set; }
-        public ExceptionCode Code { get; set; }
+        public PersonExceptionType Type { get; set; }
+        public PersonExceptionCode Code { get; set; }
 
-        public PersonException(ExceptionType type, ExceptionCode code)
+        public PersonException(PersonExceptionType type, PersonExceptionCode code)
         {
             Type = type;
             Code = code;
