@@ -55,7 +55,7 @@ namespace ServiceHub.Person.Service.Controllers
         {
             var result2 = await Repo.GetAll();
 
-            var result = result2.FirstOrDefault(p => p.BatchName == batchName);
+            var result = result2.Where(p => p.BatchName == batchName);
 
             if (result is null)
             {
@@ -85,7 +85,7 @@ namespace ServiceHub.Person.Service.Controllers
         {
             var result2 = await Repo.GetAll();
 
-            var result = result2.FirstOrDefault(p => p.HasCar == hasCar);
+            var result = result2.Where(p => p.HasCar == hasCar);
 
             if (result is null)
             {
@@ -100,7 +100,7 @@ namespace ServiceHub.Person.Service.Controllers
         {
             var result2 = await Repo.GetAll();
 
-            var result = result2.FirstOrDefault(p => p.IsMale == isMale);
+            var result = result2.Where(p => p.IsMale == isMale);
 
             if (result is null)
             {
@@ -115,7 +115,7 @@ namespace ServiceHub.Person.Service.Controllers
         {
             var result2 = await Repo.GetAll();
 
-            var result = result2.FirstOrDefault(p => p.Address == address);
+            var result = result2.Where(p => p.Address == address);
 
             if (result is null)
             {
