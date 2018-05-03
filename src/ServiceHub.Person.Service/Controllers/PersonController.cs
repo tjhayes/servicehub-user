@@ -34,5 +34,95 @@ namespace ServiceHub.Person.Service.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.FirstOrDefault(p => p.Name == name);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("batchName/{batchName}")]
+        public async Task<IActionResult> GetByBatchName(string batchName)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.Where(p => p.BatchName == batchName);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("phone/{phone}")]
+        public async Task<IActionResult> GetByPhone(string phone)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.FirstOrDefault(p => p.Phone == phone);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("hasCar/{hasCar}")]
+        public async Task<IActionResult> GetByHasCar(bool hasCar)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.Where(p => p.HasCar == hasCar);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("isMale/{isMale}")]
+        public async Task<IActionResult> GetByIsMale(bool isMale)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.Where(p => p.IsMale == isMale);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("address/{address}")]
+        public async Task<IActionResult> GetByAddress(string address)
+        {
+            var result2 = await Repo.GetAll();
+
+            var result = result2.Where(p => p.Address == address);
+
+            if (result is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
     }
 }
