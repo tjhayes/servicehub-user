@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServiceHub.Person.Library.Filters
 {
-    public enum FoundationExceptionCode
+    public enum ExceptionCode
     {
         OK,
         NotFound,
