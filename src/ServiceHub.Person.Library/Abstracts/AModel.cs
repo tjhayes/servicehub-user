@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ServiceHub.Person.Library.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
