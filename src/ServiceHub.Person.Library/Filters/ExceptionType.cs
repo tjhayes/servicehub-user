@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServiceHub.Person.Library.Filters
 {
-    public enum FoundationExceptionType
+    public enum ExceptionType
     {
         Apartment,
         Batch,
