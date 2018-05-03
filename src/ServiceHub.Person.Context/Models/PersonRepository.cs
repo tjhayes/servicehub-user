@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using AutoMapper;
 using ServiceHub.Person.Library.Abstracts;
-using ServiceHub.Person.Library.Interfaces;
 using ServiceHub.Person.Library.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
