@@ -7,7 +7,7 @@ using System.Web.Http.Filters;
 
 namespace ServiceHub.Person.Library.Filters
 {
-    class ExceptionFilter : ExceptionFilterAttribute
+    class PersonExceptionFilter : ExceptionFilterAttribute
     {
         /// <summary>
         /// A custom exception filter that handles the exceptions in the Apartment, Batch, and person
