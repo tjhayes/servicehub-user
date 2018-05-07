@@ -1,5 +1,5 @@
-# gitignore::author
-# licensed under the terms of the [MIT License](https://github.com/fredbelotte/author/blob/master/LICENSE).
+# servicehub-person://gitignore
+# licensed under the terms of the [MIT License](https://github.com/revaturecloud/servicehub-person/blob/master/LICENSE).
 
 # PROJECT
 # exclude - filepath
@@ -8,6 +8,7 @@
 
 # exclude - filename
 .history
+appsettings.*.json
 ubuntu*
 
 # ==================================================================================================
