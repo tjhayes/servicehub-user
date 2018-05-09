@@ -1,61 +1,63 @@
 ﻿using System;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Collections.Generic;
-using AutoMapper;
-using ServiceHub.Person.Library.Abstracts;
-using ServiceHub.Person.Library.Models;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace ServiceHub.Person.Context.Models
 {
-    public class PersonRepository : ARepository<Person>
+    public class PersonRepository
     {
+        public const string MongoDbIdName = "_id";
 
-        /// <summary>
-        /// These fields are the keys inside of the JSON object
-        /// that relate to the fields of the object model.
-        /// { ObjectModelProperty, DataSourceJsonKey }
-        /// 
-        /// Example: Salesforce provides a FirstName and LastName fields in their Contact object 
-        /// </summary>
-        // TODO: Determine which phone field should be entered in the salesforce sandbox.
-        private Dictionary<string, string> jsonKeys = new Dictionary<string, string>() {
-            {"Id", "Id" }, {"Name", "Name"}, {"Email", "Email"}, {"BatchName", "Training_Skill_Type_Test__c"},
-            { "Phone", "MobilePhone"}, {"HasCar", "HR_Has_Car__c"}, {"IsMale", "rnm__Gender__c"},
-            {"Street", "rnm__Street_Address__c"}, {"City", "rnm__City__c"}, {"State", "rnm__State__c"},
-            {"PostalCode", "rnm__Postal_Code__c"}, {"Country", "rnm__Country__c"}
-        };
+        protected readonly IMongoClient _client;
 
-        public PersonRepository(IOptions<Settings> settings) : base(settings) { }
+        protected readonly IMongoDatabase _db;
 
-        public string ConvertToHexString(string Id)
+        private readonly IMongoCollection<Person> _collection;
+
+        protected readonly TimeSpan CacheExpiration;
+
+        public PersonRepository(IOptions<Settings> settings)
         {
-            string hexString = "";
-            foreach (char ch in Id.ToCharArray())
+            _client = new MongoClient(settings.Value.ConnectionString);
+            if (_client != null)
             {
-                var strToAdd = BitConverter.ToString(new byte[] { Convert.ToByte(ch) });
-                hexString += int.TryParse(strToAdd, out _) ? strToAdd : strToAdd.ToLower();
+                _db = _client.GetDatabase(settings.Value.Database);
+                _collection = _db.GetCollection<Person>(settings.Value.CollectionName);
             }
-            return hexString.Length >= 24 ? hexString.Substring((hexString.Length - 24), 24) : hexString;
+            CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
 
-        protected override Person MapJsonToModel(JObject jsonObject)
+
+        public async Task<IEnumerable<Person>> GetAll()
         {
-            
-            var config = new MapperConfiguration(
-                  cfg => cfg.CreateMap<JObject, Person>()
-                      .ForMember(person => person.ModelId, options => options.MapFrom(json => ConvertToHexString(json[jsonKeys["Id"]].ToString())))
-                      .ForMember(person => person.Name, options => options.MapFrom(json => json[jsonKeys["Name"]].ToString()))
-                      .ForMember(person => person.Email, options => options.MapFrom(json => json[jsonKeys["Email"]].ToString()))
-                      .ForMember(person => person.BatchName, options => options.MapFrom(json => json[jsonKeys["BatchName"]]))
-                      .ForMember(person => person.IsMale, options => options.MapFrom(json => json[jsonKeys["IsMale"]].ToString() == "Male"))
-                      .ForMember(person => person.Phone, options => options.MapFrom(json => json[jsonKeys["Phone"]]))
-                      .ForMember(person => person.HasCar, options => options.MapFrom(json => json[jsonKeys["HasCar"]].ToString() == "Yes"))
-                      .ForMember(person => person.Address, options => options.MapFrom(json => json[jsonKeys["Street"]] + ", " + json[jsonKeys["City"]] + ", " +
-                        json[jsonKeys["State"]] + ", " + json[jsonKeys["PostalCode"]] + ", " + json[jsonKeys["Country"]]))
-            );
-            IMapper imap = config.CreateMapper();
-            return imap.Map<JObject, Person>(jsonObject);
+            // Update the mongoDB with salesforce API.
+            // TODO: Abstract data source.
+
+            return await _collection.Find(new BsonDocument()).ToListAsync();
+        }
+
+        public async Task<Person> GetById(string id)
+        {
+            ObjectId theObjectId;
+            try
+            {
+                theObjectId = new ObjectId(id);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid ID", ex);
+            }
+
+            FilterDefinition<Person> filter = Builders<Person>.Filter.Eq(MongoDbIdName, theObjectId);
+
+            Person result = await _collection.Find(filter).FirstAsync();
+
+            // TODO: Figure out caching for single item.
+
+            return result;
         }
     }
 }
