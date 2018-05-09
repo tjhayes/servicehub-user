@@ -1,9 +1,8 @@
-﻿using ServiceHub.Person.Library.Abstracts;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ServiceHub.Person.Library.Models
 {
-    public class Person : AModel
+    public class Person
     {
         [Required]
         public string Name { get; set; }
