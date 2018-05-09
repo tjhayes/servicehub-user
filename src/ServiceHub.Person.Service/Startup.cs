@@ -21,8 +21,6 @@ namespace ServiceHub.Person.Service
         }
 
         public IConfiguration Configuration { get; }
-        public Dictionary<string, string> SalesforceConfig { get; private set; }
-        public Dictionary<string, string> SalesforceURLs { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
