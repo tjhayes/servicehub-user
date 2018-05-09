@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceHub.Person.Service.Controllers
 {
-  [Route("api/[conroller]")]
+  [Route("api/[controller]")]
   public class PersonController : Controller
   {
     public async Task<IActionResult> Get()
