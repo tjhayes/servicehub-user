@@ -33,9 +33,6 @@ namespace ServiceHub.Person.Context.Models
 
         public async Task<IEnumerable<Person>> GetAll()
         {
-            // Update the mongoDB with salesforce API.
-            // TODO: Abstract data source.
-
             return await _collection.Find(new BsonDocument()).ToListAsync();
         }
 
