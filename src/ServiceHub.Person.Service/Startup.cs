@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ServiceHub.Person.Library.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
 using ServiceHub.Person.Library.Models;
 
@@ -29,7 +28,7 @@ namespace ServiceHub.Person.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRepository<CM.Person>, CM.PersonRepository>();
+            services.AddScoped<CM.PersonRepository>();
             //add and configure Di with setting class, get connection string and database name from appsettings.json
             //settings will be access via IOptions<Settings>
             services.Configure<Settings>(Options =>
@@ -40,14 +39,6 @@ namespace ServiceHub.Person.Service
 
                 Options.CacheExpirationMinutes = int.Parse(Configuration.GetSection("CacheExpirationMinutes").Value);
             
-                Options.ClientId = Configuration.GetSection("Salesforce:client_id").Value;
-                Options.ClientSecret = Configuration.GetSection("Salesforce:client_secret").Value;
-                Options.Username = Configuration.GetSection("Salesforce:username").Value;
-                Options.Password = Configuration.GetSection("Salesforce:password").Value;
-
-                Options.BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
-                Options.LoginURLExtension = Configuration.GetSection("SalesforceURLs:Login_Extension").Value;
-                Options.ResourceBaseExtension = Configuration.GetSection("SalesforceURLs:Resource_Base_Extension").Value;
             });
             services.AddMvc();
 

@@ -1,19 +1,37 @@
-﻿using ServiceHub.Person.Library.Abstracts;
-using ServiceHub.Person.Library.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using LM = ServiceHub.Person.Library.Models;
 using CM = ServiceHub.Person.Context.Models;
+using System.Collections.Generic;
 
 namespace ServiceHub.Person.Service.Controllers
 {
+
     /// <summary>
-    /// This Controller will extend AModelController abstract class, used for Person service.
+    /// This Controller will provide data from our DB for the person service.
     /// </summary>
+    [Produces("application/json")]
     [Route("api/[controller]")]
-    public class PersonController : AModelController<CM.Person>
+    public class PersonController : Controller
     {
-        public PersonController(IRepository<CM.Person> repo) : base(repo) { }
+        private CM.PersonRepository _Repo;
+
+        public PersonController(CM.PersonRepository repo)
+        { 
+            _Repo = repo;
+        }
+
+        /// <summary>
+        /// This is a GET method that returns all the documents from MongoDB.
+        /// </summary>
+        /// <returns>A list of Documents</returns>
+        [HttpGet]
+        public async Task<IEnumerable<LM.Person>> Get()
+        {
+            return await _Repo.GetAll();
+        }
+
 
         /// <summary>
         /// This will perform GET operation based on Email field.
@@ -23,105 +41,24 @@ namespace ServiceHub.Person.Service.Controllers
         [HttpGet("email/{email}")]
         public async Task<IActionResult> GetByEmail(string email)
         {
-            var result2 = await Repo.GetAll();
-
+            var result2 = await _Repo.GetAll();
             var result = result2.FirstOrDefault(p => p.Email == email);
-
             if (result is null)
             {
                 return NotFound();
             }
-
             return Ok(result);
         }
 
         [HttpGet("name/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
-            var result2 = await Repo.GetAll();
-
+            var result2 = await _Repo.GetAll();
             var result = result2.FirstOrDefault(p => p.Name == name);
-
             if (result is null)
             {
                 return NotFound();
             }
-
-            return Ok(result);
-        }
-
-        [HttpGet("batchName/{batchName}")]
-        public async Task<IActionResult> GetByBatchName(string batchName)
-        {
-            var result2 = await Repo.GetAll();
-
-            var result = result2.Where(p => p.BatchName == batchName);
-
-            if (result is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("phone/{phone}")]
-        public async Task<IActionResult> GetByPhone(string phone)
-        {
-            var result2 = await Repo.GetAll();
-
-            var result = result2.FirstOrDefault(p => p.Phone == phone);
-
-            if (result is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("hasCar/{hasCar}")]
-        public async Task<IActionResult> GetByHasCar(bool hasCar)
-        {
-            var result2 = await Repo.GetAll();
-
-            var result = result2.Where(p => p.HasCar == hasCar);
-
-            if (result is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("isMale/{isMale}")]
-        public async Task<IActionResult> GetByIsMale(bool isMale)
-        {
-            var result2 = await Repo.GetAll();
-
-            var result = result2.Where(p => p.IsMale == isMale);
-
-            if (result is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("address/{address}")]
-        public async Task<IActionResult> GetByAddress(string address)
-        {
-            var result2 = await Repo.GetAll();
-
-            var result = result2.Where(p => p.Address == address);
-
-            if (result is null)
-            {
-                return NotFound();
-            }
-
             return Ok(result);
         }
     }
