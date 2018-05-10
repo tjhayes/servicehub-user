@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceHub.Person.Context.Models
 {
-    class Person
+    public class Person
     {
         [Required]
         public string Name { get; set; }
