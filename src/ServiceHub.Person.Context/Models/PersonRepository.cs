@@ -4,6 +4,8 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using ServiceHub.Person.Library.Models;
+using System.Net.Http.Headers;
 
 namespace ServiceHub.Person.Context.Models
 {
@@ -30,7 +32,6 @@ namespace ServiceHub.Person.Context.Models
             CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
 
-
         public async Task<IEnumerable<Person>> GetAll()
         {
             return await _collection.Find(new BsonDocument()).ToListAsync();
@@ -56,5 +57,7 @@ namespace ServiceHub.Person.Context.Models
 
             return result;
         }
+
+
     }
 }
