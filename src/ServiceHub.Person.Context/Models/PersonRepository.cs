@@ -4,6 +4,8 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ServiceHub.Person.Context.Models
 {
@@ -19,7 +21,7 @@ namespace ServiceHub.Person.Context.Models
 
         protected readonly TimeSpan CacheExpiration;
 
-        public PersonRepository(IOptions<Settings> settings)
+        public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
         {
             _client = new MongoClient(settings.Value.ConnectionString);
             if (_client != null)
@@ -56,5 +58,57 @@ namespace ServiceHub.Person.Context.Models
 
             return result;
         }
+
+
+
+
+        public static async Task<List<Person>> ReadFromSalesForce()
+        {
+            var client = new HttpClient();
+            var result = await client.GetAsync("");
+
+            if (result.IsSuccessStatusCode)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                List<Person> personlist = null;
+
+                if  (content != null  ){
+               
+                personlist = JsonConvert.DeserializeObject<List<Person>>(content);
+                }
+                return personlist;
+
+            }
+            else
+                return null;
+        }
+
+          public void UpdateMongoDB(List<Person> personlist)
+        {
+            // Get the contacts in the Person collection, check for existing contacts.
+            // If not present, add to collection.
+            var mongoContacts = _collection.Find(_ => true).ToList();
+            foreach (var person in personlist)
+            {
+
+                var existingContact = mongoContacts.Find(item => person.ModelId == item.ModelId);
+
+                if (existingContact == null)
+                {
+                    _collection.InsertOne(person);
+                }
+            }
+
+            foreach (var mongoContact in mongoContacts)
+            {
+                var existingContact = personlist.Find(item => mongoContact.ModelId == item.ModelId);
+                if (existingContact == null)
+                {
+                    _collection.DeleteMany(Builders<Person>.Filter.Eq("_id", new ObjectId(mongoContact.ModelId)));
+                }
+
+            }
+        }
+
     }
 }
