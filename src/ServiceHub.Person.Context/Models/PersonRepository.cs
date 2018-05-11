@@ -57,7 +57,5 @@ namespace ServiceHub.Person.Context.Models
 
             return result;
         }
-
-
     }
 }
