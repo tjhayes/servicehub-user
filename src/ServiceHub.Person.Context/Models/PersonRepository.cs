@@ -21,7 +21,7 @@ namespace ServiceHub.Person.Context.Models
 
         protected readonly TimeSpan CacheExpiration;
 
-        public PersonRepository(IOptions<Settings> settings)
+        public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
         {
             _client = new MongoClient(settings.Value.ConnectionString);
             if (_client != null)
