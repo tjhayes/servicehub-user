@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using LM = ServiceHub.Person.Library.Models;
 using CM = ServiceHub.Person.Context.Models;
 using System.Collections.Generic;
 
@@ -19,7 +18,7 @@ namespace ServiceHub.Person.Service.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<LM.Person>> Get()
+        public async Task<IEnumerable<CM.Person>> Get()
         {
             return await _Repo.GetAll();
         }
