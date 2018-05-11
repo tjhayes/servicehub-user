@@ -7,7 +7,6 @@ namespace ServiceHub.Person.Context.Models
 {
     public class Person : ServiceHub.Person.Library.Models.Person
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string ModelId { get; set; }
