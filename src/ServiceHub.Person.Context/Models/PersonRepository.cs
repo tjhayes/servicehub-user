@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using ServiceHub.Person.Library.Models;
+using System.Net.Http.Headers;
 
 namespace ServiceHub.Person.Context.Models
 {
@@ -20,7 +21,7 @@ namespace ServiceHub.Person.Context.Models
 
         protected readonly TimeSpan CacheExpiration;
 
-        public PersonRepository(IOptions<Settings> settings)
+        public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
         {
             _client = new MongoClient(settings.Value.ConnectionString);
             if (_client != null)
@@ -30,7 +31,6 @@ namespace ServiceHub.Person.Context.Models
             }
             CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
-
 
         public async Task<IEnumerable<Person>> GetAll()
         {
