@@ -7,8 +7,6 @@ namespace ServiceHub.Person.Context.Models
 {
     public class Person : Library.Models.Person
     {
-
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [JsonIgnore]
