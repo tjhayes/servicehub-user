@@ -17,6 +17,6 @@ namespace ServiceHub.Person.Library.Models
         [Required]
         public bool IsMale { get; set; }
         [Required]
-        public string Address { get; set; }
+        public Address Address { get; set; }
     }
 }
