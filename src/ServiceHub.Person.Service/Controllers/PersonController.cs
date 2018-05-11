@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CM = ServiceHub.Person.Context.Models;
 using System.Collections.Generic;
+using System;
 
 namespace ServiceHub.Person.Service.Controllers
 {
@@ -11,6 +12,28 @@ namespace ServiceHub.Person.Service.Controllers
     public class PersonController : Controller
     {
         private CM.PersonRepository _Repo;
+
+        private void _updateDatabase()
+        {
+            var now = DateTime.Now;
+            var TimeStamp = _Repo.GetById("5af0953c153254170c367ef1").Result; //TODO: place _id in json after creating the document in CosmosDB
+            var then = TimeStamp.LastModified;
+            var diff = now.Subtract(then);
+            var period = TimeSpan.FromHours(12.0);
+            bool doCheck = (TimeSpan.Compare(diff, period) > 0);
+            if (doCheck)
+            {
+                Console.WriteLine("database needs updating");
+                // call context object to update database
+                var list = _Repo.ReadFromSalesForce().GetAwaiter().GetResult();
+                _Repo.UpdateMongoDB(list);
+            }
+            else
+            {
+                Console.WriteLine("proceed, no update needed.");
+                return;
+            }
+        }
 
         public PersonController(CM.PersonRepository repo)
         { 
