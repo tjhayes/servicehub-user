@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using ServiceHub.Person.Library.Models;
 
 namespace ServiceHub.Person.Context.Models
 {
