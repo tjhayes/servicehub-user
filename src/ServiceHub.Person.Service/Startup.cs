@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ServiceHub.Person.Library.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ServiceHub.Person.Service
 {
@@ -46,12 +47,24 @@ namespace ServiceHub.Person.Service
                        .AllowAnyHeader()
                        .AllowCredentials();
             }));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Revature Housing: Person API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors("Open");
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Revature Housing: Person API V1");
+            });
 
             if (env.IsDevelopment())
             {
