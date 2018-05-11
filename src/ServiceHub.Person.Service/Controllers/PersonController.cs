@@ -19,7 +19,7 @@ namespace ServiceHub.Person.Service.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<LM.Person>> Get()
+        public async Task<IEnumerable<CM.Person>> Get()
         {
             return await _Repo.GetAll();
         }
