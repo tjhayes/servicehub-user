@@ -1,11 +1,14 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceHub.Person.Service.Controllers
 {
   [Route("api/[controller]")]
-  public class PersonController : Controller
+  public class PersonController : BaseController
   {
+    public PersonController(ILoggerFactory loggerFactory) : base(loggerFactory) {}
+    
     public async Task<IActionResult> Get()
     {
       return await Task.Run(() => Ok());
