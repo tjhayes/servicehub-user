@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'post building'
+git branch
