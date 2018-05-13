@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo 'pre pushing'
+echo 'building'
 git branch
