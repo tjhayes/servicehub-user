@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'pre building'
+git branch
