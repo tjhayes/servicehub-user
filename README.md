@@ -1,5 +1,8 @@
 # servicehub-person://readme
 
+![VSTS Build](https://revaturecloudio.visualstudio.com/_apis/public/build/definitions/2da46701-d7e3-415b-8014-9844d62eb557/5/badge)
+![VSTS Release](https://rmsprodscussu1.vsrm.visualstudio.com/A8bf00fea-0cbc-400b-acc6-edcb0ddf1e59/_apis/public/Release/badge/2da46701-d7e3-415b-8014-9844d62eb557/3/3)
+
 ## instruction
 1. download and install Virtualbox 5.2+.
 1. download and install Vagrant 2.0.1+.

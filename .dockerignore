@@ -5,12 +5,14 @@
 # exclude - filepath
 .vagrant
 .vscode
-src/**/bin
-src/**/obj
+
+**/bin
+**/obj
 
 # exclude - filename
 .dockerignore
 .gitignore
+.history
 CHANGELOG*
 CONTRIBUTING*
 docker*
@@ -18,3 +20,5 @@ LICENSE*
 README*
 ubuntu*
 vagrant*
+
+**/appsetings.*.json
