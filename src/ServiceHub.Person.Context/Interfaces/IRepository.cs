@@ -45,5 +45,11 @@ namespace ServiceHub.Person.Context.Interfaces
         /// <param name="id">ModelId</param>
         /// <returns>True if id was found, false otherwise</returns>
         Task<bool> DeleteById(string id);    
+
+        /// <summary>
+        /// This function will be used to update the database
+        /// </summary>
+        void UpdateRepository();
+
     }
 }
