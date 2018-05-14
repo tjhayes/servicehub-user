@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CM = ServiceHub.Person.Context.Models;
 using System.Collections.Generic;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceHub.Person.Service.Controllers
 {
