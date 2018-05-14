@@ -6,10 +6,13 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using ServiceHub.Person.Context.Models;
+using System.Net.Http.Headers;
+using ServiceHub.Person.Context.Interfaces;
 
-namespace ServiceHub.Person.Context.Models
+namespace ServiceHub.Person.Context.Models 
 {
-    public class PersonRepository
+    public class PersonRepository : IRepository<Person>
     {
         public const string MongoDbIdName = "_id";
 
@@ -20,7 +23,7 @@ namespace ServiceHub.Person.Context.Models
         private readonly IMongoCollection<Person> _collection;
 
         protected readonly TimeSpan CacheExpiration;
-
+        
         private readonly HttpClient _salesforceapi;
 
         private readonly string _baseUrl;
@@ -50,7 +53,6 @@ namespace ServiceHub.Person.Context.Models
             CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
 
-
         public async Task<IEnumerable<Person>> GetAll()
         {
             return await _collection.Find(new BsonDocument()).ToListAsync();
@@ -77,10 +79,7 @@ namespace ServiceHub.Person.Context.Models
             return result;
         }
 
-
-
-
-        public async Task<List<Person>> ReadFromSalesForce()
+        private async Task<List<Person>> ReadFromSalesForce()
         {
             var result = await _salesforceapi.GetAsync( _baseUrl + _getAll);
 
@@ -126,6 +125,23 @@ namespace ServiceHub.Person.Context.Models
 
             }
         }
+        
+        public Task Create(Person model)
+        {
+            return Task.Run(() => Console.WriteLine("Not Implemented"));
+//            throw new NotImplementedException();
+        }
 
+        public Task<bool> UpdateById(string id, Person model)
+        {
+            return Task.Run(() => false);
+//            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteById(string id)
+        {
+            return Task.Run(() => false);
+//            throw new NotImplementedException();
+        }
     }
 }

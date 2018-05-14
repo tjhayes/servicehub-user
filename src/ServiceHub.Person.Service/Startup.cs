@@ -10,23 +10,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ServiceHub.Person.Library.Models;
+using Swashbuckle.AspNetCore.Swagger;
+using ServiceHub.Person.Context.Interfaces;
 
 namespace ServiceHub.Person.Service
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+      Configuration = configuration;
+    }
 
-        public IConfiguration Configuration { get; }
+    public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<CM.PersonRepository>();
-            //add and configure Di with setting class, get connection string and database name from appsettings.json
+
+            services.AddScoped<IRepository<CM.Person>,CM.PersonRepository>();            
             //settings will be access via IOptions<Settings>
             services.Configure<Settings>(Options =>
             {
@@ -48,19 +50,32 @@ namespace ServiceHub.Person.Service
                        .AllowAnyHeader()
                        .AllowCredentials();
             }));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Revature Housing: Person API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            loggerFactory.AddApplicationInsights(app.ApplicationServices);
             app.UseCors("Open");
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Revature Housing: Person API V1");
+            });
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
-        }
+      app.UseMvc();
     }
+  }
 }
