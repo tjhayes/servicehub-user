@@ -18,6 +18,9 @@ namespace ServiceHub.Person.Library.Models
         //collection name
         public string CollectionName { get; set; }
 
+        public string MetaDataCollectionName { get; set; }
+        public string MetaDataId {get; set;}
+
         public int CacheExpirationMinutes { get; set; }
 
         // Salesforce request body information
@@ -30,5 +33,7 @@ namespace ServiceHub.Person.Library.Models
         public string BaseURL { get; set; }
         public string LoginURLExtension { get; set; }
         public string ResourceBaseExtension { get; set; }
+
+        public string GetAll {get; set;}
     }
 }
