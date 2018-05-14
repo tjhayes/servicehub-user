@@ -37,6 +37,7 @@ namespace ServiceHub.Person.Service.Controllers
         public PersonController(IRepository<CM.Person> repo)
         { 
             _Repo = repo;
+            _updateDatabase();
         }
 
         [HttpGet]
