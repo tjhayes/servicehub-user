@@ -5,6 +5,7 @@ using CM = ServiceHub.Person.Context.Models;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Logging;
+using ServiceHub.Person.Context.Interfaces;
 
 namespace ServiceHub.Person.Service.Controllers
 {
@@ -12,8 +13,6 @@ namespace ServiceHub.Person.Service.Controllers
     [Route("api/[controller]")]
     public class PersonController : Controller
     {
-        private CM.PersonRepository _Repo;
-
         private void _updateDatabase()
         {
             var now = DateTime.Now;
@@ -35,8 +34,8 @@ namespace ServiceHub.Person.Service.Controllers
                 return;
             }
         }
-
-        public PersonController(CM.PersonRepository repo)
+        private IRepository<CM.Person> _Repo;
+        public PersonController(IRepository<CM.Person> repo)
         { 
             _Repo = repo;
         }
@@ -51,7 +50,7 @@ namespace ServiceHub.Person.Service.Controllers
         public async Task<IActionResult> GetByEmail(string email)
         {
             var result2 = await _Repo.GetAll();
-            var result = result2.FirstOrDefault(p => p.Email == email);
+            var result = result2.FirstOrDefault(p => p.EMail == email);
             if (result is null)
             {
                 return NotFound();
