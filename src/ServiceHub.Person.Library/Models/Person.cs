@@ -5,9 +5,12 @@ namespace ServiceHub.Person.Library.Models
     public class Person
     {
         [Required]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         [Required]
-        public string Email { get; set; }
+        public string LastName { get; set; }
+
+        [Required]
+        public string EMail { get; set; }
         [Required]
         public string BatchName { get; set; }
         [Phone]
@@ -17,6 +20,10 @@ namespace ServiceHub.Person.Library.Models
         [Required]
         public bool IsMale { get; set; }
         [Required]
-        public string Address { get; set; }
+        public Address Address { get; set; }
+        [Required]
+        public string Role {get; set;}
+        [Required]
+        public long PersonID {get; set;}
     }
 }
