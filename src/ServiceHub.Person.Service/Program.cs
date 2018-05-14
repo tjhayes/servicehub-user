@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceHub.Person.Service
 {
@@ -42,6 +43,7 @@ namespace ServiceHub.Person.Service
                     logging.ClearProviders();
                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
+                .UseApplicationInsights(Environment.GetEnvironmentVariable("INSTRUMENTATION_KEY"))
                 .UseNLog()
                 .Build();
     }
