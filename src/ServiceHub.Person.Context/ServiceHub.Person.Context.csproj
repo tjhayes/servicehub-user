@@ -5,11 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceHub.Person.Library\ServiceHub.Person.Library.csproj" />
+  </ItemGroup>
+
+</Project>
+    <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
   </ItemGroup>
 
 </Project>
