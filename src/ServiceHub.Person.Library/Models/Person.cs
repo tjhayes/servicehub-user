@@ -23,5 +23,7 @@ namespace ServiceHub.Person.Library.Models
         public Address Address { get; set; }
         [Required]
         public string Role {get; set;}
+        [Required]
+        public long PersonID {get; set;}
     }
 }
