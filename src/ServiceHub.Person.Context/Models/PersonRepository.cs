@@ -76,5 +76,10 @@ namespace ServiceHub.Person.Context.Models
             return Task.Run(() => false);
 //            throw new NotImplementedException();
         }
+
+        public void UpdateRepository()
+        {
+
+        }
     }
 }
