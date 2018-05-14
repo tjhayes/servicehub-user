@@ -16,3 +16,7 @@
   </ItemGroup>
 
 </Project>
+    <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
+  </ItemGroup>
+
+</Project>
