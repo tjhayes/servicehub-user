@@ -4,12 +4,13 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using ServiceHub.Person.Library.Models;
+using ServiceHub.Person.Context.Models;
 using System.Net.Http.Headers;
+using ServiceHub.Person.Context.Interfaces;
 
-namespace ServiceHub.Person.Context.Models
+namespace ServiceHub.Person.Context.Models 
 {
-    public class PersonRepository
+    public class PersonRepository : IRepository<Person>
     {
         public const string MongoDbIdName = "_id";
 
@@ -56,6 +57,24 @@ namespace ServiceHub.Person.Context.Models
             // TODO: Figure out caching for single item.
 
             return result;
+        }
+
+        public Task Create(Person model)
+        {
+            return Task.Run(() => Console.WriteLine("Not Implemented"));
+//            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateById(string id, Person model)
+        {
+            return Task.Run(() => false);
+//            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteById(string id)
+        {
+            return Task.Run(() => false);
+//            throw new NotImplementedException();
         }
     }
 }
