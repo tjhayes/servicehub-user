@@ -25,8 +25,7 @@ namespace ServiceHub.Person.Service.Controllers
             {
                 Console.WriteLine("database needs updating");
                 // call context object to update database
-                var list = _Repo.ReadFromSalesForce().GetAwaiter().GetResult();
-                Repo.UpdateMongoDB(list);
+                _Repo.UpdateRepository();
             }
             else
             {
@@ -38,6 +37,7 @@ namespace ServiceHub.Person.Service.Controllers
         public PersonController(IRepository<CM.Person> repo)
         { 
             _Repo = repo;
+            _updateDatabase();
         }
 
         [HttpGet]
