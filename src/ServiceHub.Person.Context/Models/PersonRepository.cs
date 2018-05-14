@@ -21,13 +21,31 @@ namespace ServiceHub.Person.Context.Models
 
         protected readonly TimeSpan CacheExpiration;
 
+        private readonly HttpClient _salesforceapi;
+
+        private readonly string _baseUrl;
+
+        private readonly string _getAll; 
+
+        private readonly MetaData _metadata;
+
+        private readonly string _MetaDataCollection;
+
         public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
         {
             _client = new MongoClient(settings.Value.ConnectionString);
+            _salesforceapi = new HttpClient();
+            _baseUrl = settings.Value.BaseURL;
+            _getAll =  settings.Value.GetAll;
+            _MetaDataCollection = settings.Value.MetaDataCollectionName;
             if (_client != null)
             {
                 _db = _client.GetDatabase(settings.Value.Database);
                 _collection = _db.GetCollection<Person>(settings.Value.CollectionName);
+
+                // Obtaining metadata
+                _metadata = _db.GetCollection<MetaData>(settings.Value.MetaDataCollectionName)
+                                .Find(p=> p.ModelId == settings.Value.MetaDataId).FirstOrDefault();
             }
             CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
@@ -62,10 +80,9 @@ namespace ServiceHub.Person.Context.Models
 
 
 
-        public static async Task<List<Person>> ReadFromSalesForce()
+        public async Task<List<Person>> ReadFromSalesForce()
         {
-            var client = new HttpClient();
-            var result = await client.GetAsync("");
+            var result = await _salesforceapi.GetAsync( _baseUrl + _getAll);
 
             if (result.IsSuccessStatusCode)
             {
