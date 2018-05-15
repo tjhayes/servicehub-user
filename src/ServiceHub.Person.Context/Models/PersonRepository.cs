@@ -10,6 +10,8 @@ using ServiceHub.Person.Context.Models;
 using System.Net.Http.Headers;
 using ServiceHub.Person.Context.Interfaces;
 using System.Data;
+using System.Security.Authentication;
+using ServiceHub.Person.Library.Models;
 
 namespace ServiceHub.Person.Context.Models 
 {
@@ -22,38 +24,35 @@ namespace ServiceHub.Person.Context.Models
         protected readonly IMongoDatabase _db;
 
         private readonly IMongoCollection<Person> _collection;
-
-        protected readonly TimeSpan CacheExpiration;
         
         private readonly HttpClient _salesforceapi;
 
         private readonly string _baseUrl;
-
-        private readonly string _getAll; 
 
         private readonly MetaData _metadata;
 
         private readonly string _MetaDataCollection;
         private readonly string _metadataId;
 
-        public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
+        public PersonRepository()
         {
-            _client = new MongoClient(settings.Value.ConnectionString);
+            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(settings.Value.ConnectionString) );
+            Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
+            _client = new MongoClient(Msettings);
+            //_client = new MongoClient(settings.Value.ConnectionString); may have to switch to this
             _salesforceapi = new HttpClient();
-            _baseUrl = settings.Value.BaseURL;
-            _getAll =  settings.Value.GetAll;
-            _MetaDataCollection = settings.Value.MetaDataCollectionName;
-            _metadataId = settings.Value.MetaDataId;
+            _baseUrl = Settings.BaseURL;
+            _MetaDataCollection = Settings.MetaDataCollectionName;
+            _metadataId = Settings.MetaDataId;
             if (_client != null)
             {
-                _db = _client.GetDatabase(settings.Value.Database);
-                _collection = _db.GetCollection<Person>(settings.Value.CollectionName);
+                _db = _client.GetDatabase(Settings.Database);
+                _collection = _db.GetCollection<Person>(Settings.CollectionName);
 
                 // Obtaining metadata
-                _metadata = _db.GetCollection<MetaData>(settings.Value.MetaDataCollectionName)
-                                .Find(p=> p.ModelId == settings.Value.MetaDataId).FirstOrDefault();
+                _metadata = _db.GetCollection<MetaData>(Settings.MetaDataCollectionName)
+                                .Find(p=> p.ModelId == Settings.MetaDataId).FirstOrDefault();
             }
-            CacheExpiration = new TimeSpan(0, settings.Value.CacheExpirationMinutes, 0);
         }
 
         public async Task<IEnumerable<Person>> GetAll()
@@ -78,7 +77,7 @@ namespace ServiceHub.Person.Context.Models
 
         private async Task<List<Person>> ReadFromSalesForce()
         {
-            var result = await _salesforceapi.GetAsync( _baseUrl + _getAll);
+            var result = await _salesforceapi.GetAsync( _baseUrl);
 
             if (result.IsSuccessStatusCode)
             {
