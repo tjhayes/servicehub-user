@@ -12,7 +12,6 @@ using Microsoft.Extensions.Options;
 using ServiceHub.Person.Library.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using ServiceHub.Person.Context.Interfaces;
-using System.Net.Http;
 
 namespace ServiceHub.Person.Service
 {
@@ -29,8 +28,20 @@ namespace ServiceHub.Person.Service
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<IRepository<CM.Person>,CM.PersonRepository>();
-            
+            services.AddScoped<IRepository<CM.Person>,CM.PersonRepository>();            
+            //settings will be access via IOptions<Settings>
+            services.Configure<Settings>(Options =>
+            {
+                Options.ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
+                Options.Database = Configuration.GetSection("MongoDB:Database").Value;
+                Options.CollectionName = Configuration.GetSection("MongoDB:Collection").Value;
+                Options.MetaDataCollectionName = Configuration.GetSection("MongoDB:MetaDataCollection").Value;;
+                Options.MetaDataId = Configuration.GetSection("MongoDB:MetaDataId").Value;;
+                Options.BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
+                Options.GetAll = Configuration.GetSection("SalesforceURLs:GetAll").Value;
+                Options.GetById = Configuration.GetSection("SalesforceURLs:GetById").Value;
+                Options.CacheExpirationMinutes = int.Parse(Configuration.GetSection("CacheExpirationMinutes").Value);            
+            });
             services.AddMvc();
 
             services.AddCors(o => o.AddPolicy("Open", builder =>
