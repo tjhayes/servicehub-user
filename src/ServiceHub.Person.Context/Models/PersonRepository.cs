@@ -202,5 +202,10 @@ namespace ServiceHub.Person.Context.Models
         {
             return _metadata.LastModified;
         }
+
+        public void UpdateRepository()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
