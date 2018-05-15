@@ -39,6 +39,7 @@ namespace ServiceHub.Person.Service
                 Options.MetaDataId = Configuration.GetSection("MongoDB:MetaDataId").Value;;
                 Options.BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
                 Options.GetAll = Configuration.GetSection("SalesforceURLs:GetAll").Value;
+                Options.GetById = Configuration.GetSection("SalesforceURLs:GetById").Value;
                 Options.CacheExpirationMinutes = int.Parse(Configuration.GetSection("CacheExpirationMinutes").Value);            
             });
             services.AddMvc();
