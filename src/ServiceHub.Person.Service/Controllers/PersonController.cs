@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using CM = ServiceHub.Person.Context.Models;
 using System.Collections.Generic;
 using System;
-using Microsoft.Extensions.Logging;
 using ServiceHub.Person.Context.Interfaces;
+using System.Net.Http;
+using ServiceHub.Person.Library.Models;
 
 namespace ServiceHub.Person.Service.Controllers
 {
@@ -13,6 +14,8 @@ namespace ServiceHub.Person.Service.Controllers
     [Route("api/[controller]")]
     public class PersonController : Controller
     {
+        private IRepository<CM.Person> _Repo;
+        private HttpClient _Client;
         private void _updateDatabase()
         {
             var now = DateTime.UtcNow;//best to use UTC
@@ -29,9 +32,8 @@ namespace ServiceHub.Person.Service.Controllers
                 return;
             }
         }
-        private IRepository<CM.Person> _Repo;
         public PersonController(IRepository<CM.Person> repo)
-        { 
+        {
             _Repo = repo;
             _updateDatabase();
         }
@@ -60,6 +62,18 @@ namespace ServiceHub.Person.Service.Controllers
             var result = await _Repo.GetById(id);
 
             if(result is null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var result = await _Client.DeleteAsync(Settings.BaseURL + "/" + id);
+
+            if (result is null)
             {
                 return NotFound();
             }
