@@ -71,11 +71,14 @@ namespace ServiceHub.Person.Service.Controllers
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var result = await _Client.DeleteAsync(Settings.BaseURL + "/" + id);
+            var person = await _Repo.GetById(id);
 
-            if (result is null)
+            var result = await _Client.DeleteAsync(Settings.BaseURL + "/" + person.ModelId);
+
+            if (result.IsSuccessStatusCode)
             {
-                return NotFound();
+                await _Repo.DeleteById(id);
+                return Ok();
             }
             return Ok(result);
         }
