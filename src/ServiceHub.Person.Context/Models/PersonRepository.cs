@@ -158,18 +158,16 @@ namespace ServiceHub.Person.Context.Models
 
         public async Task<bool> DeleteById(string id)
         {
-            ObjectId theObjectId;
+            long newId;
             try
             {
-                theObjectId = new ObjectId(id);
+                newId = Convert.ToInt64(id);
             }
             catch (Exception ex)
             {
                 throw new ArgumentException("Invalid ID", ex);
             }
-            //filter based on given model
-            FilterDefinition<Person> filter = Builders<Person>.Filter.Eq(MongoDbIdName, theObjectId);
-            DeleteResult result = await _collection.DeleteOneAsync(filter);
+            DeleteResult result = await _collection.DeleteOneAsync(p => p.PersonID == newId);
             return (result.IsAcknowledged && result.DeletedCount == 1);
         }
 
