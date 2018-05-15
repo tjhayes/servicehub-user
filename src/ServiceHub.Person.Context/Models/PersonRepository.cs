@@ -36,7 +36,7 @@ namespace ServiceHub.Person.Context.Models
 
         public PersonRepository()
         {
-            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(settings.Value.ConnectionString) );
+            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
             Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
             _client = new MongoClient(Msettings);
             //_client = new MongoClient(settings.Value.ConnectionString); may have to switch to this
