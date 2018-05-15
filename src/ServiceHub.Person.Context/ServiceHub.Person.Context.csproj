@@ -15,7 +15,7 @@
     <ProjectReference Include="..\ServiceHub.Person.Library\ServiceHub.Person.Library.csproj" />
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
   </ItemGroup>
 
