@@ -36,7 +36,7 @@ namespace ServiceHub.Person.Service
                 Options.Database = Configuration.GetSection("MongoDB:Database").Value;
                 Options.CollectionName = Configuration.GetSection("MongoDB:Collection").Value;
                 Options.MetaDataCollectionName = Configuration.GetSection("MongoDB:MetaDataCollection").Value;;
-                Options.MetaDataCollectionName = Configuration.GetSection("MongoDB:MetaDataId").Value;;
+                Options.MetaDataId = Configuration.GetSection("MongoDB:MetaDataId").Value;;
                 Options.BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
                 Options.GetAll = Configuration.GetSection("SalesforceURLs:GetAll").Value;
                 Options.CacheExpirationMinutes = int.Parse(Configuration.GetSection("CacheExpirationMinutes").Value);            
