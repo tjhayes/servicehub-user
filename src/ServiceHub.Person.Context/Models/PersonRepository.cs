@@ -63,22 +63,16 @@ namespace ServiceHub.Person.Context.Models
 
         public async Task<Person> GetById(string id)
         {
-            ObjectId theObjectId;
+            long newId;
             try
             {
-                theObjectId = new ObjectId(id);
+                newId = Convert.ToInt64(id);
             }
             catch (Exception ex)
             {
                 throw new ArgumentException("Invalid ID", ex);
             }
-
-            FilterDefinition<Person> filter = Builders<Person>.Filter.Eq(MongoDbIdName, theObjectId);
-
-            Person result = await _collection.Find(filter).FirstAsync();
-
-            // TODO: Figure out caching for single item.
-
+            Person result = await _collection.Find(p => p.PersonID == newId).FirstAsync();
             return result;
         }
 
