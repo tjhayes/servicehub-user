@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace ServiceHub.Person.Library.Models
 {
@@ -8,47 +9,32 @@ namespace ServiceHub.Person.Library.Models
     /// This class is used to get connectionstring name, database name, and collection name from appSettings.json file for MongoDB.
     /// Then, we can inject this to any dbcontext with IOptions
     /// </summary>
-    public static class Settings
+    public class Settings
     {
 
         //connectionstring name
-        public static readonly string ConnectionString;
+        public readonly string ConnectionString;
         //database name
-        public static readonly string Database;
+        public readonly string Database;
         //collection name
-        public static readonly string CollectionName;
+        public readonly string CollectionName;
 
-        public static readonly string MetaDataCollectionName;
-        public static readonly string MetaDataId;
+        public readonly string MetaDataCollectionName;
+        public readonly string MetaDataId;
 
         // Salesforce URLs
-        public static readonly string BaseURL;
-        public static readonly string GetById;
-        public static IConfiguration Configuration { get; }
-        public static IHostingEnvironment Env { get; }
+        public readonly string BaseURL;
+        public readonly string GetById;
 
-        static Settings()
+        public Settings(List<string> strings)
         {
-            if (Env.IsStaging())
-            {
-                ConnectionString = Environment.GetEnvironmentVariable("MongoDB:ConnectionString");
-                Database = Environment.GetEnvironmentVariable("MongoDB:Database");
-                CollectionName = Environment.GetEnvironmentVariable("MongoDB:Collection");
-                MetaDataCollectionName = Environment.GetEnvironmentVariable("MongoDB:MetaDataCollection");
-                MetaDataId = Environment.GetEnvironmentVariable("MongoDB:MetaDataId");
-                BaseURL = Environment.GetEnvironmentVariable("SalesforceURLs:Base");
-                GetById = Environment.GetEnvironmentVariable("SalesforceURLs:GetById");
-            }
-            else
-            {
-                ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
-                Database = Configuration.GetSection("MongoDB:Database").Value;
-                CollectionName = Configuration.GetSection("MongoDB:Collection").Value;
-                MetaDataCollectionName = Configuration.GetSection("MongoDB:MetaDataCollection").Value; ;
-                MetaDataId = Configuration.GetSection("MongoDB:MetaDataId").Value; ;
-                BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
-                GetById = Configuration.GetSection("SalesforceURLs:GetById").Value;
-            }
+            ConnectionString = strings[0];
+            Database = strings[1];
+            CollectionName = strings[2];
+            MetaDataCollectionName = strings[3];
+            MetaDataId = strings[4];
+            BaseURL = strings[5];
+            GetById = strings[6];
         }
     }
 }

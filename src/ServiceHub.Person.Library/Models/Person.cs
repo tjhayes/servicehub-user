@@ -24,6 +24,6 @@ namespace ServiceHub.Person.Library.Models
         [Required]
         public string Role {get; set;}
         [Required]
-        public long PersonID {get; set;}
+        public long PersonId {get; set;}
     }
 }
