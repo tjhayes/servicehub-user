@@ -15,21 +15,17 @@ namespace ServiceHub.Person.Service.Controllers
     {
         private void _updateDatabase()
         {
-            var now = DateTime.Now;
-            var TimeStamp = _Repo.GetById("5af0953c153254170c367ef1").Result; //TODO: place _id in json after creating the document in CosmosDB
-            var then = TimeStamp.LastModified;
+            var now = DateTime.UtcNow;//best to use UTC
+            var then = _Repo.LastGlobalUpdateTime();
             var diff = now.Subtract(then);
             var period = TimeSpan.FromHours(12.0);
             bool doCheck = (TimeSpan.Compare(diff, period) > 0);
             if (doCheck)
             {
-                Console.WriteLine("database needs updating");
-                // call context object to update database
                 _Repo.UpdateRepository();
             }
             else
             {
-                Console.WriteLine("proceed, no update needed.");
                 return;
             }
         }

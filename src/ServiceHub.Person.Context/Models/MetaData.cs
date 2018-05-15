@@ -10,12 +10,11 @@ namespace ServiceHub.Person.Context.Models{
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        [BsonIgnoreIfDefault]    // <--- this is what was missing
         [JsonIgnore]
         public string ModelId { get; set; }
-        public DateTime LastModified{get;set;}
+        public DateTime LastModified {get;set;}
 
-        public long Count{get; set;}
+        public long Count {get; set;}
 
 
   } 
