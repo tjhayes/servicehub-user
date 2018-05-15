@@ -9,6 +9,7 @@
 # exclude - filename
 .history
 appsettings.*.json
+appsettings.json
 ubuntu*
 
 # ==================================================================================================
