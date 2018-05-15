@@ -36,10 +36,10 @@ namespace ServiceHub.Person.Context.Models
 
         public PersonRepository(Settings Settings)
         {
-            //MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
-            //Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
-            //_client = new MongoClient(Msettings);
-            _client = new MongoClient(Settings.ConnectionString); //mayZ have to switch to this
+            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
+            Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
+            _client = new MongoClient(Msettings);
+            //_client = new MongoClient(Settings.ConnectionString); //mayZ have to switch to this
             _salesforceapi = new HttpClient();
             _baseUrl = Settings.BaseURL;
             _MetaDataCollection = Settings.MetaDataCollectionName;
@@ -169,7 +169,7 @@ namespace ServiceHub.Person.Context.Models
             {
                 throw new ArgumentException("Invalid ID", ex);
             }
-            DeleteResult result = await _collection.DeleteOneAsync(p => p.PersonID == newId);
+            DeleteResult result = await _collection.DeleteOneAsync(p => p.PersonId == newId);
             return (result.IsAcknowledged && result.DeletedCount == 1);
         }
 
