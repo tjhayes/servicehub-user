@@ -10,6 +10,7 @@ using ServiceHub.Person.Context.Models;
 using System.Net.Http.Headers;
 using ServiceHub.Person.Context.Interfaces;
 using System.Data;
+using System.Security.Authentication;
 using ServiceHub.Person.Library.Models;
 
 namespace ServiceHub.Person.Context.Models 
@@ -35,7 +36,10 @@ namespace ServiceHub.Person.Context.Models
 
         public PersonRepository()
         {
-            _client = new MongoClient(Settings.ConnectionString);
+            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(settings.Value.ConnectionString) );
+            Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
+            _client = new MongoClient(Msettings);
+            //_client = new MongoClient(settings.Value.ConnectionString); may have to switch to this
             _salesforceapi = new HttpClient();
             _baseUrl = Settings.BaseURL;
             _MetaDataCollection = Settings.MetaDataCollectionName;
