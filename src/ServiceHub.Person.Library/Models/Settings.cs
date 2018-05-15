@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace ServiceHub.Person.Library.Models
 {
@@ -8,24 +6,33 @@ namespace ServiceHub.Person.Library.Models
     /// This class is used to get connectionstring name, database name, and collection name from appSettings.json file for MongoDB.
     /// Then, we can inject this to any dbcontext with IOptions
     /// </summary>
-    public class Settings
+    public static class Settings
     {
 
         //connectionstring name
-        public string ConnectionString { get; set; }
+        public static readonly string ConnectionString;
         //database name
-        public string Database { get; set; }
+        public static readonly string Database;
         //collection name
-        public string CollectionName { get; set; }
+        public static readonly string CollectionName;
 
-        public string MetaDataCollectionName { get; set; }
-        public string MetaDataId {get; set;}
+        public static readonly string MetaDataCollectionName;
+        public static readonly string MetaDataId;
 
-        public int CacheExpirationMinutes { get; set; }
-        
         // Salesforce URLs
-        public string BaseURL { get; set; }
-        public string GetAll {get; set;}
-        public string GetById { get; set; }
+        public static readonly string BaseURL;
+        public static readonly string GetById;
+        public static IConfiguration Configuration { get; }
+
+        static Settings()
+        {
+            ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
+            Database = Configuration.GetSection("MongoDB:Database").Value;
+            CollectionName = Configuration.GetSection("MongoDB:Collection").Value;
+            MetaDataCollectionName = Configuration.GetSection("MongoDB:MetaDataCollection").Value; ;
+            MetaDataId = Configuration.GetSection("MongoDB:MetaDataId").Value; ;
+            BaseURL = Configuration.GetSection("SalesforceURLs:Base").Value;
+            GetById = Configuration.GetSection("SalesforceURLs:GetById").Value;
+        }
     }
 }
