@@ -22,18 +22,10 @@ namespace ServiceHub.Person.Library.Models
         public string MetaDataId {get; set;}
 
         public int CacheExpirationMinutes { get; set; }
-
-        // Salesforce request body information
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
         
         // Salesforce URLs
         public string BaseURL { get; set; }
-        public string LoginURLExtension { get; set; }
-        public string ResourceBaseExtension { get; set; }
-
         public string GetAll {get; set;}
+        public string GetById { get; set; }
     }
 }
