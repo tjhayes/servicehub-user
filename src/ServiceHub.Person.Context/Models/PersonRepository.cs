@@ -169,7 +169,7 @@ namespace ServiceHub.Person.Context.Models
             {
                 throw new ArgumentException("Invalid ID", ex);
             }
-            DeleteResult result = await _collection.DeleteOneAsync(p => p.PersonID == newId);
+            DeleteResult result = await _collection.DeleteOneAsync(p => p.PersonId == newId);
             return (result.IsAcknowledged && result.DeletedCount == 1);
         }
 
