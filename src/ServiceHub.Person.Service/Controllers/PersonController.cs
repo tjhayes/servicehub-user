@@ -78,7 +78,7 @@ namespace ServiceHub.Person.Service.Controllers
             if (result.IsSuccessStatusCode)
             {
                 await _Repo.DeleteById(id);
-                return Ok()
+                return Ok();
             }
             return Ok(result);
         }
