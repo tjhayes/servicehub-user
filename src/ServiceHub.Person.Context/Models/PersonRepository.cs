@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using ServiceHub.Person.Context.Models;
 using System.Net.Http.Headers;
 using ServiceHub.Person.Context.Interfaces;
+using System.Data;
 
 namespace ServiceHub.Person.Context.Models 
 {
@@ -33,6 +34,7 @@ namespace ServiceHub.Person.Context.Models
         private readonly MetaData _metadata;
 
         private readonly string _MetaDataCollection;
+        private readonly string _metadataId;
 
         public PersonRepository(IOptions<ServiceHub.Person.Library.Models.Settings> settings)
         {
@@ -41,6 +43,7 @@ namespace ServiceHub.Person.Context.Models
             _baseUrl = settings.Value.BaseURL;
             _getAll =  settings.Value.GetAll;
             _MetaDataCollection = settings.Value.MetaDataCollectionName;
+            _metadataId = settings.Value.MetaDataId;
             if (_client != null)
             {
                 _db = _client.GetDatabase(settings.Value.Database);
@@ -88,18 +91,17 @@ namespace ServiceHub.Person.Context.Models
                 var content = await result.Content.ReadAsStringAsync();
                 List<Person> personlist = null;
 
-                if  (content != null  ){
-               
-                personlist = JsonConvert.DeserializeObject<List<Person>>(content);
+                if  (content != null  )
+                {               
+                    personlist = JsonConvert.DeserializeObject<List<Person>>(content);
                 }
                 return personlist;
-
             }
             else
                 return null;
         }
 
-          public void UpdateMongoDB(List<Person> personlist)
+        public void UpdateMongoDB(List<Person> personlist)
         {
             // Get the contacts in the Person collection, check for existing contacts.
             // If not present, add to collection.
@@ -126,22 +128,79 @@ namespace ServiceHub.Person.Context.Models
             }
         }
         
-        public Task Create(Person model)
+        public async Task Create(Person model)
         {
-            return Task.Run(() => Console.WriteLine("Not Implemented"));
-//            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            model.ModelId = null;
+            model.LastModified = DateTime.UtcNow;
+            await _collection.InsertOneAsync(model);
         }
 
-        public Task<bool> UpdateById(string id, Person model)
+        public async Task<bool> UpdateById(string id, Person model)
         {
-            return Task.Run(() => false);
-//            throw new NotImplementedException();
+            ObjectId theObjectId;
+            try
+            {
+                theObjectId = new ObjectId(id);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid ID", nameof(id), ex);
+            }
+
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            model.ModelId = id;
+            model.LastModified = DateTime.Now;
+            //find a document which contains the passed model.
+            FilterDefinition<Person> filter = Builders<Person>.Filter.Eq(MongoDbIdName, theObjectId);
+            ReplaceOneResult result = await _collection.ReplaceOneAsync(filter, model);
+            return (result.IsAcknowledged && result.ModifiedCount == 1);            
         }
 
-        public Task<bool> DeleteById(string id)
+        public async Task<bool> DeleteById(string id)
         {
-            return Task.Run(() => false);
-//            throw new NotImplementedException();
+            ObjectId theObjectId;
+            try
+            {
+                theObjectId = new ObjectId(id);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid ID", ex);
+            }
+            //filter based on given model
+            FilterDefinition<Person> filter = Builders<Person>.Filter.Eq(MongoDbIdName, theObjectId);
+            DeleteResult result = await _collection.DeleteOneAsync(filter);
+            return (result.IsAcknowledged && result.DeletedCount == 1);
+        }
+
+        public void UpdateRepository()
+        {
+            var updateList = this.ReadFromSalesForce().GetAwaiter().GetResult(); 
+            if(updateList != null)
+            {
+                this.UpdateMongoDB(updateList);
+                var theObjectId = new ObjectId(_metadataId);
+                _metadata.LastModified = DateTime.Now;
+                //find a document which contains the passed model.
+                FilterDefinition<MetaData> filter = Builders<MetaData>.Filter.Eq(MongoDbIdName, theObjectId);
+                ReplaceOneResult result = _db.GetCollection<MetaData>(_MetaDataCollection)
+                                            .ReplaceOne(filter, _metadata);
+                if(!(result.IsAcknowledged && result.ModifiedCount == 1))
+                {
+                    throw new DBConcurrencyException("Global time not updated.");
+                }                                
+            }
+        }
+        public DateTime LastGlobalUpdateTime()
+        {
+            return _metadata.LastModified;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -50,6 +51,11 @@ namespace ServiceHub.Person.Context.Interfaces
         /// This function will be used to update the database
         /// </summary>
         void UpdateRepository();
+
+        /// <summary>
+        /// This function will be used to update the database
+        /// </summary>
+        DateTime LastGlobalUpdateTime();        
 
     }
 }
