@@ -53,5 +53,17 @@ namespace ServiceHub.Person.Service.Controllers
             }
             return Ok(result);
         }
+
+        [HttpGet("id/{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var result = await _Repo.GetById(id);
+
+            if(result is null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
     }
 }
