@@ -15,7 +15,7 @@ namespace ServiceHub.Person.Service.Controllers
     public class PersonController : Controller
     {
         private IRepository<CM.Person> _Repo;
-        private HttpClient _Client;
+        private Settings _Settings;
         private void _updateDatabase()
         {
             var now = DateTime.UtcNow;//best to use UTC
@@ -32,9 +32,10 @@ namespace ServiceHub.Person.Service.Controllers
                 return;
             }
         }
-        public PersonController(IRepository<CM.Person> repo)
+        public PersonController(IRepository<CM.Person> repo, Settings settings)
         {
             _Repo = repo;
+            _Settings = settings;
             _updateDatabase();
         }
 
@@ -73,7 +74,7 @@ namespace ServiceHub.Person.Service.Controllers
         {
             var person = await _Repo.GetById(id);
 
-            var result = await _Client.DeleteAsync(Settings.BaseURL + "/" + person.ModelId);
+            var result = await new HttpClient().DeleteAsync(_Settings.BaseURL + "/" + person.ModelId);
 
             if (result.IsSuccessStatusCode)
             {

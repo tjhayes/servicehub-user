@@ -34,12 +34,12 @@ namespace ServiceHub.Person.Context.Models
         private readonly string _MetaDataCollection;
         private readonly string _metadataId;
 
-        public PersonRepository()
+        public PersonRepository(Settings Settings)
         {
-            MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
-            Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
-            _client = new MongoClient(Msettings);
-            //_client = new MongoClient(settings.Value.ConnectionString); may have to switch to this
+            //MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
+            //Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
+            //_client = new MongoClient(Msettings);
+            _client = new MongoClient(Settings.ConnectionString); //mayZ have to switch to this
             _salesforceapi = new HttpClient();
             _baseUrl = Settings.BaseURL;
             _MetaDataCollection = Settings.MetaDataCollectionName;
@@ -56,8 +56,10 @@ namespace ServiceHub.Person.Context.Models
         }
 
         public async Task<IEnumerable<Person>> GetAll()
-        {
-            return await _collection.Find(new BsonDocument()).ToListAsync();
+        { 
+            var stuff = await _collection.Find(new BsonDocument()).ToListAsync();
+            Console.WriteLine(stuff.ToJson().ToString());
+            return stuff;
         }
 
         public async Task<Person> GetById(string id)
@@ -71,7 +73,7 @@ namespace ServiceHub.Person.Context.Models
             {
                 throw new ArgumentException("Invalid ID", ex);
             }
-            Person result = await _collection.Find(p => p.PersonID == newId).FirstAsync();
+            Person result = await _collection.Find(p => p.PersonId == newId).FirstAsync();
             return result;
         }
 
