@@ -90,11 +90,15 @@ namespace ServiceHub.Person.Context.Models
                 return personlist;
             }
             else
-                return null;
+            {
+                return new List<Person>();
+            }
         }
 
         public void UpdateMongoDB(List<Person> personlist)
         {
+            if(personlist.Count==0)
+                return;
             // Get the contacts in the Person collection, check for existing contacts.
             // If not present, add to collection.
             var mongoContacts = _collection.Find(_ => true).ToList();
