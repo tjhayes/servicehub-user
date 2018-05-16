@@ -9,7 +9,7 @@ namespace ServiceHub.Person.Testing.Service
 {
     public class TestSuite
     {
-        [Fact]
+        //[Fact]
         public void PersonControllerTest()
         {
             LM.Settings mockSettings = new LM.Settings(new List<string>() { "mongodb://admin123", "1", "2", "3", "4", "http://www.google.com", "6" });
