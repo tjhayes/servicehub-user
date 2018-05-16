@@ -29,13 +29,13 @@ namespace ServiceHub.Person.Service
             List<string> strings = new List<string>();
             if (Env.IsStaging())
             {
-                strings.Add(Environment.GetEnvironmentVariable("MongoDB:ConnectionString"));
-                strings.Add(Environment.GetEnvironmentVariable("MongoDB:Database"));
-                strings.Add(Environment.GetEnvironmentVariable("MongoDB:Collection"));
-                strings.Add(Environment.GetEnvironmentVariable("MongoDB:MetaDataCollection"));
-                strings.Add(Environment.GetEnvironmentVariable("MongoDB:MetaDataId"));
-                strings.Add(Environment.GetEnvironmentVariable("SalesforceURLs:Base"));
-                strings.Add(Environment.GetEnvironmentVariable("SalesforceURLs:GetById"));
+                strings.Add(Environment.GetEnvironmentVariable("MONGODB_CONNECTION_STRING"));
+                strings.Add(Environment.GetEnvironmentVariable("MONGODB_DATABASE"));
+                strings.Add(Environment.GetEnvironmentVariable("MONGODB_COLLECTION"));
+                strings.Add(Environment.GetEnvironmentVariable("MONGODB_METADATA_COLLECTION"));
+                strings.Add(Environment.GetEnvironmentVariable("MONGODB_METADATA_ID"));
+                strings.Add(Environment.GetEnvironmentVariable("SALESFORCE_URLS"));
+                strings.Add(Environment.GetEnvironmentVariable("SALESFORCE_GET_BY_ID"));
             }
             else
             {
