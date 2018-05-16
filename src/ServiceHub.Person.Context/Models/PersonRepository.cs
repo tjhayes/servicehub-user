@@ -185,7 +185,7 @@ namespace ServiceHub.Person.Context.Models
         public void UpdateRepository()
         {
             var updateList = this.ReadFromSalesForce().GetAwaiter().GetResult(); 
-            if(updateList != null)
+            if(updateList.Count != 0)
             {
                 this.UpdateMongoDB(updateList);
                 var theObjectId = new ObjectId(_metadataId);
