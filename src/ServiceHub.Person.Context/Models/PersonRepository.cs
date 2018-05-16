@@ -2,12 +2,9 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
-using ServiceHub.Person.Context.Models;
-using System.Net.Http.Headers;
 using ServiceHub.Person.Context.Interfaces;
 using System.Data;
 using System.Security.Authentication;
