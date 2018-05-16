@@ -48,7 +48,6 @@ namespace ServiceHub.Person.Context.Models
             _metadata = _db.GetCollection<MetaData>(Settings.MetaDataCollectionName)
                             .Find(p=> p.ModelId == Settings.MetaDataId).FirstOrDefault();
             _CurrentCount = _metadata.Count;
-            }
         }
 
         public async Task<IEnumerable<Person>> GetAll()
