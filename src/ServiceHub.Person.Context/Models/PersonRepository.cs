@@ -76,23 +76,31 @@ namespace ServiceHub.Person.Context.Models
 
         private async Task<List<Person>> ReadFromSalesForce()
         {
-            var result = await _salesforceapi.GetAsync( _baseUrl);
-
-            if (result.IsSuccessStatusCode)
+            
+            try
             {
-                var content = await result.Content.ReadAsStringAsync();
-                List<Person> personlist = null;
+                HttpResponseMessage result = await _salesforceapi.GetAsync( _baseUrl);
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = await result.Content.ReadAsStringAsync();
+                    List<Person> personlist = null;
 
-                if  (content != null  )
-                {               
-                    personlist = JsonConvert.DeserializeObject<List<Person>>(content);
+                    if  (content != null  )
+                    {               
+                        personlist = JsonConvert.DeserializeObject<List<Person>>(content);
+                    }
+                    return personlist;
                 }
-                return personlist;
+                else
+                {
+                    return new List<Person>();
+                }
             }
-            else
+            catch(Exception e)
             {
-                return new List<Person>();
+                    return new List<Person>();                
             }
+
         }
 
         public void UpdateMongoDB(List<Person> personlist)
