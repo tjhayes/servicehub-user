@@ -69,7 +69,7 @@ namespace ServiceHub.Person.Service.Controllers
             return Ok(result);
         }
 
-        [HttpGet("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var person = await _Repo.GetById(id);
