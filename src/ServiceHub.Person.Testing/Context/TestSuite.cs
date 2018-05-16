@@ -20,26 +20,14 @@ namespace ServiceHub.Person.Testing.Context
             Assert.True(expected == actual.GetType());
 
     }
-        [Fact]
-        public void PersonRepositoryTest()
-        {
-            var expected = typeof(CM.PersonRepository);            
+        //[Fact]
+        //public void DbTimeUpdaterTest()
+        //{
+        //    var expected = typeof(CM.MetaData);
 
-            var actual = new CM.PersonRepository();
+        //    var actual = new CM.MetaData();
 
-            Assert.True(expected == actual.GetType());
-    }
-
-        [Fact]
-        public void DbTimeUpdaterTest()
-        {
-            var expected = typeof(CM.MetaData);
-
-            var actual = new CM.MetaData();
-
-            Assert.True(expected == actual.GetType());
-
-
-        }
+        //    Assert.True(expected == actual.GetType());
+        //}
   }
 }
