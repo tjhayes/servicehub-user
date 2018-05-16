@@ -84,7 +84,7 @@ namespace ServiceHub.Person.Service
                 app.UseDeveloperExceptionPage();
             }
 
-      app.UseMvc();
+            app.UseMvc();
     }
   }
 }

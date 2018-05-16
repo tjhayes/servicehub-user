@@ -31,27 +31,23 @@ namespace ServiceHub.Person.Context.Models
         private readonly string _MetaDataCollection;
         private readonly string _metadataId;
         private long _CurrentCount; //this number is such that (_CurrentCount + 1) is a valid ID.  
-        //TODO: issues could occur with multiple containers assigning ID's.  Need a better auto-assignment method.
 
         public PersonRepository(Settings Settings)
         {
             MongoClientSettings Msettings = MongoClientSettings.FromUrl( new MongoUrl(Settings.ConnectionString) );
             Msettings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 }; 
             _client = new MongoClient(Msettings);
-            //_client = new MongoClient(Settings.ConnectionString); //mayZ have to switch to this
             _salesforceapi = new HttpClient();
             _baseUrl = Settings.BaseURL;
             _MetaDataCollection = Settings.MetaDataCollectionName;
             _metadataId = Settings.MetaDataId;
-            if (_client != null)
-            {
-                _db = _client.GetDatabase(Settings.Database);
-                _collection = _db.GetCollection<Person>(Settings.CollectionName);
+            _db = _client.GetDatabase(Settings.Database);
+            _collection = _db.GetCollection<Person>(Settings.CollectionName);
 
-                // Obtaining metadata
-                _metadata = _db.GetCollection<MetaData>(Settings.MetaDataCollectionName)
-                                .Find(p=> p.ModelId == Settings.MetaDataId).FirstOrDefault();
-                _CurrentCount = _metadata.Count;
+            // Obtaining metadata
+            _metadata = _db.GetCollection<MetaData>(Settings.MetaDataCollectionName)
+                            .Find(p=> p.ModelId == Settings.MetaDataId).FirstOrDefault();
+            _CurrentCount = _metadata.Count;
             }
         }
 
@@ -81,7 +77,7 @@ namespace ServiceHub.Person.Context.Models
             
             try
             {
-                HttpResponseMessage result = await _salesforceapi.GetAsync( _baseUrl);
+                HttpResponseMessage result = await _salesforceapi.GetAsync(_baseUrl);
                 if (result.IsSuccessStatusCode)
                 {
                     var content = await result.Content.ReadAsStringAsync();
