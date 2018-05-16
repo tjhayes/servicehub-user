@@ -27,6 +27,5 @@ namespace ServiceHub.Person.Testing.Context
 
             Assert.True(expected == actual.GetType());
         }
-
     }
 }
