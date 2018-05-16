@@ -1,8 +1,5 @@
 using Xunit;
-//using moq;
 using CM = ServiceHub.Person.Context.Models;
-using System.Collections.Generic;
-using ServiceHub.Person.Library.Models;
 
 namespace ServiceHub.Person.Testing.Context
 {
