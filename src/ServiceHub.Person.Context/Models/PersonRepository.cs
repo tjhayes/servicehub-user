@@ -58,7 +58,6 @@ namespace ServiceHub.Person.Context.Models
         public async Task<IEnumerable<Person>> GetAll()
         { 
             var stuff = await _collection.Find(new BsonDocument()).ToListAsync();
-            Console.WriteLine(stuff.ToJson().ToString());
             return stuff;
         }
 
