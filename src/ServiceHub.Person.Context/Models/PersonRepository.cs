@@ -30,6 +30,8 @@ namespace ServiceHub.Person.Context.Models
 
         private readonly string _MetaDataCollection;
         private readonly string _metadataId;
+        private long _CurrentCount; //this number is such that (_CurrentCount + 1) is a valid ID.  
+        //TODO: issues could occur with multiple containers assigning ID's.  Need a better auto-assignment method.
 
         public PersonRepository(Settings Settings)
         {
@@ -49,6 +51,7 @@ namespace ServiceHub.Person.Context.Models
                 // Obtaining metadata
                 _metadata = _db.GetCollection<MetaData>(Settings.MetaDataCollectionName)
                                 .Find(p=> p.ModelId == Settings.MetaDataId).FirstOrDefault();
+                _CurrentCount = _metadata.Count;
             }
         }
 
@@ -110,13 +113,15 @@ namespace ServiceHub.Person.Context.Models
             // Get the contacts in the Person collection, check for existing contacts.
             // If not present, add to collection.
             var mongoContacts = _collection.Find(_ => true).ToList();
+            var count = _CurrentCount;
             foreach (var person in personlist)
             {
-
                 var existingContact = mongoContacts.Find(item => person.ModelId == item.ModelId);
 
                 if (existingContact == null)
                 {
+                    count += 1;
+                    person.PersonId = count; 
                     _collection.InsertOne(person);
                 }
             }
@@ -130,6 +135,18 @@ namespace ServiceHub.Person.Context.Models
                 }
 
             }
+            _CurrentCount = count;
+            var theObjectId = new ObjectId(_metadataId);
+            _metadata.LastModified = DateTime.UtcNow;
+            _metadata.Count = _CurrentCount;
+            //find a document which contains the passed model.
+            FilterDefinition<MetaData> filter = Builders<MetaData>.Filter.Eq(MongoDbIdName, theObjectId);
+            ReplaceOneResult result = _db.GetCollection<MetaData>(_MetaDataCollection)
+                                            .ReplaceOne(filter, _metadata);
+            if(!(result.IsAcknowledged && result.ModifiedCount == 1))
+            {
+                throw new DBConcurrencyException("Global time not updated.");
+            }                                
         }
         
         public async Task Create(Person model)
@@ -188,16 +205,6 @@ namespace ServiceHub.Person.Context.Models
             if(updateList.Count != 0)
             {
                 this.UpdateMongoDB(updateList);
-                var theObjectId = new ObjectId(_metadataId);
-                _metadata.LastModified = DateTime.Now;
-                //find a document which contains the passed model.
-                FilterDefinition<MetaData> filter = Builders<MetaData>.Filter.Eq(MongoDbIdName, theObjectId);
-                ReplaceOneResult result = _db.GetCollection<MetaData>(_MetaDataCollection)
-                                            .ReplaceOne(filter, _metadata);
-                if(!(result.IsAcknowledged && result.ModifiedCount == 1))
-                {
-                    throw new DBConcurrencyException("Global time not updated.");
-                }                                
             }
         }
         public DateTime LastGlobalUpdateTime()
