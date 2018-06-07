@@ -1,6 +1,6 @@
 # servicehub-user://readme
 
-![VSTS Build]()
+![VSTS Build](https://revaturecloud.visualstudio.com/_apis/public/build/definitions/d9ace242-0c1a-49fd-9e08-4708cf4f965b/3/badge)
 
 ## instructions
 1. download and install Virtualbox 5.2+.
