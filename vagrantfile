@@ -1,13 +1,17 @@
 # DEFINITION - VAGRANT
-Vagrant.require_version ">= 2.0.4"
+Vagrant.require_version ">= 2.1.0"
 Vagrant.configure("2") do |co|
 
 # DEFINITION - CONFIGURATION
   co.vm.box = "ubuntu/xenial64"
   co.vm.box_check_update = false
-  co.vm.box_version = "20180427.0.0"
+  co.vm.box_version = "20180531.0.0"
   co.vm.hostname = "devbox"
-  co.vm.post_up_message = "run 'cd /vagrant' to access the project artifacts."
+  co.vm.post_up_message = \
+  "ready...set...go:\n" \
+  "1) setup your aws profile -> 'aws configure' or 'aws configure --profile PROFILE_NAME'\n" \
+  "2) setup your az profile -> 'az login' or 'az login --service-principal -u SP_NAME -p PASSWORD -- TENANT'\n" \
+  "3) goto your project directory -> 'cd /vagrant'"
   co.vm.provision "shell", path: "vagrantup.sh"
   co.vm.synced_folder ".", "/vagrant"
 
@@ -17,7 +21,7 @@ Vagrant.configure("2") do |co|
 # DEFINITION - PROVIDER
   co.vm.provider "virtualbox" do |vb|
     vb.gui = false
-    vb.name = "vagrantbox-#{Time.now.to_i}"
-    vb.memory = 1024
+    vb.name = "devbox-#{Time.now.to_i}"
+    vb.memory = 2048
   end
 end
