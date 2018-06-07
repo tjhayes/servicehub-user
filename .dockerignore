@@ -1,5 +1,5 @@
-# servicehub-person://dockerignore
-# licensed under the terms of the [MIT License](https://github.com/revaturecloud/servicehub-person/blob/master/LICENSE).
+# servicehub-user://dockerignore
+# licensed under the terms of the [MIT License](https://github.com/revaturecloud/servicehub-user/blob/master/LICENSE).
 
 # DIRECTORY - ROOT
 # exclude - filepath
@@ -12,7 +12,6 @@
 # exclude - filename
 .dockerignore
 .gitignore
-.history
 CHANGELOG*
 CONTRIBUTING*
 docker*
@@ -21,4 +20,4 @@ README*
 ubuntu*
 vagrant*
 
-**/appsetings.*.json
+**/appsettings.*.json
