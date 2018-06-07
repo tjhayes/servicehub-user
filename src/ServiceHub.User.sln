@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.Person.Context", "ServiceHub.Person.Context\ServiceHub.Person.Context.csproj", "{DC2CAFC1-A172-4C71-8FB5-EEB7C06589C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.User.Context", "ServiceHub.User.Context\ServiceHub.User.Context.csproj", "{DC2CAFC1-A172-4C71-8FB5-EEB7C06589C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.Person.Library", "ServiceHub.Person.Library\ServiceHub.Person.Library.csproj", "{D090AF33-508B-4619-A654-1B3FBF905FD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.User.Library", "ServiceHub.User.Library\ServiceHub.User.Library.csproj", "{D090AF33-508B-4619-A654-1B3FBF905FD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.Person.Service", "ServiceHub.Person.Service\ServiceHub.Person.Service.csproj", "{2BB86478-D80E-4AFA-96C1-4C28BB8173E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.User.Service", "ServiceHub.User.Service\ServiceHub.User.Service.csproj", "{2BB86478-D80E-4AFA-96C1-4C28BB8173E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.Person.Testing", "ServiceHub.Person.Testing\ServiceHub.Person.Testing.csproj", "{0E4898C5-7CF9-450D-A7B5-710C7739EAC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHub.User.Testing", "ServiceHub.User.Testing\ServiceHub.User.Testing.csproj", "{0E4898C5-7CF9-450D-A7B5-710C7739EAC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

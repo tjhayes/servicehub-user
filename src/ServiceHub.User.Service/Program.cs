@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace ServiceHub.Person.Service
+namespace ServiceHub.User.Service
 {
   public static class Program
   {

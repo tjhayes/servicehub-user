@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ServiceHub.Person.Service.Controllers
+namespace ServiceHub.User.Service.Controllers
 {
   public abstract class BaseController : Controller
   {

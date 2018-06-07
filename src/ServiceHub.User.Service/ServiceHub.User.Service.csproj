@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <DebugType>full</DebugType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceHub.Person.Library\ServiceHub.Person.Library.csproj" />
+    <ProjectReference Include="..\ServiceHub.User.Library\ServiceHub.User.Library.csproj" />
   </ItemGroup>
 
 </Project>
