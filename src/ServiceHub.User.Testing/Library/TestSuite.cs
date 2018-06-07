@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace ServiceHub.Person.Testing.Service
+namespace ServiceHub.User.Testing.Library
 {
   public class TestSuite
   {

@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-
+    <DebugType>full</DebugType>
     <IsPackable>false</IsPackable>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceHub.Person.Context\ServiceHub.Person.Context.csproj" />
-    <ProjectReference Include="..\ServiceHub.Person.Library\ServiceHub.Person.Library.csproj" />
-    <ProjectReference Include="..\ServiceHub.Person.Service\ServiceHub.Person.Service.csproj" />
+    <ProjectReference Include="..\ServiceHub.User.Context\ServiceHub.User.Context.csproj" />
+    <ProjectReference Include="..\ServiceHub.User.Library\ServiceHub.User.Library.csproj" />
+    <ProjectReference Include="..\ServiceHub.User.Service\ServiceHub.User.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ServiceHub.Person.Service
+namespace ServiceHub.User.Service
 {
   public class Startup
   {
@@ -19,11 +20,16 @@ namespace ServiceHub.Person.Service
     }
 
     public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
+    
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
+      services.AddSingleton<IQueueClient>(qc => 
+        new QueueClient(
+          Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
+          Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
+        )
+      );
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

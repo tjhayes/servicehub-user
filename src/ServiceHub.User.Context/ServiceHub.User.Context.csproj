@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceHub.User.Library\ServiceHub.User.Library.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DebugType>full</DebugType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>

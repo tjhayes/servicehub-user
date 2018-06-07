@@ -1,15 +1,29 @@
 version: "3.6"
 
 networks:
-  net_person:
+  appnet:
 
 services:
-  svc_person:
-    image: revaturecloud/servicehub-person:edge
+  web:
+    image: revaturecloud/servicehub-user:latest
     deploy:
-      replicas: 3
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "256M"
+        reservations:
+          cpus: "0.25"
+          memory: "128M"
       restart_policy:
         condition: on-failure
-        delay: 5s
-        max_attempts: 5
+        delay: 10s
+        max_attempts: 3
         window: 60s
+    networks:
+      - appnet
+    ports:
+      - "9000:80"
+
+volumes:
+  appdata:
