@@ -11,9 +11,13 @@ namespace ServiceHub.User.Library.Models
     /// </remarks>
     public class Name
     {
+        /// <value>The unique Id for the user's Name Object</value>
         public Guid NameId { get; set; }
+        /// <value>The user's first name(s)</value>
         public string First { get; set; }
+        /// <value>The user's middle name(s)</value>
         public string Middle { get; set; }
+        /// <value>The user's surname(s) or last name(s)</value>
         public string Last { get; set; }
     }
 }
