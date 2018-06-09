@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace ServiceHub.User.Library.Models
+﻿namespace ServiceHub.User.Library.Models
 {
     public class Address
     {
