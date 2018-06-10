@@ -15,6 +15,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// <value> A string of minimum size for Name. </value>
         readonly string SingleCharacterName = new string('A', 1);
 
+        /// <value> A generic name that will serve as the baseline for the tests. </value>
         readonly Name ControlName = new Name() { NameId = Guid.NewGuid(), First = "John", Middle = "Jacob", Last = "Schmidt" };
 
         #region Validate
