@@ -13,6 +13,10 @@ namespace ServiceHub.User.Testing.Library.Models
 
         readonly Name ControlName = new Name() { NameId = Guid.NewGuid(), First = "John", Middle = "Jacob", Last = "Schmidt" };
 
+        #region Validate
+        #endregion
+
+
         #region ValidateFirst
         [Fact]
         public void ValidateFirst_NullArgument_ReturnsFalse()
@@ -45,6 +49,28 @@ namespace ServiceHub.User.Testing.Library.Models
 
             // Assert
             Assert.False(result);
+        }
+
+        [Fact]
+        public void ValidateFirst_MaxLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateFirst(MaxLengthName);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ValidateFirst_MinLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateFirst(MinLengthName);
+
+            // Assert
+            Assert.True(result);
         }
         #endregion
 
@@ -81,9 +107,30 @@ namespace ServiceHub.User.Testing.Library.Models
             // Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public void ValidateMiddle_MaxLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateMiddle(MaxLengthName);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ValidateMiddle_MinLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateMiddle(MinLengthName);
+
+            // Assert
+            Assert.True(result);
+        }
         #endregion
 
-        
         #region ValidateLast
         [Fact]
         public void ValidateLast_NullArgument_ReturnsFalse()
@@ -116,6 +163,28 @@ namespace ServiceHub.User.Testing.Library.Models
 
             // Assert
             Assert.False(result);
+        }
+
+        [Fact]
+        public void ValidateLast_MaxLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateLast(MaxLengthName);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ValidateLast_MinLengthName_ReturnsTrue()
+        {
+            // Arrange
+            // Act
+            var result = Name.ValidateLast(MinLengthName);
+
+            // Assert
+            Assert.True(result);
         }
         #endregion
     }
