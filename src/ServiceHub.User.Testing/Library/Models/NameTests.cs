@@ -13,13 +13,317 @@ namespace ServiceHub.User.Testing.Library.Models
         /// <value> An empty string. </value>
         readonly string UndersizedName = new string('A', 0);
         /// <value> A string of minimum size for Name. </value>
-        readonly string MinLengthName = new string('A', 1);
+        readonly string SingleCharacterName = new string('A', 1);
 
         readonly Name ControlName = new Name() { NameId = Guid.NewGuid(), First = "John", Middle = "Jacob", Last = "Schmidt" };
 
         #region Validate
-        #endregion
+        /// <summary>
+        /// Test complete name for compliance with model requirements.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "ControlGroup")]
+        public void Validate_CompleteName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
 
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to check that an unset guid is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "RequiredField")]
+        public void Validate_GuidIsNotSet_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.NameId = new Guid();
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a missing first name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "RequiredField")]
+        public void Validate_FirstIsNull_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.First = null;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a missing first name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "NotRequiredField")]
+        public void Validate_MiddleIsNull_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Middle = null;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a missing Last name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "RequiredField")]
+        public void Validate_LastIsNull_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Last = null;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure an empty first name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_EmptyFirstName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.First = UndersizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure an empty middle name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_EmptyMiddleName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Middle = UndersizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure an empty last name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_EmptyLastName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Last = UndersizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a single character first name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_SingleCharacterFirstName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.First = SingleCharacterName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a single character middle name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_SingleCharacterMiddleName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Middle = SingleCharacterName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a single character last name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "EmptyString")]
+        public void Validate_SingleCharacterLastName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Last = SingleCharacterName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 256-character first name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_OversizedFirstName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.First = OversizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 256-character middle name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_OversizedMiddleName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Middle = OversizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 256-character last name is invalid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_OversizedLastName_ReturnsFalse()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Last = OversizedName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 255-character first name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_MaxLengthFirstName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.First = MaxLengthName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 255-character middle name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_MaxLengthMiddleName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Middle = MaxLengthName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// Test to make sure a 255-character last name is valid.
+        /// </summary>
+        [Fact]
+        [Trait("Type", "MaxStringLength")]
+        public void Validate_MaxLengthLastName_ReturnsTrue()
+        {
+            //Arrange
+            Name name = ControlName;
+            name.Last = MaxLengthName;
+
+            //Act
+            var result = name.Validate();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        #endregion
 
         #region ValidateFirst
         /// <summary>
@@ -56,7 +360,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to make sure an oversized string would not be an acceptable first name.
         /// </summary>
         [Fact]
-        [Trait("Type", "OversizedString")]
+        [Trait("Type", "MaxStringLength")]
         public void ValidateFirst_OversizedName_ReturnsFalse()
         {
             // Arrange
@@ -87,11 +391,11 @@ namespace ServiceHub.User.Testing.Library.Models
         /// </summary>
         [Fact]
         [Trait("Type", "Control")]
-        public void ValidateFirst_MinLengthName_ReturnsTrue()
+        public void ValidateFirst_SingleCharacterName_ReturnsTrue()
         {
             // Arrange
             // Act
-            var result = Name.ValidateFirst(MinLengthName);
+            var result = Name.ValidateFirst(SingleCharacterName);
 
             // Assert
             Assert.True(result);
@@ -133,7 +437,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to make sure an oversized string would not be an acceptable middle name.
         /// </summary>
         [Fact]
-        [Trait("Type", "OversizedString")]
+        [Trait("Type", "MaxStringLength")]
         public void ValidateMiddle_OversizedName_ReturnsFalse()
         {
             // Arrange
@@ -164,11 +468,11 @@ namespace ServiceHub.User.Testing.Library.Models
         /// </summary>
         [Fact]
         [Trait("Type", "Control")]
-        public void ValidateMiddle_MinLengthName_ReturnsTrue()
+        public void ValidateMiddle_SingleCharacterName_ReturnsTrue()
         {
             // Arrange
             // Act
-            var result = Name.ValidateMiddle(MinLengthName);
+            var result = Name.ValidateMiddle(SingleCharacterName);
 
             // Assert
             Assert.True(result);
@@ -210,7 +514,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to make sure an oversized string would not be an acceptable last name.
         /// </summary>
         [Fact]
-        [Trait("Type", "OversizedString")]
+        [Trait("Type", "MaxStringLength")]
         public void ValidateLast_OversizedName_ReturnsFalse()
         {
             // Arrange
@@ -241,11 +545,11 @@ namespace ServiceHub.User.Testing.Library.Models
         /// </summary>
         [Fact]
         [Trait("Type", "Control")]
-        public void ValidateLast_MinLengthName_ReturnsTrue()
+        public void ValidateLast_SingleCharacterName_ReturnsTrue()
         {
             // Arrange
             // Act
-            var result = Name.ValidateLast(MinLengthName);
+            var result = Name.ValidateLast(SingleCharacterName);
 
             // Assert
             Assert.True(result);
