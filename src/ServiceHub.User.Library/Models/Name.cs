@@ -74,13 +74,19 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the middle name is valid and false otherwise.</returns>
         public static Boolean ValidateMiddle(string middleName)
         {
-            if (middleName.Length > MiddleMaxLength ||
+            if(middleName == null)
+            {
+                return true;
+            }
+            else if (middleName.Length > MiddleMaxLength ||
                 middleName == "")
             {
                 return false;
             }
-
-            return true;
+            else
+            {
+                return true;
+            }
         }
 
         /// <summary>
