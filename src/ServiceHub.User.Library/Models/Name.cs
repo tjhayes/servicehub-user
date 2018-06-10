@@ -41,11 +41,12 @@ namespace ServiceHub.User.Library.Models
             if (NameId == Guid.Empty) { return false; }
             if (First == null || First == "") { return false; }
             else if (First.Length > FIRST_MAX_LENGTH) { return false; }
-            if (Middle != null && 
+            if (Middle != null &&
                 (Middle == "" || Middle.Length > MIDDLE_MAX_LENGTH)) { return false; }
             if (Last == null || Last == "") { return false; }
             else if (Last.Length > LAST_MAX_LENGTH) { return false; }
-            
+
             return true;
         }
+    }
 }
