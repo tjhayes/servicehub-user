@@ -50,14 +50,14 @@ namespace ServiceHub.User.Testing.Library.Models
 
         #region ValidateMiddle
         [Fact]
-        public void ValidateMiddle_NullArgument_ReturnsFalse()
+        public void ValidateMiddle_NullArgument_ReturnsTrue()
         {
             // Arrange
             // Act
             var result = Name.ValidateMiddle(null);
 
             // Assert
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Fact]
