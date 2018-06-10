@@ -38,13 +38,43 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the name is valid and false otherwise.</returns>
         public Boolean Validate()
         {
-            if (NameId == Guid.Empty) { return false; }
-            if (First == null || First == "") { return false; }
-            else if (First.Length > FIRST_MAX_LENGTH) { return false; }
-            if (Middle != null &&
-                (Middle == "" || Middle.Length > MIDDLE_MAX_LENGTH)) { return false; }
-            if (Last == null || Last == "") { return false; }
-            else if (Last.Length > LAST_MAX_LENGTH) { return false; }
+            return (NameId != Guid.Empty && 
+                ValidateFirst(First) && 
+                ValidateMiddle(Middle) && 
+                ValidateLast(Last));
+        }
+
+        public static Boolean ValidateFirst(string first)
+        {
+            if (first == null || 
+                first.Length > FIRST_MAX_LENGTH || 
+                first == "")
+            { 
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Boolean ValidateMiddle(string middle)
+        {
+            if (middle.Length > MIDDLE_MAX_LENGTH ||
+                middle == "")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Boolean ValidateLast(string last)
+        {
+            if (last == null ||
+                last.Length > LAST_MAX_LENGTH ||
+                last == "")
+            {
+                return false;
+            }
 
             return true;
         }
