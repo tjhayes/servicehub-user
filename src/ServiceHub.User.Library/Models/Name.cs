@@ -21,11 +21,11 @@ namespace ServiceHub.User.Library.Models
         public string Last { get; set; }
 
         /// <value>The maximum length of the user's first name(s)</value>
-        private const int FIRST_MAX_LENGTH = 255;
+        private const int FirstMaxLength = 255;
         /// <value>The maximum length of the user's middle name(s)</value>
-        private const int MIDDLE_MAX_LENGTH = 255;
+        private const int MiddleMaxLength = 255;
         /// <value>The maximum length of the user's last name(s)</value>
-        private const int LAST_MAX_LENGTH = 255;
+        private const int LastMaxLength = 255;
 
         /// <summary>
         /// Check that the Name object represents a valid name.
@@ -48,13 +48,13 @@ namespace ServiceHub.User.Library.Models
         /// Check that the string parameter would represent a valid first name.
         /// </summary>
         /// <remarks>
-        /// First name is required, must not be empty, and must not exceed FIRST_MAX_LENGTH.
+        /// First name is required, must not be empty, and must not exceed FirstMaxLength.
         /// </remarks>
         /// <returns>True if the first name is valid and false otherwise.</returns>
         public static Boolean ValidateFirst(string first)
         {
             if (first == null || 
-                first.Length > FIRST_MAX_LENGTH || 
+                first.Length > FirstMaxLength || 
                 first == "")
             { 
                 return false;
@@ -69,12 +69,12 @@ namespace ServiceHub.User.Library.Models
         /// <remarks>
         /// Middle name is not required.
         /// Middle name must not be empty if it is not null.
-        /// Middle name must not exceed MIDDLE_MAX_LENGTH.
+        /// Middle name must not exceed MiddleMaxLength.
         /// </remarks>
         /// <returns>True if the middle name is valid and false otherwise.</returns>
         public static Boolean ValidateMiddle(string middleName)
         {
-            if (middleName.Length > MIDDLE_MAX_LENGTH ||
+            if (middleName.Length > MiddleMaxLength ||
                 middleName == "")
             {
                 return false;
@@ -87,13 +87,13 @@ namespace ServiceHub.User.Library.Models
         /// Check that the string parameter would represent a valid last name.
         /// </summary>
         /// <remarks>
-        /// Last name is required, must not be empty, and must not exceed LAST_MAX_LENGTH.
+        /// Last name is required, must not be empty, and must not exceed LastMaxLength.
         /// </remarks>
         /// <returns>True if the last name is valid and false otherwise.</returns>
         public static Boolean ValidateLast(string lastName)
         {
             if (lastName == null ||
-                lastName.Length > LAST_MAX_LENGTH ||
+                lastName.Length > LastMaxLength ||
                 lastName == "")
             {
                 return false;
