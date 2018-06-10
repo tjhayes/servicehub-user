@@ -44,6 +44,13 @@ namespace ServiceHub.User.Library.Models
                 ValidateLast(Last));
         }
 
+        /// <summary>
+        /// Check that the string parameter would represent a valid first name.
+        /// </summary>
+        /// <remarks>
+        /// First name is required, must not be empty, and must not exceed FIRST_MAX_LENGTH.
+        /// </remarks>
+        /// <returns>True if the first name is valid and false otherwise.</returns>
         public static Boolean ValidateFirst(string first)
         {
             if (first == null || 
@@ -56,10 +63,19 @@ namespace ServiceHub.User.Library.Models
             return true;
         }
 
-        public static Boolean ValidateMiddle(string middle)
+        /// <summary>
+        /// Check that the string parameter would represent a valid middle name.
+        /// </summary>
+        /// <remarks>
+        /// Middle name is not required.
+        /// Middle name must not be empty if it is not null.
+        /// Middle name must not exceed MIDDLE_MAX_LENGTH.
+        /// </remarks>
+        /// <returns>True if the middle name is valid and false otherwise.</returns>
+        public static Boolean ValidateMiddle(string middleName)
         {
-            if (middle.Length > MIDDLE_MAX_LENGTH ||
-                middle == "")
+            if (middleName.Length > MIDDLE_MAX_LENGTH ||
+                middleName == "")
             {
                 return false;
             }
@@ -67,11 +83,18 @@ namespace ServiceHub.User.Library.Models
             return true;
         }
 
-        public static Boolean ValidateLast(string last)
+        /// <summary>
+        /// Check that the string parameter would represent a valid last name.
+        /// </summary>
+        /// <remarks>
+        /// Last name is required, must not be empty, and must not exceed LAST_MAX_LENGTH.
+        /// </remarks>
+        /// <returns>True if the last name is valid and false otherwise.</returns>
+        public static Boolean ValidateLast(string lastName)
         {
-            if (last == null ||
-                last.Length > LAST_MAX_LENGTH ||
-                last == "")
+            if (lastName == null ||
+                lastName.Length > LAST_MAX_LENGTH ||
+                lastName == "")
             {
                 return false;
             }
