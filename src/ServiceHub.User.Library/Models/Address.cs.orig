@@ -8,15 +8,25 @@ namespace ServiceHub.User.Library.Models
     /// Stores data for an address model.
     /// </summary>
     /// <remarks>
+<<<<<<< HEAD
+    /// An Address refers to the street, City, and apartment number of a room.
+=======
     /// The residential address of a user.
+>>>>>>> timothy-lib-model
     /// </remarks>
     public class Address
     {
         /// <value> The unique ID of an address. </value>
         public Guid AddressId { get; set; }
+<<<<<<< HEAD
+        ///<value> The first street and apartment number. </value>
+        public string Address1 { get; set; }
+        /// <value> The second street and apartment number. </value>
+=======
         ///<value> Address line one </value>
         public string Address1 { get; set; }
         ///<value> Address line two </value>
+>>>>>>> timothy-lib-model
         public string Address2 { get; set; }
         /// <value> The city. </value>
         public string City { get; set; }
@@ -26,9 +36,6 @@ namespace ServiceHub.User.Library.Models
         public string PostalCode { get; set; }
         /// <value> The country. </value>
         public string Country { get; set; }
-
-
-        public const int MaxStringLength = 255;
 
         /// <summary>
         /// Check whether the address is valid.
@@ -44,20 +51,13 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the address is valid and false otherwise</returns>
         public Boolean Validate()
         {
-            if (Address1 == null || 
-                City == null || 
-                State == null || 
-                PostalCode == null || 
-                Country == null )
-            { return false; }
             if (AddressId == Guid.Empty) { return false; }
-            if (Address1 == "" || Address1.Length > MaxStringLength) { return false; }
-            if (Address2 != null)
-                if(Address2 == "" || Address2.Length > MaxStringLength) { return false; }
-            if (City == "" || City.Length > MaxStringLength) { return false; }
-            if (State == "" || State.Length > MaxStringLength) { return false; }
-            if (PostalCode == "" || PostalCode.Length > MaxStringLength) { return false; }
-            if (ValidateCountry() == false) { return false; }
+            if (Address1 == null || Address1 == "") { return false; }
+            if (Address2 == "") { return false; }
+            if (City == null || City == "") { return false; }
+            if (State == null || State == "") { return false; }
+            if (PostalCode == null || PostalCode == "") { return false; }
+            if (Country == null || ValidateCountry() == false) { return false; }
             if (Country.ToUpper() == "US" && ValidateAmericanState() == false) { return false; }
             if (Country.ToUpper() == "US" && ValidateAmericanPostalCode() == false) { return false; }
             return true;
@@ -75,7 +75,6 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if Country is valid, and false otherwise</returns>
         public Boolean ValidateCountry()
         {
-            if(Country == null) { return false; }
             bool validCountry = true;
             try { RegionInfo region = new RegionInfo(Country); }
             catch (ArgumentException) { validCountry = false; }
@@ -84,7 +83,11 @@ namespace ServiceHub.User.Library.Models
 
         /// <summary>
         /// Check whether the string is one of the valid 2-digit American
+<<<<<<< HEAD
+        /// State or territory codes. If so, it is valid, otherwise invalid.
+=======
         /// State codes. If so, it is valid, otherwise invalid.
+>>>>>>> timothy-lib-model
         /// </summary>
         /// <returns>True if the state code is valid, and false otherwise.</returns>
         public Boolean ValidateAmericanState()
@@ -141,6 +144,7 @@ namespace ServiceHub.User.Library.Models
                 case "WV":
                 case "WI":
                 case "WY":
+<<<<<<< HEAD
                 case "AS":
                 case "DC":
                 case "GU":
@@ -150,6 +154,8 @@ namespace ServiceHub.User.Library.Models
                 case "PW":
                 case "PR":
                 case "VI":
+=======
+>>>>>>> timothy-lib-model
                     return true;
                 default:
                     return false;
@@ -164,7 +170,10 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if postal code is in a valid format and false otherwise.</returns>
         public Boolean ValidateAmericanPostalCode()
         {
+<<<<<<< HEAD
             if(PostalCode == null) { return false; }
+=======
+>>>>>>> timothy-lib-model
             Regex regex = new Regex(@"^\d{5}(?:-\d{4})?$");
             return regex.Match(PostalCode).Success;
         }
