@@ -73,7 +73,7 @@ namespace ServiceHub.User.Library.Models
 
         /// <summary>
         /// Check whether the string is one of the valid 2-digit American
-        /// State codes. If so, it is valid, otherwise invalid.
+        /// State or territory codes. If so, it is valid, otherwise invalid.
         /// </summary>
         /// <returns>True if the state code is valid, and false otherwise.</returns>
         public Boolean ValidateAmericanState()
@@ -130,6 +130,15 @@ namespace ServiceHub.User.Library.Models
                 case "WV":
                 case "WI":
                 case "WY":
+                case "AS":
+                case "DC":
+                case "GU":
+                case "MH":
+                case "FM":
+                case "MP":
+                case "PW":
+                case "PR":
+                case "VI":
                     return true;
                 default:
                     return false;
@@ -144,6 +153,7 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if postal code is in a valid format and false otherwise.</returns>
         public Boolean ValidateAmericanPostalCode()
         {
+            if(PostalCode == null) { return false; }
             Regex regex = new Regex(@"^\d{5}(?:-\d{4})?$");
             return regex.Match(PostalCode).Success;
         }
