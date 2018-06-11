@@ -33,6 +33,7 @@ namespace ServiceHub.User.Library.Models
         /// If Address is not null, the Address must be valid for the User to 
         /// be valid (via Address's validate method)
         /// Name must be valid for the User to be valid also (via Name's validate method).
+        /// Location and Type must be 255 characters or less, and Email 254 or less.
         /// </remarks>
         /// <returns>True if user model is valid and false if invalid.</returns>
         public Boolean Validate()
