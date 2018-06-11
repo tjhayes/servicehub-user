@@ -7,7 +7,7 @@ namespace ServiceHub.User.Testing.Library.Models
 {
     public class AddressTests
     {
-
+        /// <value> Field for an Address to be tested.</value>
         Address _address;
 
         #region Test Data
@@ -29,7 +29,12 @@ namespace ServiceHub.User.Testing.Library.Models
             PostalCode = "12345",
             State = "FL",
             Country = "us" };
-
+        
+        /// <summary>
+        /// MemberData set consisting of upper case state codes for all US states
+        /// and territories.
+        /// </summary>
+        /// <returns>Returns each upper case state code </returns>
         public static IEnumerable<object[]> AmericanStateCodesUpperCase()
         {
             // American States
@@ -96,7 +101,12 @@ namespace ServiceHub.User.Testing.Library.Models
             yield return new object[] { "VI" };
 
         }
-
+        
+        /// <summary>
+        /// MemberData set consisting of lower case state codes for all US states
+        /// and territories.
+        /// </summary>
+        /// <returns>Returns each lower case state code. </returns>
         public static IEnumerable<object[]> AmericanStateCodesLowerCase()
         {
             // American States
@@ -167,7 +177,9 @@ namespace ServiceHub.User.Testing.Library.Models
 
         #endregion
 
-
+        /// <summary>
+        /// Setup constructor.  Initializes _address to a passing Address value.
+        /// </summary>
         public AddressTests()
         {
             _address = ControlAddress;
@@ -316,6 +328,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that an empty Guid is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "RequiredField")]
         public void AddressIDRequired()
@@ -330,6 +345,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that missing Address1 is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "RequiredField")]
         public void Address1Required()
@@ -344,6 +362,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that an empty Address1 is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "NotEmptyString")]
         public void Address1IsNotEmptyString()
@@ -358,6 +379,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that a missing Address2 can still be valid.
+        /// </summary>
         [Fact]
         [Trait("Type", "NotRequired")]
         public void Address2NotRequired()
@@ -372,6 +396,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.True(result);
         }
 
+        /// <summary>
+        /// Test that, if not missing, an empty Address2 is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "NotEmptyString")]
         public void Address2NotEmptyString()
@@ -386,6 +413,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that missing City is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "RequiredField")]
         public void CityRequired()
@@ -400,6 +430,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that an empty City is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "NotEmptyString")]
         public void CityNotEmptyString()
@@ -414,6 +447,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Tests that missing State is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "RequiredField")]
         public void StateRequired()
@@ -428,6 +464,9 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test that an empty State is invalid.
+        /// </summary>
         [Fact]
         [Trait("Type", "NotEmptyString")]
         public void StateNotEmptyString()
@@ -519,14 +558,91 @@ namespace ServiceHub.User.Testing.Library.Models
             //Assert pass validation
             Assert.False(result);
         }
-        #endregion
 
-        #region ValidateCountry
+        /// <summary>
+        /// Tests to ensure that an oversized Address1 string is not valid.
+        /// </summary>
+        [Fact]
+        public void Validate_OversizedAddress1_ReturnsFalse()
+        {
+            // Arrange
+            _address.Address1 = OversizedString;
+
+            // Act
+            var result = _address.Validate();
+
+            // Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Tests to ensure that an oversized Address2 string is not valid.
+        /// </summary>
+        [Fact]
+        public void Validate_OversizedAddress2_ReturnsFalse()
+        {
+            // Arrange
+            _address.Address2 = OversizedString;
+
+            // Act
+            var result = _address.Validate();
+
+            // Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Tests to ensure that an oversized City string is not valid.
+        /// </summary>
+        [Fact]
+        public void Validate_OversizedCity_ReturnsFalse()
+        {
+            // Arrange
+            _address.City = OversizedString;
+
+            // Act
+            var result = _address.Validate();
+
+            // Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Tests to ensure that an oversized country string is not valid.
+        /// </summary>
+        [Fact]
+        public void Validate_OversizedCountry_ReturnsFalse()
+        {
+            // Arrange
+            _address.Country = OversizedString;
+
+            // Act
+            var result = _address.Validate();
+
+            // Assert
+            Assert.False(result);
+        }
+
+        /// <summary>
+        /// Tests to ensure that an oversized Address1 string is not valid.
+        /// </summary>
+        [Fact]
+        public void Validate_OversizedPostalCode_ReturnsFalse()
+        {
+            // Arrange
+            _address.PostalCode = OversizedString;
+
+            // Act
+            var result = _address.Validate();
+
+            // Assert
+            Assert.False(result);
+        }
         #endregion
 
         #region ValidateAmericanState
         /// <summary>
-        /// 
+        /// Tests to ensure that uppercase state codes are ruled as valid.
         /// </summary>
         [Theory, MemberData(nameof(AmericanStateCodesUpperCase))]
         public void ValidateAmericanState_ValidStateCodesUpperCase_ReturnsTrue(string state)
@@ -542,7 +658,7 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// 
+        /// Tests to ensure that lowercase state codes are ruled as invalid.
         /// </summary>
         [Theory, MemberData(nameof(AmericanStateCodesLowerCase))]
         public void ValidateAmericanState_ValidStateCodesLowerCase_ReturnsFalse(string state)
@@ -558,7 +674,7 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// 
+        /// Tests to ensure that state codes are ruled as invalid.
         /// </summary>
         [Fact]
         public void ValidateAmericanState_NullState_ReturnsFalse()
@@ -574,7 +690,7 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// 
+        /// Tests to ensure that empty state code is ruled as invalid.
         /// </summary>
         [Fact]
         public void ValidateAmericanState_EmptyState_ReturnsFalse()
@@ -590,7 +706,7 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// 
+        /// Tests to ensure that state codes with leading whitespace are ruled as invalid.
         /// </summary>
         [Fact]
         public void ValidateAmericanState_LeadingSpacesValidState_ReturnsFalse()
@@ -606,7 +722,7 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// 
+        /// Tests to ensure that state codes with trailing whitespace are ruled as invalid.
         /// </summary>
         [Fact]
         public void ValidateAmericanState_TrailingSpacesValidState_ReturnsFalse()
@@ -624,7 +740,7 @@ namespace ServiceHub.User.Testing.Library.Models
 
         #region ValidateAmericanPostalCode
         /// <summary>
-        /// 
+        /// Tests to ensure that null zip codes are ruled as invalid.
         /// </summary>
         [Fact]
         public void ValidateAmericanPostalCode_NullZipCode_ReturnsFalse()

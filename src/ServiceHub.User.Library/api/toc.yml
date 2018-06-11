@@ -1,0 +1,10 @@
+### YamlMime:TableOfContent
+- uid: ServiceHub.User.Library.Models
+  name: ServiceHub.User.Library.Models
+  items:
+  - uid: ServiceHub.User.Library.Models.Address
+    name: Address
+  - uid: ServiceHub.User.Library.Models.Name
+    name: Name
+  - uid: ServiceHub.User.Library.Models.User
+    name: User

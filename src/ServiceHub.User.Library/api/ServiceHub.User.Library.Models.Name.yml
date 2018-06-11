@@ -1,0 +1,685 @@
+### YamlMime:ManagedReference
+items:
+- uid: ServiceHub.User.Library.Models.Name
+  commentId: T:ServiceHub.User.Library.Models.Name
+  id: Name
+  parent: ServiceHub.User.Library.Models
+  children:
+  - ServiceHub.User.Library.Models.Name.First
+  - ServiceHub.User.Library.Models.Name.Last
+  - ServiceHub.User.Library.Models.Name.Middle
+  - ServiceHub.User.Library.Models.Name.NameId
+  - ServiceHub.User.Library.Models.Name.Validate
+  - ServiceHub.User.Library.Models.Name.ValidateFirst(System.String)
+  - ServiceHub.User.Library.Models.Name.ValidateLast(System.String)
+  - ServiceHub.User.Library.Models.Name.ValidateMiddle(System.String)
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: Name
+  fullName: ServiceHub.User.Library.Models.Name
+  type: Class
+  source:
+    id: Name
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 11
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  summary: "\nA model for storing people&apos;s names.\n"
+  remarks: "\nFor people with multiple first/middle/last names\nyou can separate the names with whitespace/commas/etc.\n"
+  example: []
+  syntax:
+    content: public class Name
+    content.vb: Public Class Name
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: ServiceHub.User.Library.Models.Name.NameId
+  commentId: P:ServiceHub.User.Library.Models.Name.NameId
+  id: NameId
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: NameId
+  nameWithType: Name.NameId
+  fullName: ServiceHub.User.Library.Models.Name.NameId
+  type: Property
+  source:
+    id: NameId
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 14
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  example: []
+  syntax:
+    content: public Guid NameId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+      description: The unique Id for the user&apos;s Name Object
+    content.vb: Public Property NameId As Guid
+  overload: ServiceHub.User.Library.Models.Name.NameId*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: ServiceHub.User.Library.Models.Name.First
+  commentId: P:ServiceHub.User.Library.Models.Name.First
+  id: First
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: First
+  nameWithType: Name.First
+  fullName: ServiceHub.User.Library.Models.Name.First
+  type: Property
+  source:
+    id: First
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 16
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  example: []
+  syntax:
+    content: public string First { get; set; }
+    parameters: []
+    return:
+      type: System.String
+      description: The user&apos;s first name(s)
+    content.vb: Public Property First As String
+  overload: ServiceHub.User.Library.Models.Name.First*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: ServiceHub.User.Library.Models.Name.Middle
+  commentId: P:ServiceHub.User.Library.Models.Name.Middle
+  id: Middle
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: Middle
+  nameWithType: Name.Middle
+  fullName: ServiceHub.User.Library.Models.Name.Middle
+  type: Property
+  source:
+    id: Middle
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 18
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  example: []
+  syntax:
+    content: public string Middle { get; set; }
+    parameters: []
+    return:
+      type: System.String
+      description: The user&apos;s middle name(s)
+    content.vb: Public Property Middle As String
+  overload: ServiceHub.User.Library.Models.Name.Middle*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: ServiceHub.User.Library.Models.Name.Last
+  commentId: P:ServiceHub.User.Library.Models.Name.Last
+  id: Last
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: Last
+  nameWithType: Name.Last
+  fullName: ServiceHub.User.Library.Models.Name.Last
+  type: Property
+  source:
+    id: Last
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 20
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  example: []
+  syntax:
+    content: public string Last { get; set; }
+    parameters: []
+    return:
+      type: System.String
+      description: The user&apos;s surname(s) or last name(s)
+    content.vb: Public Property Last As String
+  overload: ServiceHub.User.Library.Models.Name.Last*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: ServiceHub.User.Library.Models.Name.Validate
+  commentId: M:ServiceHub.User.Library.Models.Name.Validate
+  id: Validate
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: Validate()
+  nameWithType: Name.Validate()
+  fullName: ServiceHub.User.Library.Models.Name.Validate()
+  type: Method
+  source:
+    id: Validate
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 38
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  summary: "\nCheck that the Name object represents a valid name.\n"
+  remarks: "\nFirst and Last names are required, as well as Name Id. \nMiddle name is optional.\nNo name fields can be an empty string.\n"
+  example: []
+  syntax:
+    content: public bool Validate()
+    return:
+      type: System.Boolean
+      description: True if the name is valid and false otherwise.
+    content.vb: Public Function Validate As Boolean
+  overload: ServiceHub.User.Library.Models.Name.Validate*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: ServiceHub.User.Library.Models.Name.ValidateFirst(System.String)
+  commentId: M:ServiceHub.User.Library.Models.Name.ValidateFirst(System.String)
+  id: ValidateFirst(System.String)
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: ValidateFirst(String)
+  nameWithType: Name.ValidateFirst(String)
+  fullName: ServiceHub.User.Library.Models.Name.ValidateFirst(System.String)
+  type: Method
+  source:
+    id: ValidateFirst
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 53
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  summary: "\nCheck that the string parameter would represent a valid first name.\n"
+  remarks: "\nFirst name is required, must not be empty, and must not exceed FirstMaxLength.\n"
+  example: []
+  syntax:
+    content: public static bool ValidateFirst(string first)
+    parameters:
+    - id: first
+      type: System.String
+    return:
+      type: System.Boolean
+      description: True if the first name is valid and false otherwise.
+    content.vb: Public Shared Function ValidateFirst(first As String) As Boolean
+  overload: ServiceHub.User.Library.Models.Name.ValidateFirst*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: ServiceHub.User.Library.Models.Name.ValidateMiddle(System.String)
+  commentId: M:ServiceHub.User.Library.Models.Name.ValidateMiddle(System.String)
+  id: ValidateMiddle(System.String)
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: ValidateMiddle(String)
+  nameWithType: Name.ValidateMiddle(String)
+  fullName: ServiceHub.User.Library.Models.Name.ValidateMiddle(System.String)
+  type: Method
+  source:
+    id: ValidateMiddle
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 74
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  summary: "\nCheck that the string parameter would represent a valid middle name.\n"
+  remarks: "\nMiddle name is not required.\nMiddle name must not be empty if it is not null.\nMiddle name must not exceed MiddleMaxLength.\n"
+  example: []
+  syntax:
+    content: public static bool ValidateMiddle(string middleName)
+    parameters:
+    - id: middleName
+      type: System.String
+    return:
+      type: System.Boolean
+      description: True if the middle name is valid and false otherwise.
+    content.vb: Public Shared Function ValidateMiddle(middleName As String) As Boolean
+  overload: ServiceHub.User.Library.Models.Name.ValidateMiddle*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: ServiceHub.User.Library.Models.Name.ValidateLast(System.String)
+  commentId: M:ServiceHub.User.Library.Models.Name.ValidateLast(System.String)
+  id: ValidateLast(System.String)
+  parent: ServiceHub.User.Library.Models.Name
+  langs:
+  - csharp
+  - vb
+  name: ValidateLast(String)
+  nameWithType: Name.ValidateLast(String)
+  fullName: ServiceHub.User.Library.Models.Name.ValidateLast(System.String)
+  type: Method
+  source:
+    id: ValidateLast
+    path: C:\Users\Austin\Documents\Revature\servicehub-user\src\ServiceHub.User.Library\Models\Name.cs
+    startLine: 98
+  assemblies:
+  - ServiceHub.User.Library
+  namespace: ServiceHub.User.Library.Models
+  summary: "\nCheck that the string parameter would represent a valid last name.\n"
+  remarks: "\nLast name is required, must not be empty, and must not exceed LastMaxLength.\n"
+  example: []
+  syntax:
+    content: public static bool ValidateLast(string lastName)
+    parameters:
+    - id: lastName
+      type: System.String
+    return:
+      type: System.Boolean
+      description: True if the last name is valid and false otherwise.
+    content.vb: Public Shared Function ValidateLast(lastName As String) As Boolean
+  overload: ServiceHub.User.Library.Models.Name.ValidateLast*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: ServiceHub.User.Library.Models
+  commentId: N:ServiceHub.User.Library.Models
+  name: ServiceHub.User.Library.Models
+  nameWithType: ServiceHub.User.Library.Models
+  fullName: ServiceHub.User.Library.Models
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ServiceHub.User.Library.Models.Name.NameId*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.NameId
+  name: NameId
+  nameWithType: Name.NameId
+  fullName: ServiceHub.User.Library.Models.Name.NameId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: ServiceHub.User.Library.Models.Name.First*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.First
+  name: First
+  nameWithType: Name.First
+  fullName: ServiceHub.User.Library.Models.Name.First
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: ServiceHub.User.Library.Models.Name.Middle*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.Middle
+  name: Middle
+  nameWithType: Name.Middle
+  fullName: ServiceHub.User.Library.Models.Name.Middle
+- uid: ServiceHub.User.Library.Models.Name.Last*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.Last
+  name: Last
+  nameWithType: Name.Last
+  fullName: ServiceHub.User.Library.Models.Name.Last
+- uid: ServiceHub.User.Library.Models.Name.Validate*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.Validate
+  name: Validate
+  nameWithType: Name.Validate
+  fullName: ServiceHub.User.Library.Models.Name.Validate
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: ServiceHub.User.Library.Models.Name.ValidateFirst*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.ValidateFirst
+  name: ValidateFirst
+  nameWithType: Name.ValidateFirst
+  fullName: ServiceHub.User.Library.Models.Name.ValidateFirst
+- uid: ServiceHub.User.Library.Models.Name.ValidateMiddle*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.ValidateMiddle
+  name: ValidateMiddle
+  nameWithType: Name.ValidateMiddle
+  fullName: ServiceHub.User.Library.Models.Name.ValidateMiddle
+- uid: ServiceHub.User.Library.Models.Name.ValidateLast*
+  commentId: Overload:ServiceHub.User.Library.Models.Name.ValidateLast
+  name: ValidateLast
+  nameWithType: Name.ValidateLast
+  fullName: ServiceHub.User.Library.Models.Name.ValidateLast
