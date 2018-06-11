@@ -3,14 +3,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
+using ServiceHub.User.Context.Repositories;
 
 namespace ServiceHub.User.Service.Controllers
 {
   [Route("api/[controller]")]
   public class UserController : BaseController
   {
+    private readonly UserStorage _userStorage;
+
     public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
-      : base(loggerFactory, queueClientSingleton) {}
+      : base(loggerFactory, queueClientSingleton)
+    {
+      _userStorage = new UserStorage(new UserRepository());
+    }
     
     public async Task<IActionResult> Get()
     {

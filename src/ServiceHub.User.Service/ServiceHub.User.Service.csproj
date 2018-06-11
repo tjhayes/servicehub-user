@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServiceHub.User.Context\ServiceHub.User.Context.csproj" />
     <ProjectReference Include="..\ServiceHub.User.Library\ServiceHub.User.Library.csproj" />
   </ItemGroup>
 
