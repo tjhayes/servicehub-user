@@ -21,5 +21,21 @@ namespace ServiceHub.User.Library.Models
         public string Gender { get; set; }
         /// <value>The user's job title</value>
         public string Type { get; set; }
+
+        /// <summary>
+        /// Returns true if the User model is valid, and false otherwise.
+        /// </summary>
+        /// <remarks>
+        /// All fields are required except Address, thus if any field besides
+        /// Address is null or the Guid is the default value, the model is invalid.
+        /// If Address is not null, the Address must be valid for the User to 
+        /// be valid (via Address's validate method)
+        /// Name must be valid for the User to be valid also (via Name's validate method).
+        /// </remarks>
+        /// <returns>True if user model is valid and false if invalid.</returns>
+        public Boolean Validate()
+        {
+            return false;
+        }
     }
 }
