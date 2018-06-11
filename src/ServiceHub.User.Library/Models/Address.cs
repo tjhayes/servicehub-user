@@ -8,15 +8,15 @@ namespace ServiceHub.User.Library.Models
     /// Stores data for an address model.
     /// </summary>
     /// <remarks>
-    /// An Address refers to the street, City, and apartment number of a room.
+    /// The residential address of a user.
     /// </remarks>
     public class Address
     {
         /// <value> The unique ID of an address. </value>
         public Guid AddressId { get; set; }
-        ///<value> The first street and apartment number. </value>
+        ///<value> Address line one </value>
         public string Address1 { get; set; }
-        /// <value> The second street and apartment number. </value>
+        ///<value> Address line two </value>
         public string Address2 { get; set; }
         /// <value> The city. </value>
         public string City { get; set; }
@@ -73,7 +73,7 @@ namespace ServiceHub.User.Library.Models
 
         /// <summary>
         /// Check whether the string is one of the valid 2-digit American
-        /// State or territory codes. If so, it is valid, otherwise invalid.
+        /// State codes. If so, it is valid, otherwise invalid.
         /// </summary>
         /// <returns>True if the state code is valid, and false otherwise.</returns>
         public Boolean ValidateAmericanState()
