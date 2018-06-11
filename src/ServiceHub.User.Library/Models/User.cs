@@ -38,12 +38,12 @@ namespace ServiceHub.User.Library.Models
         public Boolean Validate()
         {
             if (UserId == Guid.Empty) { return false; }
-            if (Location == null || Location == "") { return false; }
+            if (Location == null || Location == "" || Location.Length > 255) { return false; }
             if (Address != null && Address.Validate() == false) { return false; }
-            if (ValidateEmail() == false) { return false; }
+            if (ValidateEmail() == false || Email.Length > 254) { return false; }
             if (Name == null || Name.Validate() == false) { return false; }
             if (Gender == null || ValidateGender() == false) { return false; }
-            if (Type == null || Type == "") { return false; }
+            if (Type == null || Type == "" || Type.Length > 255) { return false; }
 
             return true;
         }
