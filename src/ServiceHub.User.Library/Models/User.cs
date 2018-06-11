@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Mail;
 
 namespace ServiceHub.User.Library.Models
 {
@@ -35,7 +37,51 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if user model is valid and false if invalid.</returns>
         public Boolean Validate()
         {
-            return false;
+            if (UserId == Guid.Empty) { return false; }
+            if (Location == null || Location == "") { return false; }
+            if (Address != null && Address.Validate() == false) { return false; }
+            if (ValidateEmail() == false) { return false; }
+            if (Name == null || Name.Validate() == false) { return false; }
+            if (Gender == null || ValidateGender() == false) { return false; }
+            if (Type == null || Type == "") { return false; }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Check if Email is null, empty string or an invalid email address.
+        /// If any of those are true, the email is invalid. Otherwise it is valid.
+        /// </summary>
+        /// <returns>True if the email is valid and false otherwise.</returns>
+        public Boolean ValidateEmail()
+        {
+            try
+            {
+                // MailAddress constructor throws an exception if 
+                // Email is null, emptry string or an invalid email address.
+                MailAddress emailAddress = new MailAddress(Email);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Check that the Gender field is a recognizable way to represent
+        /// Male or Female.
+        /// </summary>
+        /// <remarks>
+        /// Valid gender strings are "M", "Male", "F", "Female". (all case-insensitive)
+        /// </remarks>
+        /// <returns>True if the Gender is valid and false otherwise.</returns>
+        public Boolean ValidateGender()
+        {
+            List<string> validGenders = new List<string>() { "M", "F", "MALE", "FEMALE" };
+            if (validGenders.Contains(Gender.ToUpper())) { return true; }
+            else { return false; }
         }
     }
 }
