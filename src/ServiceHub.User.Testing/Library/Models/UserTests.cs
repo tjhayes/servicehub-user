@@ -35,35 +35,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Generates a sample valid non-American user
-        /// </summary>
-        /// <returns>A valid user object with a non-American address</returns>
-        public User.Library.Models.User Non_US_User()
-        {
-            User.Library.Models.User validNonAmericanUser = new User.Library.Models.User();
-            validNonAmericanUser.Address = new Address();
-            validNonAmericanUser.Address.AddressId =
-                new Guid("44444444-4444-4444-4444-444444444444");
-            validNonAmericanUser.Address.Address1 = "132 Old Road";
-            validNonAmericanUser.Address.Address2 = "Apt 100";
-            validNonAmericanUser.Address.City = "Maastricht";
-            validNonAmericanUser.Address.PostalCode = "3581 CD";
-            validNonAmericanUser.Address.State = "Limburg";
-            validNonAmericanUser.Address.Country = "NL";
-            validNonAmericanUser.Email = "sophie@jansen.com";
-            validNonAmericanUser.Gender = "Female";
-            validNonAmericanUser.Location = "Tampa";
-            validNonAmericanUser.Name = new Name();
-            validNonAmericanUser.Name.First = "Sophie";
-            validNonAmericanUser.Name.Middle = "Emma";
-            validNonAmericanUser.Name.Last = "Jansen";
-            validNonAmericanUser.Name.NameId = new Guid("55555555-5555-5555-5555-555555555555");
-            validNonAmericanUser.Type = "Associate";
-            validNonAmericanUser.UserId = new Guid("66666666-6666-6666-6666-666666666666");
-            return validNonAmericanUser;
-        }
-
-        /// <summary>
         /// Test a default user
         /// </summary>
         [Fact]
@@ -85,16 +56,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Test the sample Non-American user
-        /// </summary>
-        [Fact]
-        [Trait("Type", "ControlGroup")]
-        public void SampleNonAmericanUserShouldBeValid()
-        {
-            Assert.True(Non_US_User().Validate());
-        }
-
-        /// <summary>
         /// Test that UserId is required
         /// </summary>
         [Fact]
@@ -103,15 +64,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.UserId = Guid.Empty;
-            non_us.UserId = Guid.Empty;
 
             // Assert that empty Guids fail validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -123,15 +81,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Location = null;
-            non_us.Location = null;
 
             // Assert that null Location fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -143,15 +98,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Location = "";
-            non_us.Location = "";
 
             // Assert that empty string Location fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -163,15 +115,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Address = null;
-            non_us.Address = null;
 
             // Assert that null Address passes
             Assert.True(us.Validate());
-            Assert.True(non_us.Validate());
         }
 
         /// <summary>
@@ -183,15 +132,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Email = null;
-            non_us.Email = null;
 
             // Assert that null Email fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -203,15 +149,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Email = "";
-            non_us.Email = "";
 
             // Assert that empty string Email fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -227,15 +170,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Email = email;
-            non_us.Email = email;
 
             // Assert that valid emails pass
             Assert.True(us.Validate());
-            Assert.True(non_us.Validate());
         }
 
         /// <summary>
@@ -254,15 +194,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = US_User();
 
             // Act
             us.Email = email;
-            non_us.Email = email;
 
             // Assert that invalid emails fails
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -274,15 +211,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Name = null;
-            non_us.Name = null;
 
             // Assert that null Name fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -294,15 +228,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Gender = null;
-            non_us.Gender = null;
 
             // Assert that null Gender fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -325,15 +256,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Gender = gender;
-            non_us.Gender = gender;
 
             // Assert that valid Gender passes
             Assert.True(us.Validate());
-            Assert.True(non_us.Validate());
         }
 
         /// <summary>
@@ -349,15 +277,11 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
-
             // Act
             us.Gender = gender;
-            non_us.Gender = gender;
 
             // Assert that invalid Gender fails
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -369,15 +293,11 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
-
             // Act
             us.Type = null;
-            non_us.Type = null;
 
             // Assert that empty Type fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -389,15 +309,11 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Type = "";
-            non_us.Type = "";
-
             // Assert that empty string Type fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
 
