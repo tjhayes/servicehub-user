@@ -43,7 +43,6 @@ namespace ServiceHub.User.Library.Models
         {
             if (AddressId == Guid.Empty) { return false; }
             if (Address1 == null || Address1 == "") { return false; }
-            if (Address2 == "") { return false; }
             if (City == null || City == "") { return false; }
             if (State == null || State == "") { return false; }
             if (PostalCode == null || PostalCode == "") { return false; }

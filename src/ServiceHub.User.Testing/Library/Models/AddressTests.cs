@@ -215,15 +215,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.City = null;
-            non_us.Address.City = null;
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -235,15 +232,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.City = "";
-            non_us.Address.City = "";
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -255,15 +249,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.State = null;
-            non_us.Address.State = null;
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -275,15 +266,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.State = "";
-            non_us.Address.State = "";
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -301,15 +289,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.State = state;
-            non_us.Address.State = state;
 
             //Assert pass validation
             Assert.True(us.Address.Validate());
-            Assert.True(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -350,15 +335,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.PostalCode = zip;
-            non_us.Address.PostalCode = zip;
 
             //Assert pass validation
             Assert.True(us.Address.Validate());
-            Assert.True(non_us.Address.Validate());
         }
 
         /// <summary>
