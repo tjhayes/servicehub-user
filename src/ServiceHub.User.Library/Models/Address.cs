@@ -147,8 +147,6 @@ namespace ServiceHub.User.Library.Models
             {
                 if(countryToUpper == country) { return true; }
             }
-           /* try { RegionInfo region = new RegionInfo(Country); }
-            catch (ArgumentException) { validCountry = false; }*/
             return false;
         }
 

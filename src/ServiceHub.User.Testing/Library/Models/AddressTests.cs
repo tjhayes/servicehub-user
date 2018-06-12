@@ -300,31 +300,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Test that invalid non-US country codes fail
-        /// </summary>
-        /// <param name="countryCode">The country code to test</param>
-        [Theory]
-        [Trait("Type", "TrueNegative")]
-        [InlineData("")]
-        [InlineData("China")]
-        [InlineData("ZZ")]
-        [InlineData("YY")]
-        [InlineData("XX")]
-        [InlineData("A")]
-        [InlineData("ABC")]
-        public void InvalidNonUSCountryCodeFails(string countryCode)
-        {
-            // Arrange
-            _address.Country = countryCode;
-
-            // Act
-            var result = _address.Validate();
-
-            // Assert that invalid Non-US Country code fails
-            Assert.False(result);
-        }
-
-        /// <summary>
         /// Test that an empty Guid is invalid.
         /// </summary>
         [Fact]
@@ -390,6 +365,23 @@ namespace ServiceHub.User.Testing.Library.Models
 
             //Assert pass validation
             Assert.True(result);
+        }
+
+        /// <summary>
+        /// Ensure that the secondary address is not an empty string
+        /// </summary>
+        [Fact]
+        [Trait("Type", "AllowEmptyString")]
+        public void Address2AllowEmptyString()
+        {
+            //Arrange
+            User.Library.Models.User us = US_User();
+
+            //Act
+            us.Address.Address2 = "";
+
+            //Assert fail validation
+            Assert.True(us.Address.Validate());
         }
 
         /// <summary>
