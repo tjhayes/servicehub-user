@@ -55,15 +55,6 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.True(US_User().Validate());
         }
 
-        /// <summary>
-        /// Test the sample Non-American user
-        /// </summary>
-        [Fact]
-        [Trait("Type", "ControlGroup")]
-        public void SampleNonAmericanUserShouldBeValid()
-        {
-            Assert.True(Non_US_User().Validate());
-        }
 
         /// <summary>
         /// Test that UserId is required
