@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using ServiceHub.User.Library.Models;
 
@@ -247,7 +246,7 @@ namespace ServiceHub.User.Testing.Library.Models
         [InlineData("BR")]
         [InlineData("CO")]
         [InlineData("FR")]
-        public void ValidNonUSCountryCodePasses(string countryCode)
+        public void ValidNonUSCountryCodeFails(string countryCode)
         {
             // Arrange
             _address.Country = countryCode;
@@ -256,7 +255,7 @@ namespace ServiceHub.User.Testing.Library.Models
             var result = _address.Validate();
 
             // Assert that valid Country passes
-            Assert.True(result);
+            Assert.False(result);
         }
 
         /// <summary>
@@ -394,23 +393,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Ensure that the secondary address is not an empty string
-        /// </summary>
-        [Fact]
-        [Trait("Type", "NotEmptyString")]
-        public void Address2NotEmptyString()
-        {
-            //Arrange
-            _address.Address2 = "";
-
-            //Act
-            var result = _address.Validate();
-
-            //Assert fail validation
-            Assert.False(result);
-        }
-
-        /// <summary>
         /// Ensure that the city property is required.
         /// </summary>
         [Fact]
@@ -508,7 +490,6 @@ namespace ServiceHub.User.Testing.Library.Models
         [Theory]
         [Trait("Type", "TruePositive")]
         [InlineData("Kansas")]
-        [InlineData("Wv")]
         [InlineData("Canada")]
         [InlineData("Europe")]
         [InlineData("I like pie")]
@@ -532,9 +513,7 @@ namespace ServiceHub.User.Testing.Library.Models
         [Trait("Type", "TruePositive")]
         [InlineData("55555")]
         [InlineData("66043")]
-        [InlineData("66048-1234")]
         [InlineData("66002")]
-        [InlineData("12345-6789")]
         public void ValidAmericanPostalCodePasses(string zip)
         {
             //Arrange
@@ -559,6 +538,8 @@ namespace ServiceHub.User.Testing.Library.Models
         [InlineData("66048-12")]
         [InlineData("66002-12345")]
         [InlineData("123456")]
+        [InlineData("66048-1234")]
+        [InlineData("12345-6789")]
         public void InValidAmericanPostalCodeFails(string zip)
         {
             //Arrange
@@ -620,6 +601,16 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.False(result);
         }
 
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Tests to ensure that an oversized Country  is not valid.
         /// </summary>
@@ -644,23 +635,6 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             _address.PostalCode = OversizedString;
-
-            // Act
-            var result = _address.Validate();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        /// <summary>
-        /// Tests to ensure that an oversized non-US State is not valid.
-        /// </summary>
-        [Fact]
-        public void Validate_OversizedNonUsState_ReturnsFalse()
-        {
-            // Arrange
-            _address.Country = "GB";
-            _address.State = OversizedString;
 
             // Act
             var result = _address.Validate();
@@ -717,24 +691,6 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.True(result);
         }
 
-        /// <summary>
-        /// Tests to ensure that a max-length non-US State string is valid.
-        /// </summary>
-        [Fact]
-        public void Validate_MaxLengthNonUsState_ReturnsTrue()
-        {
-            // Arrange
-            _address.Country = "GB";
-            _address.State = MaxLengthString;
-
-            // Act
-            var result = _address.Validate();
-
-            // Assert
-            Assert.True(result);
-        }
-
-
         #endregion
 
         #region ValidateAmericanState
@@ -758,7 +714,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that lowercase state codes are ruled as invalid.
         /// </summary>
         [Theory, MemberData(nameof(AmericanStateCodesLowerCase))]
-        public void ValidateAmericanState_ValidStateCodesLowerCase_ReturnsFalse(string state)
+        public void ValidateAmericanState_ValidStateCodesLowerCase_ReturnsTrue(string state)
         {
             // Arrange
             _address.State = state;
@@ -767,7 +723,7 @@ namespace ServiceHub.User.Testing.Library.Models
             var result = _address.ValidateAmericanState();
 
             // Assert
-            Assert.False(result);
+            Assert.True(result);
         }
 
         /// <summary>

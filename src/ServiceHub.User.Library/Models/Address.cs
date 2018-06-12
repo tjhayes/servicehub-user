@@ -27,8 +27,74 @@ namespace ServiceHub.User.Library.Models
         /// <value> The country. </value>
         public string Country { get; set; }
 
-
+        /// <value> Maximum allowed length of a string for the class. </value>
         public const int MaxStringLength = 255;
+
+        private static string[] AcceptedCountries = { "US" };
+
+        private static string[] AcceptedStates = {
+            "AL",
+            "AK",
+            "AR",
+            "AZ",
+            "CA",
+            "CO",
+            "CT",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "ID",
+            "IL",
+            "IN",
+            "IA",
+            "KS",
+            "KY",
+            "LA",
+            "ME",
+            "MD",
+            "MA",
+            "MI",
+            "MN",
+            "MS",
+            "MO",
+            "MT",
+            "NE",
+            "NV",
+            "NH",
+            "NJ",
+            "NM",
+            "NY",
+            "NC",
+            "ND",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VT",
+            "VA",
+            "WA",
+            "WV",
+            "WI",
+            "WY",
+            "AS",
+            "DC",
+            "GU",
+            "MH",
+            "FM",
+            "MP",
+            "PW",
+            "PR",
+            "VI"
+        };
+
+
 
         /// <summary>
         /// Check whether the address is valid.
@@ -53,13 +119,13 @@ namespace ServiceHub.User.Library.Models
             if (AddressId == Guid.Empty) { return false; }
             if (Address1 == "" || Address1.Length > MaxStringLength) { return false; }
             if (Address2 != null)
-                if(Address2 == "" || Address2.Length > MaxStringLength) { return false; }
+                if(Address2.Length > MaxStringLength) { return false; }
             if (City == "" || City.Length > MaxStringLength) { return false; }
             if (State == "" || State.Length > MaxStringLength) { return false; }
             if (PostalCode == "" || PostalCode.Length > MaxStringLength) { return false; }
             if (ValidateCountry() == false) { return false; }
-            if (Country.ToUpper() == "US" && ValidateAmericanState() == false) { return false; }
-            if (Country.ToUpper() == "US" && ValidateAmericanPostalCode() == false) { return false; }
+            if (ValidateAmericanState() == false) { return false; }
+            if (ValidateAmericanPostalCode() == false) { return false; }
             return true;
         }
 
@@ -76,10 +142,14 @@ namespace ServiceHub.User.Library.Models
         public Boolean ValidateCountry()
         {
             if(Country == null) { return false; }
-            bool validCountry = true;
-            try { RegionInfo region = new RegionInfo(Country); }
-            catch (ArgumentException) { validCountry = false; }
-            return validCountry;
+            string countryToUpper = Country.ToUpper();
+            foreach (var country in AcceptedCountries)
+            {
+                if(countryToUpper == country) { return true; }
+            }
+           /* try { RegionInfo region = new RegionInfo(Country); }
+            catch (ArgumentException) { validCountry = false; }*/
+            return false;
         }
 
         /// <summary>
@@ -89,71 +159,14 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the state code is valid, and false otherwise.</returns>
         public Boolean ValidateAmericanState()
         {
-            switch (State)
+            if (State == null) { return false; }
+            string stateToUpper = State.ToUpper();
+            foreach (var state in AcceptedStates)
             {
-                case "AL":
-                case "AK":
-                case "AR":
-                case "AZ":
-                case "CA":
-                case "CO":
-                case "CT":
-                case "DE":
-                case "FL":
-                case "GA":
-                case "HI":
-                case "ID":
-                case "IL":
-                case "IN":
-                case "IA":
-                case "KS":
-                case "KY":
-                case "LA":
-                case "ME":
-                case "MD":
-                case "MA":
-                case "MI":
-                case "MN":
-                case "MS":
-                case "MO":
-                case "MT":
-                case "NE":
-                case "NV":
-                case "NH":
-                case "NJ":
-                case "NM":
-                case "NY":
-                case "NC":
-                case "ND":
-                case "OH":
-                case "OK":
-                case "OR":
-                case "PA":
-                case "RI":
-                case "SC":
-                case "SD":
-                case "TN":
-                case "TX":
-                case "UT":
-                case "VT":
-                case "VA":
-                case "WA":
-                case "WV":
-                case "WI":
-                case "WY":
-                case "AS":
-                case "DC":
-                case "GU":
-                case "MH":
-                case "FM":
-                case "MP":
-                case "PW":
-                case "PR":
-                case "VI":
-                    return true;
-                default:
-                    return false;
+                if(stateToUpper == state) { return true; }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -165,7 +178,7 @@ namespace ServiceHub.User.Library.Models
         public Boolean ValidateAmericanPostalCode()
         {
             if(PostalCode == null) { return false; }
-            Regex regex = new Regex(@"^\d{5}(?:-\d{4})?$");
+            Regex regex = new Regex(@"^\d{5}$");
             return regex.Match(PostalCode).Success;
         }
     }
