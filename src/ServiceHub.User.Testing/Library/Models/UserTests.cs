@@ -35,35 +35,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Generates a sample valid non-American user
-        /// </summary>
-        /// <returns>A valid user object with a non-American address</returns>
-        public User.Library.Models.User Non_US_User()
-        {
-            User.Library.Models.User validNonAmericanUser = new User.Library.Models.User();
-            validNonAmericanUser.Address = new Address();
-            validNonAmericanUser.Address.AddressId =
-                new Guid("44444444-4444-4444-4444-444444444444");
-            validNonAmericanUser.Address.Address1 = "132 Old Road";
-            validNonAmericanUser.Address.Address2 = "Apt 100";
-            validNonAmericanUser.Address.City = "Maastricht";
-            validNonAmericanUser.Address.PostalCode = "3581 CD";
-            validNonAmericanUser.Address.State = "Limburg";
-            validNonAmericanUser.Address.Country = "NL";
-            validNonAmericanUser.Email = "sophie@jansen.com";
-            validNonAmericanUser.Gender = "Female";
-            validNonAmericanUser.Location = "Tampa";
-            validNonAmericanUser.Name = new Name();
-            validNonAmericanUser.Name.First = "Sophie";
-            validNonAmericanUser.Name.Middle = "Emma";
-            validNonAmericanUser.Name.Last = "Jansen";
-            validNonAmericanUser.Name.NameId = new Guid("55555555-5555-5555-5555-555555555555");
-            validNonAmericanUser.Type = "Associate";
-            validNonAmericanUser.UserId = new Guid("66666666-6666-6666-6666-666666666666");
-            return validNonAmericanUser;
-        }
-
-        /// <summary>
         /// Test a default user
         /// </summary>
         [Fact]
