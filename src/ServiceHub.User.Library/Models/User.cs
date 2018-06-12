@@ -1,27 +1,36 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Runtime.Serialization;
 
 namespace ServiceHub.User.Library.Models
 {
     /// <summary>
     /// Model for a user's personal information. 
     /// </summary>
+    [DataContract]
     public class User
     {
         /// <value>The user's unique Id</value>
+        [DataMember]
         public Guid UserId { get; set; }
         /// <value>The name of the training location</value>
+        [DataMember]
         public string Location { get; set; }
         /// <value>The user's residential address</value>
+        [DataMember]
         public Address Address { get; set; }
         /// <value>The user's email address</value>
+        [DataMember]
         public string Email { get; set; }
         /// <value>Object storing the user's names (first, middle, last)</value>
+        [DataMember]
         public Name Name { get; set; }
         /// <value>The user's gender (Male/Female)</value>
+        [DataMember]
         public string Gender { get; set; }
         /// <value>The user's job title</value>
+        [DataMember]
         public string Type { get; set; }
 
         /// <summary>
