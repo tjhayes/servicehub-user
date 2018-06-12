@@ -9,6 +9,7 @@ namespace ServiceHub.User.Testing.Library.Models
     {
         /// <value> Field for an Address to be tested.</value>
         Address _address;
+
         #region Test Data
         /// <value> A string over the max length for Name. </value>
         readonly string OversizedString = new string('A', 256);
@@ -28,8 +29,7 @@ namespace ServiceHub.User.Testing.Library.Models
             Country = "us" };
         
         /// <summary>
-        /// MemberData set consisting of upper case state codes for all US states
-        /// and territories.
+        /// MemberData set consisting of upper case state codes for all US states.
         /// </summary>
         /// <returns>Returns each upper case state code </returns>
         public static IEnumerable<object[]> AmericanStateCodesUpperCase()
@@ -85,18 +85,6 @@ namespace ServiceHub.User.Testing.Library.Models
             yield return new object[] { "WV" };
             yield return new object[] { "WI" };
             yield return new object[] { "WY" };
-
-            // American territories
-            yield return new object[] { "AS" }; 
-            yield return new object[] { "DC" };
-            yield return new object[] { "GU" };
-            yield return new object[] { "MH" };
-            yield return new object[] { "FM" };
-            yield return new object[] { "MP" };
-            yield return new object[] { "PW" };
-            yield return new object[] { "PR" };
-            yield return new object[] { "VI" };
-
         }
         
         /// <summary>
@@ -157,18 +145,6 @@ namespace ServiceHub.User.Testing.Library.Models
             yield return new object[] { "wv" };
             yield return new object[] { "wi" };
             yield return new object[] { "wy" };
-
-            // American territories
-            yield return new object[] { "as" };
-            yield return new object[] { "dc" };
-            yield return new object[] { "gu" };
-            yield return new object[] { "mh" };
-            yield return new object[] { "fm" };
-            yield return new object[] { "mp" };
-            yield return new object[] { "pw" };
-            yield return new object[] { "pr" };
-            yield return new object[] { "vi" };
-
         }
 
         #endregion
@@ -368,20 +344,19 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Ensure that the secondary address is not an empty string
+        /// Ensure that the secondary address is can be an empty string
         /// </summary>
         [Fact]
         [Trait("Type", "AllowEmptyString")]
         public void Address2AllowEmptyString()
         {
             //Arrange
-            User.Library.Models.User us = US_User();
+            _address.Address2 = "";
 
             //Act
-            us.Address.Address2 = "";
-
-            //Assert fail validation
-            Assert.True(us.Address.Validate());
+            var result = _address.Validate();
+            //Assert pass validation
+            Assert.True(result);
         }
 
         /// <summary>
@@ -549,6 +524,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that an oversized Address1 is not valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthFail")]
         public void Validate_OversizedAddress1_ReturnsFalse()
         {
             // Arrange
@@ -565,6 +541,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that an oversized Address2 is not valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthFail")]
         public void Validate_OversizedAddress2_ReturnsFalse()
         {
             // Arrange
@@ -581,6 +558,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that an oversized City is not valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthFail")]
         public void Validate_OversizedCity_ReturnsFalse()
         {
             // Arrange
@@ -592,53 +570,12 @@ namespace ServiceHub.User.Testing.Library.Models
             // Assert
             Assert.False(result);
         }
-
-
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// Tests to ensure that an oversized Country  is not valid.
-        /// </summary>
-        [Fact]
-        public void Validate_OversizedCountry_ReturnsFalse()
-        {
-            // Arrange
-            _address.Country = OversizedString;
-
-            // Act
-            var result = _address.Validate();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        /// <summary>
-        /// Tests to ensure that an oversized PostalCode is not valid.
-        /// </summary>
-        [Fact]
-        public void Validate_OversizedPostalCode_ReturnsFalse()
-        {
-            // Arrange
-            _address.PostalCode = OversizedString;
-
-            // Act
-            var result = _address.Validate();
-
-            // Assert
-            Assert.False(result);
-        }
-
+        
         /// <summary>
         /// Tests to ensure that a max-length Address1 string is valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthPass")]
         public void Validate_MaxLengthAddress1_ReturnsTrue()
         {
             // Arrange
@@ -655,6 +592,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that a max-length Address2 string is valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthPass")]
         public void Validate_MaxLengthAddress2_ReturnsTrue()
         {
             // Arrange
@@ -671,6 +609,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that a max-length City string is valid.
         /// </summary>
         [Fact]
+        [Trait("Type", "MaxStringLengthPass")]
         public void Validate_MaxLengthCity_ReturnsTrue()
         {
             // Arrange
@@ -690,6 +629,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that uppercase state codes are ruled as valid.
         /// </summary>
         [Theory, MemberData(nameof(AmericanStateCodesUpperCase))]
+        [Trait("Type", "FiniteAcceptedInputsPass")]
         public void ValidateAmericanState_ValidStateCodesUpperCase_ReturnsTrue(string state)
         {
             // Arrange
@@ -703,8 +643,9 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Tests to ensure that lowercase state codes are ruled as invalid.
+        /// Tests to ensure that lowercase state codes are ruled as valid.
         /// </summary>
+        [Trait("Type", "FiniteAcceptedInputsPass")]
         [Theory, MemberData(nameof(AmericanStateCodesLowerCase))]
         public void ValidateAmericanState_ValidStateCodesLowerCase_ReturnsTrue(string state)
         {
@@ -722,6 +663,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that state codes are ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "RequiredField")]
         public void ValidateAmericanState_NullState_ReturnsFalse()
         {
             // Arrange
@@ -738,6 +680,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that empty state code is ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "EmptyStringNotAllowed")]
         public void ValidateAmericanState_EmptyState_ReturnsFalse()
         {
             // Arrange
@@ -754,6 +697,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that state codes with leading whitespace are ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "WhitespaceCheckFail")]
         public void ValidateAmericanState_LeadingSpacesValidState_ReturnsFalse()
         {
             // Arrange
@@ -770,6 +714,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that state codes with trailing whitespace are ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "WhitespaceCheckFail")]
         public void ValidateAmericanState_TrailingSpacesValidState_ReturnsFalse()
         {
             // Arrange
@@ -788,6 +733,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that null zip codes are ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "RequiredField")]
         public void ValidateAmericanPostalCode_NullZipCode_ReturnsFalse()
         {
             // Arrange
@@ -804,6 +750,7 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Tests to ensure that empty zip codes are ruled as invalid.
         /// </summary>
         [Fact]
+        [Trait("Type", "NotEmptyString")]
         public void ValidateAmericanPostalCode_EmptyZipCode_ReturnsFalse()
         {
             // Arrange

@@ -29,72 +29,11 @@ namespace ServiceHub.User.Library.Models
 
         /// <value> Maximum allowed length of a string for the class. </value>
         public const int MaxStringLength = 255;
+        /// <value> All allowed Country codes</value>
+        private static string[] CountryCodes = { "US" };
 
-        private static string[] AcceptedCountries = { "US" };
-
-        private static string[] AcceptedStates = {
-            "AL",
-            "AK",
-            "AR",
-            "AZ",
-            "CA",
-            "CO",
-            "CT",
-            "DE",
-            "FL",
-            "GA",
-            "HI",
-            "ID",
-            "IL",
-            "IN",
-            "IA",
-            "KS",
-            "KY",
-            "LA",
-            "ME",
-            "MD",
-            "MA",
-            "MI",
-            "MN",
-            "MS",
-            "MO",
-            "MT",
-            "NE",
-            "NV",
-            "NH",
-            "NJ",
-            "NM",
-            "NY",
-            "NC",
-            "ND",
-            "OH",
-            "OK",
-            "OR",
-            "PA",
-            "RI",
-            "SC",
-            "SD",
-            "TN",
-            "TX",
-            "UT",
-            "VT",
-            "VA",
-            "WA",
-            "WV",
-            "WI",
-            "WY",
-            "AS",
-            "DC",
-            "GU",
-            "MH",
-            "FM",
-            "MP",
-            "PW",
-            "PR",
-            "VI"
-        };
-
-
+        /// <value> All state codes for the 50 US states. </value>
+        private readonly string[] StateCodes = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 
         /// <summary>
         /// Check whether the address is valid.
@@ -143,7 +82,7 @@ namespace ServiceHub.User.Library.Models
         {
             if(Country == null) { return false; }
             string countryToUpper = Country.ToUpper();
-            foreach (var country in AcceptedCountries)
+            foreach (var country in CountryCodes)
             {
                 if(countryToUpper == country) { return true; }
             }
@@ -159,7 +98,7 @@ namespace ServiceHub.User.Library.Models
         {
             if (State == null) { return false; }
             string stateToUpper = State.ToUpper();
-            foreach (var state in AcceptedStates)
+            foreach (var state in StateCodes)
             {
                 if(stateToUpper == state) { return true; }
             }
