@@ -193,20 +193,17 @@ namespace ServiceHub.User.Testing.Library.Models
         /// Ensure that the secondary address is not an empty string
         /// </summary>
         [Fact]
-        [Trait("Type", "NotEmptyString")]
-        public void Address2NotEmptyString()
+        [Trait("Type", "AllowEmptyString")]
+        public void Address2AllowEmptyString()
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.Address2 = "";
-            non_us.Address.Address2 = "";
 
             //Assert fail validation
-            Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
+            Assert.True(us.Address.Validate());
         }
 
         /// <summary>
