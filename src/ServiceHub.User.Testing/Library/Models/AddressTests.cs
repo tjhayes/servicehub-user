@@ -74,15 +74,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Address.PostalCode = null;
-            non_us.Address.PostalCode = null;
 
             // Assert that null Postal Code fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
         }
 
         /// <summary>
@@ -94,79 +91,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             // Act
             us.Address.PostalCode = "";
-            non_us.Address.PostalCode = "";
 
             // Assert that empty string Postal Code fails validation
             Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
-        }
-
-        /// <summary>
-        /// Test that user Country is required
-        /// </summary>
-        [Fact]
-        [Trait("Type", "RequiredField")]
-        public void CountryRequired()
-        {
-            // Arrange
-            User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
-
-            // Act
-            us.Address.Country = null;
-            non_us.Address.Country = null;
-
-            // Assert that null Country fails validation
-            Assert.False(us.Validate());
-            Assert.False(non_us.Validate());
-        }
-
-        /// <summary>
-        /// Test that valid non-US country codes pass
-        /// </summary>
-        /// <param name="countryCode">The country code to test</param>
-        [Theory]
-        [Trait("Type", "TruePositive")]
-        [InlineData("GB")]
-        [InlineData("ZA")]
-        [InlineData("NL")]
-        [InlineData("BR")]
-        [InlineData("CO")]
-        [InlineData("FR")]
-        public void ValidNonUSCountryCodePasses(string countryCode)
-        {
-            // Arrange
-            User.Library.Models.User non_us = Non_US_User();
-
-            // Act
-            non_us.Address.Country = countryCode;
-
-            // Assert that valid Country passes
-            Assert.True(non_us.Validate());
-        }
-
-        /// <summary>
-        /// Test that valid US country codes pass
-        /// </summary>
-        /// <param name="countryCode">The country code to test</param>
-        [Theory]
-        [Trait("Type", "TruePositive")]
-        [InlineData("US")]
-        [InlineData("us")]
-        public void ValidUSCountryCodePasses(string countryCode)
-        {
-            // Arrange
-            User.Library.Models.User us = US_User();
-
-            // Act
-            us.Address.Country = countryCode;
-
-            // Assert that valid US Country code passes
-            Assert.True(us.Validate());
         }
 
         /// <summary>
@@ -191,32 +121,6 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Test that invalid non-US country codes fail
-        /// </summary>
-        /// <param name="countryCode">The country code to test</param>
-        [Theory]
-        [Trait("Type", "TrueNegative")]
-        [InlineData("")]
-        [InlineData("China")]
-        [InlineData("ZZ")]
-        [InlineData("YY")]
-        [InlineData("XX")]
-        [InlineData("A")]
-        [InlineData("ABC")]
-        [InlineData("US")]
-        public void InvalidNonUSCountryCodeFails(string countryCode)
-        {
-            // Arrange
-            User.Library.Models.User non_us = Non_US_User();
-
-            // Act
-            non_us.Address.Country = countryCode;
-
-            // Assert that invalid Non-US Country code fails
-            Assert.False(non_us.Validate());
-        }
-
-        /// <summary>
         /// Test that Address must have an Id.
         /// </summary>
         [Fact]
@@ -225,15 +129,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.AddressId = Guid.Empty;
-            non_us.Address.AddressId = Guid.Empty;
 
             //Assert that fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -245,15 +146,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.Address1 = null;
-            non_us.Address.Address1 = null;
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -265,15 +163,12 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.Address1 = "";
-            non_us.Address.Address1 = "";
 
             //Assert fail validation
             Assert.False(us.Address.Validate());
-            Assert.False(non_us.Address.Validate());
         }
 
         /// <summary>
@@ -285,15 +180,13 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             //Arrange
             User.Library.Models.User us = US_User();
-            User.Library.Models.User non_us = Non_US_User();
 
             //Act
             us.Address.Address2 = null;
-            non_us.Address.Address2 = null;
 
             //Assert pass validation
             Assert.True(us.Address.Validate());
-            Assert.True(non_us.Address.Validate());
+
         }
 
         /// <summary>
