@@ -53,11 +53,11 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody]object value)
-        //{
-        //    return await Task.Run(() => Ok());
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetByGender(string gender)
+        {
+            return await Task.Run(() => Ok());
+        }
 
         /// <summary>
         /// Updates the user of the id of the new model.
