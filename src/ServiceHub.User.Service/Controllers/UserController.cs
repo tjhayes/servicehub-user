@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
@@ -21,7 +22,11 @@ namespace ServiceHub.User.Service.Controllers
         /// <summary>
         /// Get all users.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>OkObjectResult with an IEnumerable of all users,
+        /// or a 500 StatusCodeResult if an error occurs.</returns>
+        [HttpGet]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
         public async Task<IActionResult> Get()
         {
             try
@@ -31,7 +36,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             catch
             {
-                return NotFound();
+                return new StatusCodeResult(500);
             }
         }
 
