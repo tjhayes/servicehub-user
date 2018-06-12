@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 using ServiceHub.User.Context.Repositories;
+using System.Collections.Generic;
 
 namespace ServiceHub.User.Service.Controllers
 {
@@ -53,10 +54,46 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Finds the users by Gender.
+        /// </summary>
+        /// <param name="gender"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetByGender(string gender)
         {
-            return await Task.Run(() => Ok());
+            if(gender[0].ToString().ToUpper() == "M")
+            {
+                var users = _userStorage.Get();
+                var GUsers = new List<ServiceHub.User.Library.Models.User>();
+                
+                foreach (var x in users)
+                {
+                    if(x.Gender[0].ToString().ToUpper() == "M")
+                    {
+                        GUsers.Add(x);
+                    }
+                }
+                return await Task.Run(() => Ok(GUsers));
+            }
+            else if(gender[0].ToString().ToUpper() == "F")
+            {
+                var users = _userStorage.Get();
+                var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                foreach (var x in users)
+                {
+                    if (x.Gender[0].ToString().ToUpper() == "M")
+                    {
+                        GUsers.Add(x);
+                    }
+                }
+                return await Task.Run(() => Ok(GUsers));
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
