@@ -18,15 +18,27 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage = new UserStorage(new UserRepository());
         }
 
+        /// <summary>
+        /// Get all users.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Get()
         {
-            return await Task.Run(() => Ok());
+            try
+            {
+                var users = _userStorage.Get();
+                return await Task.Run(() => Ok(users));
+            }
+            catch(Exception e)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            return await Task.Run(() => Ok());
+            return await Task.Run(() => Ok(_userStorage.GetById(id)));
         }
 
         [HttpPost]
