@@ -35,6 +35,11 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Finds the user based on the id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -54,8 +59,13 @@ namespace ServiceHub.User.Service.Controllers
         //    return await Task.Run(() => Ok());
         //}
 
+        /// <summary>
+        /// Updates the user of the id of the new model.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, ServiceHub.User.Library.Models.User value)
+        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
         {
             try
             { 
