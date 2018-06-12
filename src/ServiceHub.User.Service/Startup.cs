@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,12 +24,12 @@ namespace ServiceHub.User.Service
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
-      services.AddSingleton<IQueueClient>(qc => 
-        new QueueClient(
-          Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
-          Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
-        )
-      );
+      //services.AddSingleton<IQueueClient>(qc => 
+      //  new QueueClient(
+      //    Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
+      //    Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
+      //  )
+      //);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

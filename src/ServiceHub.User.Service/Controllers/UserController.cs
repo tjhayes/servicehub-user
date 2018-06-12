@@ -12,8 +12,8 @@ namespace ServiceHub.User.Service.Controllers
     {
         private readonly UserStorage _userStorage;
 
-        public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+        public UserController(ILoggerFactory loggerFactory /*, IQueueClient queueClientSingleton*/)
+          : base(loggerFactory /*, queueClientSingleton*/)
         {
             _userStorage = new UserStorage(new UserRepository());
         }
@@ -29,7 +29,7 @@ namespace ServiceHub.User.Service.Controllers
                 var users = _userStorage.Get();
                 return await Task.Run(() => Ok(users));
             }
-            catch(Exception e)
+            catch
             {
                 return NotFound();
             }
@@ -66,7 +66,7 @@ namespace ServiceHub.User.Service.Controllers
                 AutoComplete = false
             };
 
-            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
+            //queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
         }
 
         protected override void UseSender(Message message)
