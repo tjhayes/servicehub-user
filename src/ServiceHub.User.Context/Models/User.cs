@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace ServiceHub.User.Context.Models
 {
@@ -8,6 +9,7 @@ namespace ServiceHub.User.Context.Models
     public class User
     {
         /// <value>The user's unique Id</value>
+        [BsonId]
         public Guid UserId { get; set; }
         /// <value>The name of the training location</value>
         public string Location { get; set; }

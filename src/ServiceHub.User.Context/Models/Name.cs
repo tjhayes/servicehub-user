@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace ServiceHub.User.Context.Models
 {
@@ -12,6 +13,7 @@ namespace ServiceHub.User.Context.Models
     public class Name
     {
         /// <value>The unique Id for the user's Name Object</value>
+        [BsonId]
         public Guid NameId { get; set; }
         /// <value>The user's first name(s)</value>
         public string First { get; set; }
