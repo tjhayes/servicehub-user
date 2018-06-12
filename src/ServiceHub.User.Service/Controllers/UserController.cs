@@ -38,26 +38,41 @@ namespace ServiceHub.User.Service.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await Task.Run(() => Ok(_userStorage.GetById(id)));
+            try
+            {
+                return await Task.Run(() => Ok(_userStorage.GetById(id)));
+            }
+            catch(Exception e)
+            {
+                return NotFound(e);
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object value)
-        {
-            return await Task.Run(() => Ok());
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Post([FromBody]object value)
+        //{
+        //    return await Task.Run(() => Ok());
+        //}
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]object value)
+        public async Task<IActionResult> Put(int id, ServiceHub.User.Library.Models.User value)
         {
-            return await Task.Run(() => Ok());
+            try
+            { 
+                _userStorage.Update(value);
+                return await Task.Run(() => Ok());
+            }
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return await Task.Run(() => Ok());
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    return await Task.Run(() => Ok());
+        //}
 
         protected override void UseReceiver()
         {
