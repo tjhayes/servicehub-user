@@ -38,10 +38,10 @@ namespace ServiceHub.User.Library.Models
         /// <value> Maximum allowed length of a string for the class. </value>
         public const int MaxStringLength = 255;
         /// <value> All allowed Country codes</value>
-        private static string[] CountryCodes = { "US" };
+        private static readonly string[] CountryCodes = { "US" };
 
         /// <value> All state codes for the 50 US states. </value>
-        private readonly string[] StateCodes = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
+        private static readonly string[] StateCodes = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 
         /// <summary>
         /// Check whether the address is valid.

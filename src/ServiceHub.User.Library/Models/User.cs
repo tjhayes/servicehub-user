@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Mail;
 using System.Runtime.Serialization;
 
@@ -11,6 +10,16 @@ namespace ServiceHub.User.Library.Models
     [DataContract]
     public class User
     {
+        /// <value>List of all valid genders in uppercase</value>
+        /// <remarks>Convert a gender string to uppercase before comparing with this list</remarks>
+        [IgnoreDataMember]
+        public static readonly string[] ValidUppercaseGenders = { "M", "F", "MALE", "FEMALE" };
+
+        /// <value>List of all valid user types in uppercase</value>
+        /// <remarks>Convert a user type string to uppercase before comparing with this list</remarks>
+        [IgnoreDataMember]
+        public static readonly string[] ValidUppercaseTypes = { "ASSOCIATE" };
+
         /// <value>The user's unique Id</value>
         [DataMember]
         public Guid UserId { get; set; }
@@ -26,7 +35,7 @@ namespace ServiceHub.User.Library.Models
         /// <value>Object storing the user's names (first, middle, last)</value>
         [DataMember]
         public Name Name { get; set; }
-        /// <value>The user's gender (Male/Female)</value>
+        /// <value>The user's gender</value>
         [DataMember]
         public string Gender { get; set; }
         /// <value>The user's job title</value>
@@ -53,7 +62,7 @@ namespace ServiceHub.User.Library.Models
             if (ValidateEmail() == false || Email.Length > 254) { return false; }
             if (Name == null || Name.Validate() == false) { return false; }
             if (Gender == null || ValidateGender() == false) { return false; }
-            if (Type == null || Type == "" || Type.Length > 255) { return false; }
+            if (Type == null || ValidateType() == false) { return false; }
 
             return true;
         }
@@ -89,9 +98,30 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the Gender is valid and false otherwise.</returns>
         public Boolean ValidateGender()
         {
-            List<string> validGenders = new List<string>() { "M", "F", "MALE", "FEMALE" };
-            if (validGenders.Contains(Gender.ToUpper())) { return true; }
-            else { return false; }
+            foreach (var genderString in ValidUppercaseGenders)
+            {
+                if(genderString == Gender.ToUpper())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check that the Type is valid
+        /// </summary>
+        /// <returns>True if the Type is valid and false otherwise.</returns>
+        public Boolean ValidateType()
+        {
+            foreach (var typeString in ValidUppercaseTypes)
+            {
+                if (typeString == Type.ToUpper())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
