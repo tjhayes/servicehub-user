@@ -4,6 +4,7 @@ using ServiceHub.User.Service.Controllers;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Moq;
 
 namespace ServiceHub.User.Testing.Service
 {
@@ -65,7 +66,7 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            UserController c = new UserController(mockRepo.Object);
+            TempUserController c = new TempUserController(mockRepo.Object);
 
             ObjectResult result = (ObjectResult)await c.Get();
 
@@ -87,7 +88,7 @@ namespace ServiceHub.User.Testing.Service
             contextUsers[0].Name = null;
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            UserController c = new UserController(mockRepo.Object);
+            TempUserController c = new TempUserController(mockRepo.Object);
 
             StatusCodeResult result = (StatusCodeResult)await c.Get();
 
