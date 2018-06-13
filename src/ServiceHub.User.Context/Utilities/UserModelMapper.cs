@@ -28,6 +28,7 @@ namespace ServiceHub.User.Context.Utilities
             libraryUser.Location = contextUser.Location;
             libraryUser.Type = contextUser.Type;
 
+            libraryUser.Address = new Library.Models.Address();
             libraryUser.Address.AddressId = contextUser.Address.AddressId;
             libraryUser.Address.Address1 = contextUser.Address.Address1;
             libraryUser.Address.Address2 = contextUser.Address.Address2;
@@ -36,6 +37,7 @@ namespace ServiceHub.User.Context.Utilities
             libraryUser.Address.PostalCode = contextUser.Address.PostalCode;
             libraryUser.Address.Country = contextUser.Address.Country;
 
+            libraryUser.Name = new Library.Models.Name();
             libraryUser.Name.NameId = contextUser.Name.NameId;
             libraryUser.Name.First = contextUser.Name.First;
             libraryUser.Name.Middle = contextUser.Name.Middle;
@@ -68,6 +70,7 @@ namespace ServiceHub.User.Context.Utilities
             contextUser.Location = libraryUser.Location;
             contextUser.Type = libraryUser.Type;
 
+            contextUser.Address = new Context.Models.Address();
             contextUser.Address.AddressId = libraryUser.Address.AddressId;
             contextUser.Address.Address1 = libraryUser.Address.Address1;
             contextUser.Address.Address2 = libraryUser.Address.Address2;
@@ -76,6 +79,7 @@ namespace ServiceHub.User.Context.Utilities
             contextUser.Address.PostalCode = libraryUser.Address.PostalCode;
             contextUser.Address.Country = libraryUser.Address.Country;
 
+            contextUser.Name = new Context.Models.Name();
             contextUser.Name.NameId = libraryUser.Name.NameId;
             contextUser.Name.First = libraryUser.Name.First;
             contextUser.Name.Middle = libraryUser.Name.Middle;
