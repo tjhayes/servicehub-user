@@ -10,7 +10,7 @@ using ServiceHub.User.Context.Utilities;
 namespace ServiceHub.User.Service.Controllers
 {
     [Route("api/[controller]")]
-    public class TempUserController
+    public class TempUserController : Controller
     {
         private readonly UserStorage _userStorage;
 
@@ -39,7 +39,7 @@ namespace ServiceHub.User.Service.Controllers
                 var contextUsers = _userStorage.Get();
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
                 if(libraryUsers == null) { return new StatusCodeResult(500); }
-                return await Task.Run(() => new OkObjectResult(libraryUsers));
+                return await Task.Run(() => Ok(libraryUsers));
             }
             catch
             {
@@ -50,25 +50,25 @@ namespace ServiceHub.User.Service.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await Task.Run(() => new OkObjectResult(_userStorage.GetById(id)));
+            return await Task.Run(() => Ok(_userStorage.GetById(id)));
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]object value)
         {
-            return await Task.Run(() => new OkResult());
+            return await Task.Run(() => Ok());
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]object value)
         {
-            return await Task.Run(() => new OkResult());
+            return await Task.Run(() => Ok());
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return await Task.Run(() => new OkResult());
+            return await Task.Run(() => Ok());
         }
     }
 }
