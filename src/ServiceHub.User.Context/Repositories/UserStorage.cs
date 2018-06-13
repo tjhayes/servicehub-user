@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace ServiceHub.User.Context.Repositories
 {
@@ -32,7 +32,7 @@ namespace ServiceHub.User.Context.Repositories
         /// Get all the users.
         /// </summary>
         /// <returns>All the users.</returns>
-        public IQueryable<Context.Models.User> Get()
+        public List<Context.Models.User> Get()
         {
             return _userRepository.Get();
         }
