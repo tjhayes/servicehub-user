@@ -12,11 +12,6 @@ namespace ServiceHub.User.Service.Controllers
     {
         private readonly UserStorage _userStorage;
 
-        public TempUserController()
-        {
-            _userStorage = new UserStorage(new UserRepository());
-        }
-
         public TempUserController(IUserRepository userRepository)
         {
             _userStorage = new UserStorage(userRepository);
