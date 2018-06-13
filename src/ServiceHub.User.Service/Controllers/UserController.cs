@@ -62,37 +62,56 @@ namespace ServiceHub.User.Service.Controllers
         [HttpGet]
         public async Task<IActionResult> GetByGender(string gender)
         {
-            if(gender[0].ToString().ToUpper() == "M")
-            {
-                var users = _userStorage.Get();
-                var GUsers = new List<ServiceHub.User.Library.Models.User>();
-                
-                foreach (var x in users)
-                {
-                    if(x.Gender[0].ToString().ToUpper() == "M")
-                    {
-                        GUsers.Add(x);
-                    }
-                }
-                return await Task.Run(() => Ok(GUsers));
-            }
-            else if(gender[0].ToString().ToUpper() == "F")
-            {
-                var users = _userStorage.Get();
-                var GUsers = new List<ServiceHub.User.Library.Models.User>();
+            string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
+            string upperGender = gender.ToUpper();
+            bool validGender = false;
 
-                foreach (var x in users)
+            foreach (var x in genders)
+            {
+                if(upperGender == x)
                 {
-                    if (x.Gender[0].ToString().ToUpper() == "M")
-                    {
-                        GUsers.Add(x);
-                    }
+                    validGender = true;
                 }
-                return await Task.Run(() => Ok(GUsers));
+            }
+
+            if (!validGender)
+            {
+                return BadRequest();
             }
             else
             {
-                return BadRequest();
+                if (gender.ToUpper() == "M")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        {
+                            GUsers.Add(x);
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else if (gender.ToUpper() == "F")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        {
+                            GUsers.Add(x);
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
         }
 
