@@ -1,6 +1,7 @@
 ﻿using System;
 using Xunit;
 using ServiceHub.User.Context.Utilities;
+using System.Collections.Generic;
 
 namespace ServiceHub.User.Testing.Library.Utilities
 {
@@ -68,7 +69,7 @@ namespace ServiceHub.User.Testing.Library.Utilities
         public void Valid_LibraryToContext_ShouldWork()
         {
             // Arrange
-            var libraryUser = LibraryUser(); 
+            var libraryUser = LibraryUser();
 
             // Act
             var contextUser = UserModelMapper.LibraryToContext(libraryUser);
@@ -138,6 +139,75 @@ namespace ServiceHub.User.Testing.Library.Utilities
 
             // Assert
             Assert.Null(libraryUser);
+        }
+
+        [Fact]
+        [Trait("Type", "UserModelMapper")]
+        public void Invalid_ContextToLibrary_ShouldReturnNull()
+        {
+            // Arrange
+            User.Context.Models.User contextUser = ContextUser();
+            contextUser.UserId = Guid.Empty;
+
+            // Act
+            var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
+
+            // Assert
+            Assert.Null(libraryUser);
+        }
+
+        [Fact]
+        [Trait("Type", "UserModelMapper")]
+        public void Invalid_List_ContextToLibrary_ShouldReturnNull()
+        {
+            // Arrange
+            List<User.Context.Models.User> contextUsers 
+                = new List<User.Context.Models.User>();
+            contextUsers.Add(ContextUser());
+            contextUsers.Add(ContextUser());
+            contextUsers.Add(ContextUser());
+
+            // Make list invalid
+            contextUsers[1].Name = null;
+
+            // Act
+            var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+
+            // Assert list is null
+            Assert.Null(libraryUsers);
+        }
+
+        [Fact]
+        [Trait("Type", "UserModelMapper")]
+        public void Null_List_ContextToLibrary_ShouldReturnNull()
+        {
+            // Arrange
+            List<User.Context.Models.User> contextUsers = null;
+
+            // Act
+            var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+
+            // Assert list is null
+            Assert.Null(libraryUsers);
+        }
+
+        [Fact]
+        [Trait("Type", "UserModelMapper")]
+        public void Valid_List_ContextToLibrary_ShouldReturnList()
+        {
+            // Arrange
+            List<User.Context.Models.User> contextUsers
+                = new List<User.Context.Models.User>();
+            contextUsers.Add(ContextUser());
+            contextUsers.Add(ContextUser());
+            contextUsers.Add(ContextUser());
+
+            // Act
+            var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+
+            // Assert
+            Assert.NotNull(libraryUsers);
+            Assert.Equal(3, libraryUsers.Count);
         }
     }
 }
