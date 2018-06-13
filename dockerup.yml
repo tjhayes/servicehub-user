@@ -4,7 +4,7 @@ networks:
   appnet:
 
 services:
-  api:
+  web:
     image: revaturecloud/servicehub-user:latest
     deploy:
       replicas: 1
@@ -21,18 +21,13 @@ services:
         max_attempts: 3
         window: 60s
     environment:
-      ConnectionStrings__MongoDB: mongodb://root:password123@db
+      ConnectionStrings__AppMongoDB: mongodb://db
     networks:
       - appnet
     ports:
       - "9000:80"
   db:
     image: mongo:3.6
-    deploy:
-      replicas: 1
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password123
     networks:
       - appnet
 
