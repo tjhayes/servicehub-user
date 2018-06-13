@@ -6,11 +6,18 @@ namespace ServiceHub.User.Context.Utilities
 {
     public static class UserModelMapper
     {
+        /// <summary>
+        /// Convert a Context-User model to a Library-User model 
+        /// </summary>
+        /// <remarks>Use this mapper to convert an object retrieved from the 
+        /// Context data source into a Library model to return to the client</remarks>
+        /// <param name="contextUser">The user model to convert</param>
+        /// <returns>A Library User model, or null if the input Context User was null</returns>
         public static Library.Models.User ContextToLibrary(Context.Models.User contextUser)
         {
             if(contextUser is null)
             {
-                //throw custom InvalidModelException
+                return null;
             }
 
             Library.Models.User libraryUser = new Library.Models.User();
@@ -37,16 +44,20 @@ namespace ServiceHub.User.Context.Utilities
             return libraryUser;
         }
 
+        /// <summary>
+        /// Convert the Library-User model to a Context-User model
+        /// </summary>
+        /// <remarks>
+        /// Convert models with this method before trying to use them to
+        /// interact with the Context data source.
+        /// </remarks>
+        /// <param name="libraryUser">The library user to convert to a context user</param>
+        /// <returns>A Context User if the Library User was valid, null otherwise</returns>
         public static Context.Models.User LibraryToContext(Library.Models.User libraryUser)
         {
-            if (libraryUser is null)
+            if (libraryUser is null || libraryUser.Validate() == false)
             {
-                //throw custom InvalidModelException
-            }
-
-            if(!libraryUser.Validate())
-            {
-                // throw custom InvalidModelException
+                return null;
             }
 
             Context.Models.User contextUser = new Context.Models.User();
