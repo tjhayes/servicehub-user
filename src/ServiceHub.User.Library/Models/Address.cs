@@ -1,5 +1,5 @@
-﻿using System;
-using System.Globalization;
+using System;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace ServiceHub.User.Library.Models
@@ -10,22 +10,38 @@ namespace ServiceHub.User.Library.Models
     /// <remarks>
     /// The residential address of a user.
     /// </remarks>
+    [DataContract]
     public class Address
     {
         /// <value> The unique ID of an address. </value>
+        [DataMember]
         public Guid AddressId { get; set; }
         ///<value> Address line one </value>
+        [DataMember]
         public string Address1 { get; set; }
         ///<value> Address line two </value>
+        [DataMember]
         public string Address2 { get; set; }
         /// <value> The city. </value>
+        [DataMember]
         public string City { get; set; }
         /// <value> The state. </value>
+        [DataMember]
         public string State { get; set; }
         /// <value> The zip code.. </value>
+        [DataMember]
         public string PostalCode { get; set; }
         /// <value> The country. </value>
+        [DataMember]
         public string Country { get; set; }
+
+        /// <value> Maximum allowed length of a string for the class. </value>
+        public const int MaxStringLength = 255;
+        /// <value> All allowed Country codes</value>
+        private static readonly string[] CountryCodes = { "US" };
+
+        /// <value> All state codes for the 50 US states. </value>
+        private static readonly string[] StateCodes = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 
         /// <summary>
         /// Check whether the address is valid.
@@ -41,15 +57,22 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the address is valid and false otherwise</returns>
         public Boolean Validate()
         {
+            if (Address1 == null ||
+                City == null ||
+                State == null ||
+                PostalCode == null ||
+                Country == null)
+            { return false; }
             if (AddressId == Guid.Empty) { return false; }
-            if (Address1 == null || Address1 == "") { return false; }
-            if (Address2 == "") { return false; }
-            if (City == null || City == "") { return false; }
-            if (State == null || State == "") { return false; }
-            if (PostalCode == null || PostalCode == "") { return false; }
-            if (Country == null || ValidateCountry() == false) { return false; }
-            if (Country.ToUpper() == "US" && ValidateAmericanState() == false) { return false; }
-            if (Country.ToUpper() == "US" && ValidateAmericanPostalCode() == false) { return false; }
+            if (Address1 == "" || Address1.Length > MaxStringLength) { return false; }
+            if (Address2 != null)
+                if (Address2.Length > MaxStringLength) { return false; }
+            if (City == "" || City.Length > MaxStringLength) { return false; }
+            if (State == "" || State.Length > MaxStringLength) { return false; }
+            if (PostalCode == "" || PostalCode.Length > MaxStringLength) { return false; }
+            if (ValidateCountry() == false) { return false; }
+            if (ValidateAmericanState() == false) { return false; }
+            if (ValidateAmericanPostalCode() == false) { return false; }
             return true;
         }
 
@@ -65,10 +88,13 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if Country is valid, and false otherwise</returns>
         public Boolean ValidateCountry()
         {
-            bool validCountry = true;
-            try { RegionInfo region = new RegionInfo(Country); }
-            catch (ArgumentException) { validCountry = false; }
-            return validCountry;
+            if (Country == null) { return false; }
+            string countryToUpper = Country.ToUpper();
+            foreach (var country in CountryCodes)
+            {
+                if (countryToUpper == country) { return true; }
+            }
+            return false;
         }
 
         /// <summary>
@@ -78,62 +104,14 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if the state code is valid, and false otherwise.</returns>
         public Boolean ValidateAmericanState()
         {
-            switch (State)
+            if (State == null) { return false; }
+            string stateToUpper = State.ToUpper();
+            foreach (var state in StateCodes)
             {
-                case "AL":
-                case "AK":
-                case "AR":
-                case "AZ":
-                case "CA":
-                case "CO":
-                case "CT":
-                case "DE":
-                case "FL":
-                case "GA":
-                case "HI":
-                case "ID":
-                case "IL":
-                case "IN":
-                case "IA":
-                case "KS":
-                case "KY":
-                case "LA":
-                case "ME":
-                case "MD":
-                case "MA":
-                case "MI":
-                case "MN":
-                case "MS":
-                case "MO":
-                case "MT":
-                case "NE":
-                case "NV":
-                case "NH":
-                case "NJ":
-                case "NM":
-                case "NY":
-                case "NC":
-                case "ND":
-                case "OH":
-                case "OK":
-                case "OR":
-                case "PA":
-                case "RI":
-                case "SC":
-                case "SD":
-                case "TN":
-                case "TX":
-                case "UT":
-                case "VT":
-                case "VA":
-                case "WA":
-                case "WV":
-                case "WI":
-                case "WY":
-                    return true;
-                default:
-                    return false;
+                if (stateToUpper == state) { return true; }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -144,7 +122,8 @@ namespace ServiceHub.User.Library.Models
         /// <returns>True if postal code is in a valid format and false otherwise.</returns>
         public Boolean ValidateAmericanPostalCode()
         {
-            Regex regex = new Regex(@"^\d{5}(?:-\d{4})?$");
+            if (PostalCode == null) { return false; }
+            Regex regex = new Regex(@"^\d{5}$");
             return regex.Match(PostalCode).Success;
         }
     }
