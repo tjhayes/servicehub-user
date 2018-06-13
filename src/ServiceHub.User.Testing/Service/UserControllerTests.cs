@@ -71,7 +71,7 @@ namespace ServiceHub.User.Testing.Service
             ObjectResult result = (ObjectResult)await c.Get();
 
             Assert.Equal(200, result.StatusCode);
-            IEnumerable<User.Context.Models.User> usersResult =(IEnumerable<User.Context.Models.User>) result.Value;
+            List<User.Library.Models.User> usersResult =(List<User.Library.Models.User>) result.Value;
             var enumerator = usersResult.GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("John", enumerator.Current.Name.First);
