@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 
@@ -48,9 +49,9 @@ namespace ServiceHub.User.Context.Repositories
         /// Get all the users.
         /// </summary>
         /// <returns>All the users.</returns>
-        public IQueryable<Context.Models.User> Get()
+        public List<Context.Models.User> Get()
         {
-            return _users.AsQueryable();
+            return _users.AsQueryable().ToList();
         }
 
         /// <summary>
