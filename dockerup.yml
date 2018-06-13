@@ -20,8 +20,6 @@ services:
         delay: 10s
         max_attempts: 3
         window: 60s
-    environment:
-      ConnectionStrings__AppMongoDB: mongodb://db
     networks:
       - appnet
     ports:
