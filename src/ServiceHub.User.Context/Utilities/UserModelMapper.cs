@@ -43,6 +43,8 @@ namespace ServiceHub.User.Context.Utilities
             libraryUser.Name.Middle = contextUser.Name.Middle;
             libraryUser.Name.Last = contextUser.Name.Last;
 
+            if(libraryUser.Validate() == false) { return null; }
+
             return libraryUser;
         }
 
@@ -88,5 +90,24 @@ namespace ServiceHub.User.Context.Utilities
             return contextUser;
         }
 
+
+        /// <summary>
+        /// Validates and maps a list of Context Users to Library Users
+        /// </summary>
+        /// <param name="contextUsers">The users to validate and map</param>
+        /// <returns>A list of Library Users if all Context users were valid, and null
+        /// if one or more users were invalid.</returns>
+        public static List<Library.Models.User> List_ContextToLibrary(List<Context.Models.User> contextUsers)
+        {
+            List<Library.Models.User> libraryUsers = new List<Library.Models.User>();
+
+            foreach (var contextUser in contextUsers)
+            {
+                var libraryUser = ContextToLibrary(contextUser);
+                if(libraryUser == null) { return null; }
+                libraryUsers.Add(libraryUser);
+            }
+            return libraryUsers;
+        }
     }
 }
