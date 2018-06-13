@@ -23,7 +23,7 @@ namespace ServiceHub.User.Context.Repositories
         /// Insert new user into the data source.
         /// </summary>
         /// <param name="user">The user to insert.</param>
-        public void Insert(Library.Models.User user)
+        public void Insert(Context.Models.User user)
         {
             _userRepository.Insert(user);
         }
@@ -32,7 +32,7 @@ namespace ServiceHub.User.Context.Repositories
         /// Get all the users.
         /// </summary>
         /// <returns>All the users.</returns>
-        public IQueryable<Library.Models.User> Get()
+        public IQueryable<Context.Models.User> Get()
         {
             return _userRepository.Get();
         }
@@ -43,7 +43,7 @@ namespace ServiceHub.User.Context.Repositories
         /// <param name="id">The user's unique Id</param>
         /// <returns>The user with the given Id, 
         /// or null if no user was found with that Id.</returns>
-        public Library.Models.User GetById(Guid id)
+        public Context.Models.User GetById(Guid id)
         {
             return _userRepository.GetById(id);
         }
@@ -52,7 +52,7 @@ namespace ServiceHub.User.Context.Repositories
         /// Updates the user's Address and/or Location based on their Id.
         /// </summary>
         /// <param name="user">The user to update.</param>
-        public void Update(Library.Models.User user)
+        public void Update(Context.Models.User user)
         {
             _userRepository.Update(user);
         }
