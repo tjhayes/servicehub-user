@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 using ServiceHub.User.Context.Repositories;
+using ServiceHub.User.Context.Utilities;
 
 namespace ServiceHub.User.Service.Controllers
 {
@@ -31,8 +32,10 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                var users = _userStorage.Get();
-                return await Task.Run(() => Ok(users));
+                var contextUsers = _userStorage.Get();
+                var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+                if(libraryUsers == null) { return new StatusCodeResult(500); }
+                return await Task.Run(() => Ok(libraryUsers));
             }
             catch
             {
