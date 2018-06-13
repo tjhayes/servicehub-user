@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace ServiceHub.User.Context.Repositories
 {
@@ -8,10 +8,10 @@ namespace ServiceHub.User.Context.Repositories
     /// </summary>
     public interface IUserRepository
     {
-        void Insert(Library.Models.User user);
-        IQueryable<Library.Models.User> Get();
-        Library.Models.User GetById(Guid id);
-        void Update(Library.Models.User user);
+        void Insert(Context.Models.User user);
+        List<Context.Models.User> Get();
+        Context.Models.User GetById(Guid id);
+        void Update(Context.Models.User user);
         void Delete(Guid id);
         void DeleteAll();
     }

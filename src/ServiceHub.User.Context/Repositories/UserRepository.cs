@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 
@@ -10,7 +11,7 @@ namespace ServiceHub.User.Context.Repositories
     /// </summary>
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoCollection<Library.Models.User> _users;
+        private readonly IMongoCollection<Context.Models.User> _users;
 
         /// <summary>
         /// Set up User Repository using mongodb connection string, database
@@ -32,14 +33,14 @@ namespace ServiceHub.User.Context.Repositories
               new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
             IMongoClient mongoClient = new MongoClient(settings);
             IMongoDatabase db = mongoClient.GetDatabase(databaseName);
-            _users = db.GetCollection<Library.Models.User>(collectionName);
+            _users = db.GetCollection<Context.Models.User>(collectionName);
         }
 
         /// <summary>
         /// Insert new user into the data source.
         /// </summary>
         /// <param name="user">The user to insert.</param>
-        public void Insert(Library.Models.User user)
+        public void Insert(Context.Models.User user)
         {
             _users.InsertOne(user);
         }
@@ -48,9 +49,9 @@ namespace ServiceHub.User.Context.Repositories
         /// Get all the users.
         /// </summary>
         /// <returns>All the users.</returns>
-        public IQueryable<Library.Models.User> Get()
+        public List<Context.Models.User> Get()
         {
-            return _users.AsQueryable();
+            return _users.AsQueryable().ToList();
         }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace ServiceHub.User.Context.Repositories
         /// <param name="id">The user's unique Id</param>
         /// <returns>The user with the given Id, 
         /// or null if no user was found with that Id.</returns>
-        public Library.Models.User GetById(Guid id)
+        public Context.Models.User GetById(Guid id)
         {
             return _users.AsQueryable().FirstOrDefault(x => x.UserId == id);
         }
@@ -68,10 +69,10 @@ namespace ServiceHub.User.Context.Repositories
         /// Updates the user's Address and/or Location based on their Id.
         /// </summary>
         /// <param name="user">The user to update.</param>
-        public void Update(Library.Models.User user)
+        public void Update(Context.Models.User user)
         {
-            var filter = Builders<Library.Models.User>.Filter.Eq(x => x.UserId, user.UserId);
-            var update = Builders<Library.Models.User>.Update
+            var filter = Builders<Context.Models.User>.Filter.Eq(x => x.UserId, user.UserId);
+            var update = Builders<Context.Models.User>.Update
                 .Set(x => x.Address, user.Address)
                 .Set(x => x.Location, user.Location);
             _users.UpdateOneAsync(filter, update);
@@ -83,7 +84,7 @@ namespace ServiceHub.User.Context.Repositories
         /// <param name="id">The Id of the user to delete.</param>
         public void Delete(Guid id)
         {
-            var filter = Builders<Library.Models.User>.Filter.Eq(x => x.UserId, id);
+            var filter = Builders<Context.Models.User>.Filter.Eq(x => x.UserId, id);
             _users.DeleteOne(filter);
         }
 
@@ -92,7 +93,7 @@ namespace ServiceHub.User.Context.Repositories
         /// </summary>
         public void DeleteAll()
         {
-            var filter = Builders<Library.Models.User>.Filter.Where(x => true);
+            var filter = Builders<Context.Models.User>.Filter.Where(x => true);
             _users.DeleteMany(filter);
         }
     }

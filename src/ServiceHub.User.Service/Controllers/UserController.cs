@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 using ServiceHub.User.Context.Repositories;
-using System.Collections.Generic;
+using ServiceHub.User.Context.Utilities;
 
 namespace ServiceHub.User.Service.Controllers
 {
@@ -13,8 +14,8 @@ namespace ServiceHub.User.Service.Controllers
     {
         private readonly UserStorage _userStorage;
 
-        public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+        public UserController(ILoggerFactory loggerFactory /*, IQueueClient queueClientSingleton*/)
+          : base(loggerFactory /*, queueClientSingleton*/)
         {
             _userStorage = new UserStorage(new UserRepository());
         }
@@ -22,17 +23,23 @@ namespace ServiceHub.User.Service.Controllers
         /// <summary>
         /// Get all users.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>OkObjectResult with an IEnumerable of all users,
+        /// or a 500 StatusCodeResult if an error occurs.</returns>
+        [HttpGet]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var users = _userStorage.Get();
-                return await Task.Run(() => Ok(users));
+                var contextUsers = _userStorage.Get();
+                var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+                if(libraryUsers == null) { return new StatusCodeResult(500); }
+                return await Task.Run(() => Ok(libraryUsers));
             }
-            catch(Exception e)
+            catch
             {
-                return NotFound();
+                return new StatusCodeResult(500);
             }
         }
 
@@ -183,7 +190,7 @@ namespace ServiceHub.User.Service.Controllers
                 AutoComplete = false
             };
 
-            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
+            //queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
         }
 
         protected override void UseSender(Message message)
