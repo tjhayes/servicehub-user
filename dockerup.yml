@@ -24,6 +24,10 @@ services:
       - appnet
     ports:
       - "9000:80"
+  db:
+    image: mongo:3.6
+    networks:
+      - appnet
 
 volumes:
   appdata:
