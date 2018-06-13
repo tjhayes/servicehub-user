@@ -10,20 +10,16 @@ using ServiceHub.User.Context.Utilities;
 namespace ServiceHub.User.Service.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : BaseController
+    public class TempUserController : Controller
     {
         private readonly UserStorage _userStorage;
 
-        public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+        public TempUserController()
         {
             _userStorage = new UserStorage(new UserRepository());
         }
 
-        public UserController(IUserRepository userRepository,
-                              ILoggerFactory loggerFactory,
-                              IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+        public TempUserController(IUserRepository userRepository)
         {
             _userStorage = new UserStorage(userRepository);
         }
@@ -73,23 +69,6 @@ namespace ServiceHub.User.Service.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             return await Task.Run(() => Ok());
-        }
-
-        protected override void UseReceiver()
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(ReceiverExceptionHandler)
-            {
-                AutoComplete = false
-            };
-
-            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
-        }
-
-        protected override void UseSender(Message message)
-        {
-            Task.Run(() =>
-              SenderMessageProcessAsync(message)
-            );
         }
     }
 }
