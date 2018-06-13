@@ -59,7 +59,7 @@ namespace ServiceHub.User.Service.Controllers
         /// </summary>
         /// <param name="gender"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{gender}")]
         public async Task<IActionResult> GetByGender(string gender)
         {
             string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
@@ -115,12 +115,47 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        [HttpGet("{type}")]
+        public async Task<IActionResult> GetByType(string type)
+        {
+            string[] types = ServiceHub.User.Library.Models.User.ValidUppercaseTypes;
+            string upperType = type.ToUpper();
+            bool validType = false;
+
+            foreach (var x in types)
+            {
+                if (upperType == x)
+                {
+                    validType = true;
+                }
+            }
+
+            if(validType)
+            {
+                var users = _userStorage.Get();
+                var TUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                foreach (var x in users)
+                {
+                    if (x.Type.ToUpper() == upperType)
+                    {
+                        TUsers.Add(x);
+                    }
+                }
+                return await Task.Run(() => Ok(TUsers));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         /// <summary>
         /// Updates the user of the id of the new model.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut()]
         public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
         {
             try
@@ -133,6 +168,7 @@ namespace ServiceHub.User.Service.Controllers
                 return BadRequest();
             }
         }
+
 
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> Delete(int id)
