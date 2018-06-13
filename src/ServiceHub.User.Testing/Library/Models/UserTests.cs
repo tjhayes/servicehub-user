@@ -55,7 +55,6 @@ namespace ServiceHub.User.Testing.Library.Models
             Assert.True(US_User().Validate());
         }
 
-
         /// <summary>
         /// Test that UserId is required
         /// </summary>
@@ -278,7 +277,7 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
- 
+
             // Act
             us.Gender = gender;
 
@@ -295,7 +294,7 @@ namespace ServiceHub.User.Testing.Library.Models
         {
             // Arrange
             User.Library.Models.User us = US_User();
- 
+
             // Act
             us.Type = null;
 
@@ -304,22 +303,44 @@ namespace ServiceHub.User.Testing.Library.Models
         }
 
         /// <summary>
-        /// Test that user Type isn't an empty string
+        /// Test that invalid user Type fails
         /// </summary>
-        [Fact]
-        [Trait("Type", "NotEmptyString")]
-        public void UserTypeNotEmptyString()
+        [Theory]
+        [Trait("Type", "TrueNegative")]
+        [InlineData("")]
+        [InlineData("fake type")]
+        [InlineData("associat")]
+        public void InvalidUserTypeFails(string type)
         {
             // Arrange
             User.Library.Models.User us = US_User();
 
             // Act
-            us.Type = "";
- 
-            // Assert that empty string Type fails validation
+            us.Type = type;
+
+            // Assert that invalid Type fails
             Assert.False(us.Validate());
         }
 
+        /// <summary>
+        /// Test that valid user Type passes
+        /// </summary>
+        [Theory]
+        [Trait("Type", "TruePositive")]
+        [InlineData("ASSOCIATE")]
+        [InlineData("Associate")]
+        [InlineData("associate")]
+        public void ValidUserTypePasses(string type)
+        {
+            // Arrange
+            User.Library.Models.User us = US_User();
+
+            // Act
+            us.Type = type;
+
+            // Assert that valid Type passes validation
+            Assert.True(us.Validate());
+        }
 
 
 
