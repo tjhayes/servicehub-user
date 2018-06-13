@@ -8,7 +8,7 @@ namespace ServiceHub.User.Testing.Library.Utilities
     public class UserModelMapperTests
     {
         /// <summary>
-        /// Generates a sample valid Library user
+        /// Generates a sample valid Library user.
         /// </summary>
         /// <returns>A valid Library User</returns>
         public User.Library.Models.User LibraryUser()
@@ -36,7 +36,7 @@ namespace ServiceHub.User.Testing.Library.Utilities
         }
 
         /// <summary>
-        /// Generates a sample valid Context User
+        /// Generates a sample valid Context User.
         /// </summary>
         /// <returns>A valid Context User</returns>
         public User.Context.Models.User ContextUser()
@@ -63,7 +63,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             return validContextUser;
         }
 
-
+        /// <summary>
+        /// Test that a valid library user maps to a context user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Valid_LibraryToContext_ShouldWork()
@@ -81,6 +83,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Equal(libraryUser.Address.AddressId, contextUser.Address.AddressId);
         }
 
+        /// <summary>
+        /// Test that an invalid library user maps to a null context user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Invalid_LibraryToContext_ShouldReturnNull()
@@ -97,6 +102,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(contextUser);
         }
 
+        /// <summary>
+        /// Test that a null library user maps to a null context user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Null_LibraryToContext_ShouldReturnNull()
@@ -111,6 +119,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(contextUser);
         }
 
+        /// <summary>
+        /// Test that a valid context user maps to a valid library user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Valid_ContextToLibrary_ShouldWork()
@@ -127,6 +138,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Equal(libraryUser.Address.AddressId, contextUser.Address.AddressId);
         }
 
+        /// <summary>
+        /// Test that a null context user maps to a null library user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Null_ContextToLibrary_ShouldReturnNull()
@@ -141,6 +155,9 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(libraryUser);
         }
 
+        /// <summary>
+        /// Test that an invalid context user maps to a null library user.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Invalid_ContextToLibrary_ShouldReturnNull()
@@ -156,6 +173,10 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(libraryUser);
         }
 
+        /// <summary>
+        /// Test that a list of context users that contains an invalid context
+        /// user maps to a null list of library users.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Invalid_List_ContextToLibrary_ShouldReturnNull()
@@ -177,6 +198,10 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(libraryUsers);
         }
 
+        /// <summary>
+        /// Test that a null list of context users maps to a null list of 
+        /// library users.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Null_List_ContextToLibrary_ShouldReturnNull()
@@ -191,6 +216,10 @@ namespace ServiceHub.User.Testing.Library.Utilities
             Assert.Null(libraryUsers);
         }
 
+        /// <summary>
+        /// Test that a valid list of context users maps to a valid list of
+        /// library users.
+        /// </summary>
         [Fact]
         [Trait("Type", "UserModelMapper")]
         public void Valid_List_ContextToLibrary_ShouldReturnList()
