@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 
 namespace ServiceHub.User.Context.Repositories
 {
@@ -14,26 +13,11 @@ namespace ServiceHub.User.Context.Repositories
         private readonly IMongoCollection<Context.Models.User> _users;
 
         /// <summary>
-        /// Set up User Repository using mongodb connection string, database
-        /// name and collection name.
+        /// Set up User Repository
         /// </summary>
-        public UserRepository()
+        public UserRepository(IMongoCollection<User.Context.Models.User> mongoCollection)
         {
-            // Setup variables
-            string connectionString =
-              @"mongodb://cameron-wags:rp7KMfeoIp0KgM7dMMpnZDF9Cmtde0PIlQAQ9pdrpZZaZdO9Pqt9mk8VXl3upDpp2pyrzajfNvOm2JZtqfOzkQ==@cameron-wags.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
-            string databaseName = "userdb";
-            string collectionName = "users";
-
-            // Fetch User Collection from MongoDb
-            MongoClientSettings settings = MongoClientSettings.FromUrl(
-              new MongoUrl(connectionString)
-            );
-            settings.SslSettings =
-              new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-            IMongoClient mongoClient = new MongoClient(settings);
-            IMongoDatabase db = mongoClient.GetDatabase(databaseName);
-            _users = db.GetCollection<Context.Models.User>(collectionName);
+            _users = mongoCollection;
         }
 
         /// <summary>
