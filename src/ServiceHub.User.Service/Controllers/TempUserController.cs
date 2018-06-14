@@ -53,12 +53,12 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns>If the type is not an accepted type, returns a 400 StatusCodeResult. If
         /// the server fails to return a complete list of valid users, returns a 500
         /// StatusCodeResut. Otherwise returns a list of validated Users. </returns>
-        [HttpGet]
-        [Route("type/{type}")]
+        [HttpPost]
+        [Route("type")]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
-        public async Task<IActionResult> GetByType(/*[FromBody]*/ string type)
+        public async Task<IActionResult> GetByType([FromBody] string type)
         {
             if(type == null) { return new StatusCodeResult(400); }
             bool isValidType = false;
