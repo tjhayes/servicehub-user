@@ -14,13 +14,23 @@ namespace ServiceHub.User.Service.Controllers
     {
         private readonly UserStorage _userStorage;
 
+<<<<<<< HEAD
+        public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
+          : base(loggerFactory, queueClientSingleton)
+        {
+            _userStorage = new UserStorage(new UserRepository());
+        }
+
+/*        public UserController(IUserRepository userRepository,
+=======
         public UserController(IUserRepository userRepository,
+>>>>>>> timothy-service-controller
                               ILoggerFactory loggerFactory,
                               IQueueClient queueClientSingleton)
           : base(loggerFactory, queueClientSingleton)
         {
             _userStorage = new UserStorage(userRepository);
-        }
+        }*/
 
         /// <summary>
         /// Get all users.
@@ -45,11 +55,11 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        /*[HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             return await Task.Run(() => Ok(_userStorage.GetById(id)));
-        }*/
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]object value)

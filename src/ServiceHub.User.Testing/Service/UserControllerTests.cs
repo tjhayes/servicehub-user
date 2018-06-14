@@ -94,5 +94,57 @@ namespace ServiceHub.User.Testing.Service
 
             Assert.Equal(500, result.StatusCode);
         }
+
+        [Theory]
+        [InlineData("associate")]
+        [InlineData("ASSOCIATE")]
+        [InlineData("aSsOcIaTe")]
+        public async void GetByType_ValidTypes_Return200AndList(string type)
+        {
+            // Arrange
+            var mockRepo = new Mock<IUserRepository>();
+            // Act
+            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+
+            TempUserController controller = new TempUserController(mockRepo.Object);
+
+            var result = (ObjectResult) await controller.GetByType(type);
+
+            // Assert
+            Assert.Equal(200, result.StatusCode);
+            List<User.Library.Models.User> usersResult = (List<User.Library.Models.User>) result.Value;
+            var enumerator = usersResult.GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("John", enumerator.Current.Name.First);
+            enumerator.MoveNext();
+            Assert.Equal("Sophie", enumerator.Current.Name.First);
+            enumerator.Dispose();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("notvalid")]
+        public async void GetByType_InvalidTypes_Return400(string type)
+        {
+            // Arrange
+            var mockRepo = new Mock<IUserRepository>();
+            // Act
+            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+
+            TempUserController controller = new TempUserController(mockRepo.Object);
+
+            var result = (StatusCodeResult) await controller.GetByType(type);
+
+            // Assert
+            Assert.Equal(400, result.StatusCode);
+            /*List<User.Library.Models.User> usersResult = (List<User.Library.Models.User>)result.Value;
+            var enumerator = usersResult.GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("John", enumerator.Current.Name.First);
+            enumerator.MoveNext();
+            Assert.Equal("Sophie", enumerator.Current.Name.First);
+            enumerator.Dispose();*/
+        }
     }
 }

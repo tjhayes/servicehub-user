@@ -2,25 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Extensions.Logging;
 using ServiceHub.User.Context.Repositories;
 using ServiceHub.User.Context.Utilities;
 
 namespace ServiceHub.User.Service.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : BaseController
+    public class TempUserController : Controller
     {
         private readonly UserStorage _userStorage;
 
-        public UserController(IUserRepository userRepository,
-                              ILoggerFactory loggerFactory,
-                              IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+<<<<<<< HEAD
+        public TempUserController()
+        {
+            _userStorage = new UserStorage(new UserRepository());
+        }
+
+        /*public TempUserController(IUserRepository userRepository)
+=======
+        public TempUserController(IUserRepository userRepository)
+>>>>>>> timothy-service-controller
         {
             _userStorage = new UserStorage(userRepository);
-        }
+        }*/
 
         /// <summary>
         /// Get all users.
@@ -45,11 +49,11 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        /*[HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             return await Task.Run(() => Ok(_userStorage.GetById(id)));
-        }*/
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]object value)
@@ -67,23 +71,6 @@ namespace ServiceHub.User.Service.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             return await Task.Run(() => Ok());
-        }
-
-        protected override void UseReceiver()
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(ReceiverExceptionHandler)
-            {
-                AutoComplete = false
-            };
-
-            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
-        }
-
-        protected override void UseSender(Message message)
-        {
-            Task.Run(() =>
-              SenderMessageProcessAsync(message)
-            );
         }
     }
 }
