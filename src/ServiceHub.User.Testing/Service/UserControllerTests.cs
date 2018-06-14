@@ -113,6 +113,7 @@ namespace ServiceHub.User.Testing.Service
         /// Tests that the controller getById returns Ok status and model
         /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void ValidGetById_Return200_And_Model()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -133,6 +134,7 @@ namespace ServiceHub.User.Testing.Service
         /// Tests that invalid id doesn't work.
         /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void InValidGetById_Return404()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -153,6 +155,7 @@ namespace ServiceHub.User.Testing.Service
         [InlineData("m", "John")]
         [InlineData("F", "Sophie")]
         [InlineData("f", "Sophie")]
+        [Trait("Type", "Controller")]
         public async void ValidGetByGender_Returns200_List(string gender, string firstName)
         {
             // Arrange
@@ -192,7 +195,8 @@ namespace ServiceHub.User.Testing.Service
             List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>) result.Value;
 
             Assert.Equal(2, users.Count);
-            Assert.Equal("Sophie", users[0].Name.First);
+            Assert.Equal("John", users[0].Name.First);
+            Assert.Equal("Sophie", users[1].Name.First);
             Assert.Equal(200, result.StatusCode);
         }
 
@@ -200,6 +204,7 @@ namespace ServiceHub.User.Testing.Service
         /// Tests that an invalid gender request returns 500 status code.
         /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void InValidGender_Returns500()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -207,43 +212,43 @@ namespace ServiceHub.User.Testing.Service
 
             TempUserController controller = new TempUserController(mockRepo.Object);
 
-            StatusCodeResult result = (StatusCodeResult)await controller.GetByGender("Pie");
+            ObjectResult result = (ObjectResult)await controller.GetByGender("Pie");
 
-            Assert.Equal(500, result.StatusCode);
+            Assert.Equal(400, result.StatusCode);
         }
 
         /// <summary>
         /// Tests that put will change
         /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void ValidPut_Returns200()
         {
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.Update(It.IsAny<User.Context.Models.User>())).Callback((User.Context.Models.User y) => contextUsers.First(z => z.UserId == y.UserId
-                                                                                                                        ).Address = y.Address);
-            User.Library.Models.User User = new User.Library.Models.User();
-            User.Address = new User.Library.Models.Address();
-            User.Address.AddressId = new Guid("44444444-4444-4444-4444-444444444444");
-            User.Address.Address1 = "255 Short Street";
-            User.Address.Address2 = "Apt 100";
-            User.Address.City = "Reston";
-            User.Address.PostalCode = "12321";
-            User.Address.State = "va";
-            User.Address.Country = "US";
-            User.Email = "Sophie@email.com";
-            User.Gender = "Female";
-            User.Location = "Reston";
-            User.Name = new User.Library.Models.Name();
-            User.Name.First = "Sophie";
-            User.Name.Middle = "Anna";
-            User.Name.Last = "Johnson";
-            User.Name.NameId = new Guid("55555555-5555-5555-5555-555555555555");
-            User.Type = "Associate";
-            User.UserId = new Guid("77777777-7777-7777-7777-777777777777");
-            TempUserController controller = new TempUserController(mockRepo.Object);
-            StatusCodeResult result = (StatusCodeResult) await controller.Put(User);
 
-            Assert.Equal("255 Short Street", User.Address.Address1);
+            mockRepo.Setup(r => r.Update(It.IsAny<User.Context.Models.User>()))
+                .Callback((User.Context.Models.User u)
+                    => contextUsers.First(c => c.UserId == u.UserId).Address = u.Address);
+
+            mockRepo.Setup(r => r.GetById(It.IsAny<Guid>()))
+                .Returns((Guid g) => contextUsers.First(u => u.UserId == g));
+
+            User.Library.Models.User user = new User.Library.Models.User();
+            user.UserId = contextUsers[0].UserId;
+            user.Address = new User.Library.Models.Address();
+            user.Address.AddressId = contextUsers[0].Address.AddressId;
+            user.Address.Address1 = "The North Pole";
+            user.Address.Address2 = contextUsers[0].Address.Address2;
+            user.Address.City = contextUsers[0].Address.City;
+            user.Address.State = contextUsers[0].Address.State;
+            user.Address.PostalCode = contextUsers[0].Address.PostalCode;
+            user.Address.Country = contextUsers[0].Address.Country;
+
+
+            TempUserController controller = new TempUserController(mockRepo.Object);
+            StatusCodeResult result = (StatusCodeResult) await controller.Put(user);
+
+            Assert.Equal("The North Pole", user.Address.Address1);
             Assert.Equal(200, result.StatusCode);
         }
 
