@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ServiceHub.User.Context.Repositories;
 
 namespace ServiceHub.User.Service
 {
@@ -24,12 +25,15 @@ namespace ServiceHub.User.Service
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
-        services.AddSingleton<IQueueClient>(qc =>
-          new QueueClient(
-            Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
-            Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
-          )
-        );
+
+      services.AddSingleton<IQueueClient>(qc =>
+        new QueueClient(
+          Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
+          Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
+        )
+      );
+
+      services.AddTransient<IUserRepository, UserRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
