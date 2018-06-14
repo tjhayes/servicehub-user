@@ -88,10 +88,20 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="type"> A User model to be provided from an external source
+        /// via JSON.  If the model is a valid model, it will be cast to a db-ready model
+        /// and stored in the database. </param>
+        /// <returns> If the user is accepted, it will return a 201, Accepted code.
+        /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object value)
+        public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            return await Task.Run(() => Ok());
+            if(user.Validate() != true) { return BadRequest("Invalid type."); }
+            _userStorage.Insert(UserModelMapper.LibraryToContext(user));
+            return await Task.Run(() => Accepted());
         }
 
         [HttpPut("{id}")]
