@@ -94,5 +94,14 @@ namespace ServiceHub.User.Testing.Service
 
             Assert.Equal(500, result.StatusCode);
         }
+
+        [Fact]
+        public async void ValidGetById_Return200_And_Model()
+        {
+            var mockRepo = new Mock<IUserRepository>();
+            mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(((int y) => contextUsers[y]));
+
+            
+        }
     }
 }
