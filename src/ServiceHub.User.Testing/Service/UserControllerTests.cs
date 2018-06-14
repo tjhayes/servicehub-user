@@ -61,6 +61,7 @@ namespace ServiceHub.User.Testing.Service
         }
 
         [Fact]
+        [Trait("Type", "Controller")]
         public async void ValidGet_ShouldReturn200_AndList()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -81,6 +82,7 @@ namespace ServiceHub.User.Testing.Service
         }
 
         [Fact]
+        [Trait("Type", "Controller")]
         public async void InvalidGet_ShouldReturn500()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -103,6 +105,7 @@ namespace ServiceHub.User.Testing.Service
         [InlineData("associate")]
         [InlineData("ASSOCIATE")]
         [InlineData("aSsOcIaTe")]
+        [Trait("Type", "Controller")]
         public async void GetByType_ValidTypes_Return200AndList(string type)
         {
             // Arrange
@@ -133,6 +136,7 @@ namespace ServiceHub.User.Testing.Service
         [InlineData("")]
         [InlineData(null)]
         [InlineData("notvalid")]
+        [Trait("Type", "Controller")]
         public async void GetByType_InvalidTypes_Return400(string type)
         {
             // Arrange
