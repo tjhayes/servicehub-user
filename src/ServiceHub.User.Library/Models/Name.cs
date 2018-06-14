@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Runtime.Serialization;
+
 
 namespace ServiceHub.User.Library.Models
 {
@@ -21,11 +23,14 @@ namespace ServiceHub.User.Library.Models
         public string Last { get; set; }
 
         /// <value>The maximum length of the user's first name(s)</value>
-        private const int FirstMaxLength = 255;
+        [IgnoreDataMember]
+        private static readonly int FirstMaxLength = 255;
         /// <value>The maximum length of the user's middle name(s)</value>
-        private const int MiddleMaxLength = 255;
+        [IgnoreDataMember]
+        private static readonly int MiddleMaxLength = 255;
         /// <value>The maximum length of the user's last name(s)</value>
-        private const int LastMaxLength = 255;
+        [IgnoreDataMember]
+        private static readonly int LastMaxLength = 255;
 
         /// <summary>
         /// Check that the Name object represents a valid name.
