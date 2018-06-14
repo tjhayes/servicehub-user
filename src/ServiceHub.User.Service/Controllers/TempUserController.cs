@@ -88,11 +88,11 @@ namespace ServiceHub.User.Service.Controllers
 
             if (!validGender)
             {
-                return BadRequest();
+                return new StatusCodeResult(500);
             }
             else
             {
-                if (gender.ToUpper() == "M")
+                if (gender[0].ToString().ToUpper() == "M")
                 {
                     var users = _userStorage.Get();
                     var GUsers = new List<ServiceHub.User.Library.Models.User>();
@@ -106,14 +106,14 @@ namespace ServiceHub.User.Service.Controllers
                     }
                     return await Task.Run(() => Ok(GUsers));
                 }
-                else if (gender.ToUpper() == "F")
+                else if (gender[0].ToString().ToUpper() == "F")
                 {
                     var users = _userStorage.Get();
                     var GUsers = new List<ServiceHub.User.Library.Models.User>();
 
                     foreach (var x in users)
                     {
-                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        if (x.Gender[0].ToString().ToUpper() == "F")
                         {
                             GUsers.Add(UserModelMapper.ContextToLibrary(x));
                         }
@@ -122,7 +122,7 @@ namespace ServiceHub.User.Service.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return new StatusCodeResult(500);
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return new StatusCodeResult(500);
             }
         }
 
