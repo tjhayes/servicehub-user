@@ -66,7 +66,6 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        /// <summary>
         /// Finds the users by Gender.
         /// </summary>
         /// <param name="gender"></param>
@@ -127,42 +126,49 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        [HttpGet("{type}")]
-        public async Task<IActionResult> GetByType(string type)
+     
+        /// Gets all users of a certain type.
+        /// </summary>
+        /// <param name="type"> A string representing the type of user to filter by. </param>
+        /// <returns>If the type is not an accepted type, returns a 400 StatusCodeResult. If
+        /// the server fails to return a complete list of valid users, returns a 500
+        /// StatusCodeResut. Otherwise returns a list of validated Users. </returns>
+        [HttpPost]
+        [Route("type")]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        public async Task<IActionResult> GetByType([FromBody] string type)
         {
-            string[] types = ServiceHub.User.Library.Models.User.ValidUppercaseTypes;
-            string upperType = type.ToUpper();
-            bool validType = false;
-
-            foreach (var x in types)
+            if(type == null) { return BadRequest("Invalid type."); }
+            bool isValidType = false;
+            foreach (var validType in Library.Models.User.ValidUppercaseTypes)
             {
-                if (upperType == x)
-                {
-                    validType = true;
-                }
+                if (type.ToUpper() == validType) { isValidType = true; }
             }
+            if (!isValidType) { return BadRequest("Invalid type."); }
 
-            if (validType)
+            try
             {
-                var users = _userStorage.Get();
-                var TUsers = new List<ServiceHub.User.Library.Models.User>();
-
-                foreach (var x in users)
+                var users = await Task.Run(() => _userStorage.Get());
+                var contextUsers = new List<Context.Models.User>();
+                foreach (var contextUser in users)
                 {
-                    if (x.Type.ToUpper() == upperType)
+                    if(contextUser.Type.ToUpper() == type.ToUpper())
                     {
-                        TUsers.Add(UserModelMapper.ContextToLibrary(x));
+                        contextUsers.Add(contextUser);
                     }
                 }
-                return await Task.Run(() => Ok(TUsers));
+                var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+                return Ok(libraryUsers);
             }
-            else
+            catch
             {
-                return BadRequest();
+                return new StatusCodeResult(500);
             }
         }
 
-        /// <summary>
+
         /// Updates the user of the id of the new model.
         /// </summary>
         /// <param name="value"></param>
@@ -186,12 +192,23 @@ namespace ServiceHub.User.Service.Controllers
             {
                 return new StatusCodeResult(500);
             }
-        }
+       }
 
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="type"> A User model to be provided from an external source
+        /// via JSON.  If the model is a valid model, it will be cast to a db-ready model
+        /// and stored in the database. </param>
+        /// <returns> If the user is accepted, it will return a 201, Accepted code.
+        /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object value)
+        public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            return await Task.Run(() => Ok());
+            if(user == null) { return BadRequest("Invalid user: User is null"); }
+            var contextUser = UserModelMapper.LibraryToContext(user);
+            if(contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
+            _userStorage.Insert(contextUser);
+            return await Task.Run(() => Accepted());
         }
 
         [HttpDelete("{id}")]

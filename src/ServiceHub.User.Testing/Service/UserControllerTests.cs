@@ -13,7 +13,9 @@ namespace ServiceHub.User.Testing.Service
     {
         private List<User.Context.Models.User> contextUsers;
 
-
+        /// <summary>
+        /// Set up test users
+        /// </summary>
         public UserControllerTests()
         {
             contextUsers = new List<User.Context.Models.User>();
@@ -62,7 +64,12 @@ namespace ServiceHub.User.Testing.Service
             contextUsers.Add(validAmericanUser2);
         }
 
+        /// <summary>
+        /// Test that valid Get request returns a 200 status code and the
+        /// list of users.
+        /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void ValidGet_ShouldReturn200_AndList()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -70,10 +77,11 @@ namespace ServiceHub.User.Testing.Service
 
             TempUserController c = new TempUserController(mockRepo.Object);
 
-            ObjectResult result = (ObjectResult)await c.Get();
-
+            ObjectResult result = (ObjectResult) await c.Get();
             Assert.Equal(200, result.StatusCode);
-            List<User.Library.Models.User> usersResult =(List<User.Library.Models.User>) result.Value;
+            List<User.Library.Models.User> usersResult =
+                (List<User.Library.Models.User>)result.Value;
+            Assert.Equal(2, usersResult.Count);
             var enumerator = usersResult.GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("John", enumerator.Current.Name.First);
@@ -82,7 +90,11 @@ namespace ServiceHub.User.Testing.Service
             enumerator.Dispose();
         }
 
+        /// <summary>
+        /// Test that an invalid Get request returns a 500 status code
+        /// </summary>
         [Fact]
+        [Trait("Type", "Controller")]
         public async void InvalidGet_ShouldReturn500()
         {
             var mockRepo = new Mock<IUserRepository>();
@@ -96,7 +108,6 @@ namespace ServiceHub.User.Testing.Service
 
             Assert.Equal(500, result.StatusCode);
         }
-
 
         /// <summary>
         /// Tests that the controller getById returns Ok status and model
@@ -141,6 +152,21 @@ namespace ServiceHub.User.Testing.Service
         public async void ValidGetByGender_Returns200_List()
         {
             var mockRepo = new Mock<IUserRepository>();
+
+        /// <summary>
+        /// Tests to make sure all valid types return a list of corresponding users.
+        /// </summary>
+        /// <param name="type"> String of user type to be returned. </param>
+        [Theory]
+        [InlineData("associate")]
+        [InlineData("ASSOCIATE")]
+        [InlineData("aSsOcIaTe")]
+        [Trait("Type", "Controller")]
+        public async void GetByType_ValidTypes_Return200AndList(string type)
+        {
+            // Arrange
+            var mockRepo = new Mock<IUserRepository>();
+            // Act
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
             TempUserController controller = new TempUserController(mockRepo.Object);
@@ -203,5 +229,28 @@ namespace ServiceHub.User.Testing.Service
             Assert.Equal(200, result.StatusCode);
         }
 
+
+        /// <summary>
+        /// Tests to make sure that unacceptable terms result in a 400 response.
+        /// </summary>
+        /// <param name="type"> Invalid Type string of user. </param>
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("notvalid")]
+        [Trait("Type", "Controller")]
+        public async void GetByType_InvalidTypes_Return400(string type)
+        {
+            // Arrange
+            var mockRepo = new Mock<IUserRepository>();
+            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            TempUserController controller = new TempUserController(mockRepo.Object);
+
+            // Act
+            var result = (ObjectResult) await controller.GetByType(type);
+
+            // Assert
+            Assert.Equal(400, result.StatusCode);
+        }
     }
 }
