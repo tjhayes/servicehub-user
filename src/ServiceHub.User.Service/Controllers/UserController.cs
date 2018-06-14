@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace ServiceHub.User.Service.Controllers
@@ -9,8 +8,7 @@ namespace ServiceHub.User.Service.Controllers
   [Route("api/[controller]")]
   public class UserController : BaseController
   {
-    public UserController(ILoggerFactory loggerFactory, IQueueClient queueClientSingleton)
-      : base(loggerFactory, queueClientSingleton) {}
+    public UserController(ILoggerFactory loggerFactory) : base(loggerFactory) {}
     
     public async Task<IActionResult> Get()
     {
@@ -39,23 +37,6 @@ namespace ServiceHub.User.Service.Controllers
     public async Task<IActionResult> Delete(int id)
     {
       return await Task.Run(() => Ok());
-    }
-
-    protected override void UseReceiver()
-    {
-      var messageHandlerOptions = new MessageHandlerOptions(ReceiverExceptionHandler)
-      {
-        AutoComplete = false
-      };
-
-      queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
-    }
-    
-    protected override void UseSender(Message message)
-    {
-      Task.Run(() =>
-        SenderMessageProcessAsync(message)
-      );
     }
   }
 }
