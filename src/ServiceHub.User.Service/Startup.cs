@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using ServiceHub.User.Context.Repositories;
 
 namespace ServiceHub.User.Service
 {
@@ -31,6 +32,8 @@ namespace ServiceHub.User.Service
                 Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
               )
             );
+
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddSingleton(mc =>
                 new MongoClient(@"mongodb://db")
