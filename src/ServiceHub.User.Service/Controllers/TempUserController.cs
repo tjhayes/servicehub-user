@@ -40,13 +40,93 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Finds the user based on the id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await Task.Run(() => Ok(_userStorage.GetById(id)));
+            try
+            {
+                var libraryUser = UserModelMapper.ContextToLibrary(_userStorage.GetById(id));
+                if (libraryUser == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return await Task.Run(() => Ok(libraryUser));
+                }
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
 
-        /// <summary>
+        /// Finds the users by Gender.
+        /// </summary>
+        /// <param name="gender"></param>
+        /// <returns></returns>
+        [HttpGet("{gender}")]
+        public async Task<IActionResult> GetByGender(string gender)
+        {
+            string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
+            string upperGender = gender.ToUpper();
+            bool validGender = false;
+
+            foreach (var x in genders)
+            {
+                if (upperGender == x)
+                {
+                    validGender = true;
+                }
+            }
+
+            if (!validGender)
+            {
+                return new StatusCodeResult(500);
+            }
+            else
+            {
+                if (gender[0].ToString().ToUpper() == "M")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        {
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else if (gender[0].ToString().ToUpper() == "F")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "F")
+                        {
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else
+                {
+                    return new StatusCodeResult(500);
+                }
+            }
+        }
+
+     
         /// Gets all users of a certain type.
         /// </summary>
         /// <param name="type"> A string representing the type of user to filter by. </param>
@@ -88,7 +168,32 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        /// <summary>
+
+        /// Updates the user of the id of the new model.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut()]
+        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
+        {
+            try
+            {
+                if (value == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    _userStorage.Update(UserModelMapper.LibraryToContext(value));
+                    return await Task.Run(() => Ok());
+                }
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+       }
+
         /// Creates a new user.
         /// </summary>
         /// <param name="type"> A User model to be provided from an external source
@@ -104,12 +209,6 @@ namespace ServiceHub.User.Service.Controllers
             if(contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]object value)
-        {
-            return await Task.Run(() => Ok());
         }
 
         [HttpDelete("{id}")]
