@@ -94,6 +94,7 @@ namespace ServiceHub.User.Testing.Service
 
             Assert.Equal(500, result.StatusCode);
         }
+
         /// <summary>
         /// Tests to make sure all valid types return a list of corresponding users.
         /// </summary>
@@ -140,7 +141,7 @@ namespace ServiceHub.User.Testing.Service
             TempUserController controller = new TempUserController(mockRepo.Object);
 
             // Act
-            var result = (StatusCodeResult) await controller.GetByType(type);
+            var result = (ObjectResult) await controller.GetByType(type);
 
             // Assert
             Assert.Equal(400, result.StatusCode);
