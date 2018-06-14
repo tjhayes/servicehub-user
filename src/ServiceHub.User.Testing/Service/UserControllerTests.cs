@@ -50,7 +50,7 @@ namespace ServiceHub.User.Testing.Service
             validAmericanUser2.Address.State = "va";
             validAmericanUser2.Address.Country = "US";
             validAmericanUser2.Email = "Sophie@email.com";
-            validAmericanUser2.Gender = "Female";
+            validAmericanUser2.Gender = "F";
             validAmericanUser2.Location = "Reston";
             validAmericanUser2.Name = new User.Context.Models.Name();
             validAmericanUser2.Name.First = "Sophie";
@@ -148,10 +148,27 @@ namespace ServiceHub.User.Testing.Service
         /// <summary>
         /// Tests that GetByGender returns list with a 200 status code.
         /// </summary>
-        [Fact]
-        public async void ValidGetByGender_Returns200_List()
+        [Theory]
+        [InlineData("M", "John")]
+        [InlineData("m", "John")]
+        [InlineData("F", "Sophie")]
+        [InlineData("f", "Sophie")]
+        public async void ValidGetByGender_Returns200_List(string gender, string firstName)
         {
+            // Arrange
             var mockRepo = new Mock<IUserRepository>();
+            // Act
+            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+
+            TempUserController controller = new TempUserController(mockRepo.Object);
+
+            ObjectResult result = (ObjectResult)await controller.GetByGender(gender);
+            List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>)result.Value;
+
+            Assert.Single(users);
+            Assert.Equal(firstName, users[0].Name.First);
+            Assert.Equal(200, result.StatusCode);
+        }
 
         /// <summary>
         /// Tests to make sure all valid types return a list of corresponding users.
@@ -171,9 +188,10 @@ namespace ServiceHub.User.Testing.Service
 
             TempUserController controller = new TempUserController(mockRepo.Object);
 
-            ObjectResult result = (ObjectResult)await controller.GetByGender("Female");
+            ObjectResult result = (ObjectResult)await controller.GetByType(type);
             List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>) result.Value;
 
+            Assert.Equal(2, users.Count);
             Assert.Equal("Sophie", users[0].Name.First);
             Assert.Equal(200, result.StatusCode);
         }

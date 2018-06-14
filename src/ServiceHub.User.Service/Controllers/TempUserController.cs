@@ -87,42 +87,23 @@ namespace ServiceHub.User.Service.Controllers
 
             if (!validGender)
             {
-                return new StatusCodeResult(500);
+                return BadRequest($"Invalid gender: {gender}.");
             }
             else
             {
-                if (gender[0].ToString().ToUpper() == "M")
-                {
-                    var users = _userStorage.Get();
-                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+                var users = _userStorage.Get();
+                var GUsers = new List<ServiceHub.User.Library.Models.User>();
 
-                    foreach (var x in users)
-                    {
-                        if (x.Gender[0].ToString().ToUpper() == "M")
-                        {
-                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
-                        }
-                    }
-                    return await Task.Run(() => Ok(GUsers));
-                }
-                else if (gender[0].ToString().ToUpper() == "F")
+                foreach (var x in users)
                 {
-                    var users = _userStorage.Get();
-                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
-
-                    foreach (var x in users)
+                    if(x.Gender.ToUpper() == upperGender)
                     {
-                        if (x.Gender[0].ToString().ToUpper() == "F")
-                        {
-                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
-                        }
+                        var libraryUser = UserModelMapper.ContextToLibrary(x);
+                        if(libraryUser == null) { return new StatusCodeResult(500); }
+                        GUsers.Add(libraryUser);
                     }
-                    return await Task.Run(() => Ok(GUsers));
                 }
-                else
-                {
-                    return new StatusCodeResult(500);
-                }
+                return await Task.Run(() => Ok(GUsers));
             }
         }
 
@@ -174,21 +155,33 @@ namespace ServiceHub.User.Service.Controllers
         /// <param name="value"></param>
         /// <returns></returns>
         [HttpPut()]
-        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
+        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User user)
         {
             try
             {
-                if (value == null)
+                if (user == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Invalid user: object was null");
                 }
                 else
                 {
-                    _userStorage.Update(UserModelMapper.LibraryToContext(value));
+                    var id = user.UserId;
+                    if(user.UserId == Guid.Empty) { return BadRequest("Invalid User Id"); }
+                    var contextUser = _userStorage.GetById(user.UserId);
+                    if(contextUser == null) { return BadRequest("User not found"); }
+                    var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
+                    if(libraryUser == null) { return new StatusCodeResult(500); }
+
+                    if(user.Location != null) { libraryUser.Location = user.Location; }
+                    if(user.Address != null) { libraryUser.Address = user.Address; }
+
+                    contextUser = UserModelMapper.LibraryToContext(libraryUser);
+                    if(contextUser == null) { return BadRequest("Invalid update of location or address."); }
+                    _userStorage.Update(contextUser);
                     return await Task.Run(() => Ok());
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return new StatusCodeResult(500);
             }
