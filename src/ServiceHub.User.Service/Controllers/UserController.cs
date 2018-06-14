@@ -14,10 +14,12 @@ namespace ServiceHub.User.Service.Controllers
     {
         private readonly UserStorage _userStorage;
 
-        public UserController(ILoggerFactory loggerFactory /*, IQueueClient queueClientSingleton*/)
-          : base(loggerFactory /*, queueClientSingleton*/)
+        public UserController(IUserRepository userRepository,
+                              ILoggerFactory loggerFactory,
+                              IQueueClient queueClientSingleton)
+          : base(loggerFactory, queueClientSingleton)
         {
-            _userStorage = new UserStorage(new UserRepository());
+            _userStorage = new UserStorage(userRepository);
         }
 
         /// <summary>
@@ -190,7 +192,7 @@ namespace ServiceHub.User.Service.Controllers
                 AutoComplete = false
             };
 
-            //queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
+            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
         }
 
         protected override void UseSender(Message message)
