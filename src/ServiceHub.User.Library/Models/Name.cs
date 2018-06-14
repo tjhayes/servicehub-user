@@ -11,31 +11,26 @@ namespace ServiceHub.User.Library.Models
     /// For people with multiple first/middle/last names
     /// you can separate the names with whitespace/commas/etc.
     /// </remarks>
-    [DataContract]
     public class Name
     {
         /// <value>The unique Id for the user's Name Object</value>
-        [DataMember]
         public Guid NameId { get; set; }
         /// <value>The user's first name(s)</value>
-        [DataMember]
         public string First { get; set; }
         /// <value>The user's middle name(s)</value>
-        [DataMember]
         public string Middle { get; set; }
         /// <value>The user's surname(s) or last name(s)</value>
-        [DataMember]
         public string Last { get; set; }
 
         /// <value>The maximum length of the user's first name(s)</value>
         [IgnoreDataMember]
-        private const int FirstMaxLength = 255;
+        private static readonly int FirstMaxLength = 255;
         /// <value>The maximum length of the user's middle name(s)</value>
         [IgnoreDataMember]
-        private const int MiddleMaxLength = 255;
+        private static readonly int MiddleMaxLength = 255;
         /// <value>The maximum length of the user's last name(s)</value>
         [IgnoreDataMember]
-        private const int LastMaxLength = 255;
+        private static readonly int LastMaxLength = 255;
 
         /// <summary>
         /// Check that the Name object represents a valid name.
