@@ -44,8 +44,10 @@ namespace ServiceHub.User.Service.Controllers
         /// Finds the user based on the id.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>the user with matching Id, or a 404 error</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(Library.Models.User))]
         public async Task<IActionResult> Get(Guid id)
         {
             try
@@ -66,11 +68,17 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
         /// Finds the users by Gender.
         /// </summary>
         /// <param name="gender"></param>
-        /// <returns></returns>
+        /// <returns>all users with the specified gender, or a 400 error
+        /// if the gender isn't valid, or a 500 error if a database error
+        /// occured.</returns>
         [HttpGet("{gender}")]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
         public async Task<IActionResult> GetByGender(string gender)
         {
             string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
@@ -107,7 +115,8 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-     
+
+        /// <summary>
         /// Gets all users of a certain type.
         /// </summary>
         /// <param name="type"> A string representing the type of user to filter by. </param>
@@ -150,11 +159,17 @@ namespace ServiceHub.User.Service.Controllers
         }
 
 
-        /// Updates the user of the id of the new model.
+        /// <summary>
+        /// Updates the user's address and/or location
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="user">the user to update</param>
+        /// <returns>200 Ok if the update is successful, 400 Bad Request
+        /// if the user id, location or address are invalid, or 500
+        /// Internal Server Error if a database error occurs.</returns>
         [HttpPut()]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User user)
         {
             try
@@ -187,14 +202,17 @@ namespace ServiceHub.User.Service.Controllers
             }
        }
 
+        /// <summary>
         /// Creates a new user.
         /// </summary>
-        /// <param name="type"> A User model to be provided from an external source
+        /// <param name="user"> A User model to be provided from an external source
         /// via JSON.  If the model is a valid model, it will be cast to a db-ready model
         /// and stored in the database. </param>
-        /// <returns> If the user is accepted, it will return a 201, Accepted code.
+        /// <returns> If the user is accepted, it will return a 202, Accepted code.
         /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(202)]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
             if(user == null) { return BadRequest("Invalid user: User is null"); }
@@ -204,10 +222,10 @@ namespace ServiceHub.User.Service.Controllers
             return await Task.Run(() => Accepted());
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return await Task.Run(() => Ok());
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    return await Task.Run(() => Ok());
+        //}
     }
 }
