@@ -40,20 +40,156 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Finds the user based on the id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return await Task.Run(() => Ok(_userStorage.GetById(id)));
+            try
+            {
+                var libraryUser = UserModelMapper.ContextToLibrary(_userStorage.GetById(id));
+                if (libraryUser == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return await Task.Run(() => Ok(libraryUser));
+                }
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        /// <summary>
+        /// Finds the users by Gender.
+        /// </summary>
+        /// <param name="gender"></param>
+        /// <returns></returns>
+        [HttpGet("{gender}")]
+        public async Task<IActionResult> GetByGender(string gender)
+        {
+            string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
+            string upperGender = gender.ToUpper();
+            bool validGender = false;
+
+            foreach (var x in genders)
+            {
+                if (upperGender == x)
+                {
+                    validGender = true;
+                }
+            }
+
+            if (!validGender)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                if (gender.ToUpper() == "M")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        {
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else if (gender.ToUpper() == "F")
+                {
+                    var users = _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender[0].ToString().ToUpper() == "M")
+                        {
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
+                        }
+                    }
+                    return await Task.Run(() => Ok(GUsers));
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+        }
+
+        [HttpGet("{type}")]
+        public async Task<IActionResult> GetByType(string type)
+        {
+            string[] types = ServiceHub.User.Library.Models.User.ValidUppercaseTypes;
+            string upperType = type.ToUpper();
+            bool validType = false;
+
+            foreach (var x in types)
+            {
+                if (upperType == x)
+                {
+                    validType = true;
+                }
+            }
+
+            if (validType)
+            {
+                var users = _userStorage.Get();
+                var TUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                foreach (var x in users)
+                {
+                    if (x.Type.ToUpper() == upperType)
+                    {
+                        TUsers.Add(UserModelMapper.ContextToLibrary(x));
+                    }
+                }
+                return await Task.Run(() => Ok(TUsers));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Updates the user of the id of the new model.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut()]
+        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
+        {
+            try
+            {
+                if (value == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    _userStorage.Update(UserModelMapper.LibraryToContext(value));
+                    return await Task.Run(() => Ok());
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]object value)
-        {
-            return await Task.Run(() => Ok());
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]object value)
         {
             return await Task.Run(() => Ok());
         }
