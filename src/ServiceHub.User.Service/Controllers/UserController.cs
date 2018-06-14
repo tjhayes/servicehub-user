@@ -45,11 +45,11 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-        /*[HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             return await Task.Run(() => Ok(_userStorage.GetById(id)));
-        }*/
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]object value)
