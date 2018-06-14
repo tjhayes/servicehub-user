@@ -20,13 +20,13 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage = new UserStorage(new UserRepository());
         }
 
-        public UserController(IUserRepository userRepository,
+/*        public UserController(IUserRepository userRepository,
                               ILoggerFactory loggerFactory,
                               IQueueClient queueClientSingleton)
           : base(loggerFactory, queueClientSingleton)
         {
             _userStorage = new UserStorage(userRepository);
-        }
+        }*/
 
         /// <summary>
         /// Get all users.

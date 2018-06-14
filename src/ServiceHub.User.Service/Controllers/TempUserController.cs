@@ -17,10 +17,10 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage = new UserStorage(new UserRepository());
         }
 
-        public TempUserController(IUserRepository userRepository)
+        /*public TempUserController(IUserRepository userRepository)
         {
             _userStorage = new UserStorage(userRepository);
-        }
+        }*/
 
         /// <summary>
         /// Get all users.
