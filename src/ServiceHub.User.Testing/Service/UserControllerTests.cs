@@ -12,6 +12,9 @@ namespace ServiceHub.User.Testing.Service
     {
         private List<User.Context.Models.User> contextUsers;
 
+        /// <summary>
+        /// Set up test users
+        /// </summary>
         public UserControllerTests()
         {
             contextUsers = new List<User.Context.Models.User>();
@@ -60,6 +63,10 @@ namespace ServiceHub.User.Testing.Service
             contextUsers.Add(validAmericanUser2);
         }
 
+        /// <summary>
+        /// Test that valid Get request returns a 200 status code and the
+        /// list of users.
+        /// </summary>
         [Fact]
         [Trait("Type", "Controller")]
         public async void ValidGet_ShouldReturn200_AndList()
@@ -82,6 +89,9 @@ namespace ServiceHub.User.Testing.Service
             enumerator.Dispose();
         }
 
+        /// <summary>
+        /// Test that an invalid Get request returns a 500 status code
+        /// </summary>
         [Fact]
         [Trait("Type", "Controller")]
         public async void InvalidGet_ShouldReturn500()
