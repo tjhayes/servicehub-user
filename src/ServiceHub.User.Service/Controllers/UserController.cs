@@ -55,7 +55,15 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                return await Task.Run(() => Ok(_userStorage.GetById(id)));
+                var libraryUser = UserModelMapper.ContextToLibrary(_userStorage.GetById(id));
+                if (libraryUser == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return await Task.Run(() => Ok(libraryUser));
+                }
             }
             catch(Exception e)
             {
@@ -98,7 +106,7 @@ namespace ServiceHub.User.Service.Controllers
                     {
                         if (x.Gender[0].ToString().ToUpper() == "M")
                         {
-                            GUsers.Add(x);
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
                         }
                     }
                     return await Task.Run(() => Ok(GUsers));
@@ -112,7 +120,7 @@ namespace ServiceHub.User.Service.Controllers
                     {
                         if (x.Gender[0].ToString().ToUpper() == "M")
                         {
-                            GUsers.Add(x);
+                            GUsers.Add(UserModelMapper.ContextToLibrary(x));
                         }
                     }
                     return await Task.Run(() => Ok(GUsers));
@@ -148,7 +156,7 @@ namespace ServiceHub.User.Service.Controllers
                 {
                     if (x.Type.ToUpper() == upperType)
                     {
-                        TUsers.Add(x);
+                        TUsers.Add(UserModelMapper.ContextToLibrary(x));
                     }
                 }
                 return await Task.Run(() => Ok(TUsers));
@@ -168,9 +176,16 @@ namespace ServiceHub.User.Service.Controllers
         public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User value)
         {
             try
-            { 
-                _userStorage.Update(value);
-                return await Task.Run(() => Ok());
+            {
+                if (value == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    _userStorage.Update(UserModelMapper.LibraryToContext(value));
+                    return await Task.Run(() => Ok());
+                }
             }
             catch(Exception e)
             {
