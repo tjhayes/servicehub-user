@@ -7,7 +7,6 @@ namespace ServiceHub.User.Library.Models
     /// <summary>
     /// Model for a user's personal information. 
     /// </summary>
-    [DataContract]
     public class User
     {
         /// <value>List of all valid genders in uppercase</value>
@@ -21,25 +20,18 @@ namespace ServiceHub.User.Library.Models
         public static readonly string[] ValidUppercaseTypes = { "ASSOCIATE" };
 
         /// <value>The user's unique Id</value>
-        [DataMember]
         public Guid UserId { get; set; }
         /// <value>The name of the training location</value>
-        [DataMember]
         public string Location { get; set; }
         /// <value>The user's residential address</value>
-        [DataMember]
         public Address Address { get; set; }
         /// <value>The user's email address</value>
-        [DataMember]
         public string Email { get; set; }
         /// <value>Object storing the user's names (first, middle, last)</value>
-        [DataMember]
         public Name Name { get; set; }
         /// <value>The user's gender</value>
-        [DataMember]
         public string Gender { get; set; }
         /// <value>The user's job title</value>
-        [DataMember]
         public string Type { get; set; }
 
         /// <summary>

@@ -10,37 +10,32 @@ namespace ServiceHub.User.Library.Models
     /// <remarks>
     /// The residential address of a user.
     /// </remarks>
-    [DataContract]
     public class Address
     {
         /// <value> The unique ID of an address. </value>
-        [DataMember]
         public Guid AddressId { get; set; }
         ///<value> Address line one </value>
-        [DataMember]
         public string Address1 { get; set; }
         ///<value> Address line two </value>
-        [DataMember]
         public string Address2 { get; set; }
         /// <value> The city. </value>
-        [DataMember]
         public string City { get; set; }
         /// <value> The state. </value>
-        [DataMember]
         public string State { get; set; }
         /// <value> The zip code.. </value>
-        [DataMember]
         public string PostalCode { get; set; }
         /// <value> The country. </value>
-        [DataMember]
         public string Country { get; set; }
 
         /// <value> Maximum allowed length of a string for the class. </value>
-        public const int MaxStringLength = 255;
+        [IgnoreDataMember]
+        public static readonly int MaxStringLength = 255;
         /// <value> All allowed Country codes</value>
+        [IgnoreDataMember]
         private static readonly string[] CountryCodes = { "US" };
 
         /// <value> All state codes for the 50 US states. </value>
+        [IgnoreDataMember]
         private static readonly string[] StateCodes = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 
         /// <summary>
