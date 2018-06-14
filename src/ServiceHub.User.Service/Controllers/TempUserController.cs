@@ -99,8 +99,10 @@ namespace ServiceHub.User.Service.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            if(user.Validate() != true) { return BadRequest("Invalid type."); }
-            _userStorage.Insert(UserModelMapper.LibraryToContext(user));
+            if(user == null) { return BadRequest("Invalid user."); }
+            var contextUser = UserModelMapper.LibraryToContext(user);
+            if(contextUser == null) { return BadRequest("Invalid user."); }
+            _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
         }
 
