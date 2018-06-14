@@ -69,10 +69,11 @@ namespace ServiceHub.User.Testing.Service
 
             TempUserController c = new TempUserController(mockRepo.Object);
 
-            ObjectResult result = (ObjectResult)await c.Get();
-
+            ObjectResult result = (ObjectResult) await c.Get();
             Assert.Equal(200, result.StatusCode);
-            List<User.Library.Models.User> usersResult =(List<User.Library.Models.User>) result.Value;
+            List<User.Library.Models.User> usersResult =
+                (List<User.Library.Models.User>)result.Value;
+            Assert.Equal(2, usersResult.Count);
             var enumerator = usersResult.GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("John", enumerator.Current.Name.First);
@@ -120,6 +121,7 @@ namespace ServiceHub.User.Testing.Service
             // Assert
             Assert.Equal(200, result.StatusCode);
             List<User.Library.Models.User> usersResult = (List<User.Library.Models.User>) result.Value;
+            Assert.Equal(2, usersResult.Count);
             var enumerator = usersResult.GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("John", enumerator.Current.Name.First);
