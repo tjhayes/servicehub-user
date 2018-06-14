@@ -89,9 +89,11 @@ namespace ServiceHub.User.Service.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object value)
+        public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            return await Task.Run(() => Ok());
+            if(user.Validate() != true) { return BadRequest("Invalid type."); }
+            _userStorage.Insert(UserModelMapper.LibraryToContext(user));
+            return await Task.Run(() => Accepted());
         }
 
         [HttpPut("{id}")]
