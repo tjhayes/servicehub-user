@@ -60,19 +60,27 @@ namespace ServiceHub.User.Service.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
         public async Task<IActionResult> GetByType([FromBody] string type)
         {
-            if(type == null) { return new StatusCodeResult(400); }
+            if(type == null) { return BadRequest("Invalid type."); }
             bool isValidType = false;
             foreach (var validType in Library.Models.User.ValidUppercaseTypes)
             {
                 if (type.ToUpper() == validType) { isValidType = true; }
             }
-            if (!isValidType) { return new StatusCodeResult(400); }
+            if (!isValidType) { return BadRequest("Invalid type."); }
 
             try
             {
                 var users = await Task.Run(() => _userStorage.Get());
-                var results = UserModelMapper.List_ContextToLibrary(users);
-                return Ok(results);
+                var contextUsers = new List<Context.Models.User>();
+                foreach (var contextUser in users)
+                {
+                    if(contextUser.Type.ToUpper() == type.ToUpper())
+                    {
+                        contextUsers.Add(contextUser);
+                    }
+                }
+                var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
+                return Ok(libraryUsers);
             }
             catch
             {
