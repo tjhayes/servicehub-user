@@ -216,6 +216,7 @@ namespace ServiceHub.User.Service.Controllers
             if(user == null) { return BadRequest("Invalid user: User is null"); }
             var contextUser = UserModelMapper.LibraryToContext(user);
             if(contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
+            user.UserId = Guid.NewGuid();
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
         }

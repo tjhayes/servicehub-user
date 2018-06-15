@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 using Moq;
+using ServiceHub.User.Context.Utilities;
 
 namespace ServiceHub.User.Testing.Service
 {
@@ -306,6 +307,76 @@ namespace ServiceHub.User.Testing.Service
             var result = (ObjectResult) await controller.GetByType(type);
 
             // Assert
+            Assert.Equal(400, result.StatusCode);
+        }
+
+        [Fact]
+        public async void Post_ValidlUser_Returns202()
+        {
+            var mockRepo = new Mock<IUserRepository>();
+            var libraryUser = new User.Library.Models.User();
+            libraryUser.Address = new User.Library.Models.Address();
+            libraryUser.Address.AddressId = new Guid("11111111-1111-1111-1111-111111111111");
+            libraryUser.Address.Address1 = "Apt 500, 100 Long Street";
+            libraryUser.Address.Address2 = null;
+            libraryUser.Address.City = "Tampa";
+            libraryUser.Address.PostalCode = "12345";
+            libraryUser.Address.State = "FL";
+            libraryUser.Address.Country = "us";
+            libraryUser.Email = "john@smith.com";
+            libraryUser.Gender = "M";
+            libraryUser.Location = "Tampa";
+            libraryUser.Name = new User.Library.Models.Name();
+            libraryUser.Name.First = "John";
+            libraryUser.Name.Middle = null;
+            libraryUser.Name.Last = "Smith";
+            libraryUser.Name.NameId = new Guid("22222222-2222-2222-2222-222222222222");
+            libraryUser.Type = "Associate";
+            libraryUser.UserId = new Guid("33333333-3333-3333-3333-333333333333");
+            TempUserController c = new TempUserController(mockRepo.Object);
+            var contextUser = UserModelMapper.LibraryToContext(libraryUser);
+            contextUser.UserId = libraryUser.UserId;
+
+            var result = (AcceptedResult)await c.Post(libraryUser);
+
+            Assert.Equal(202, result.StatusCode);
+        }
+
+        [Fact]
+        public async void Post_NullUser_Return400()
+        {
+            var mockRepo = new Mock<IUserRepository>();
+            mockRepo.Setup(m => m.Insert(null));
+            TempUserController c = new TempUserController(mockRepo.Object);
+            var result = (BadRequestObjectResult)await c.Post(null);
+
+
+            mockRepo.Verify(m => m.Insert(null), Times.Never);
+            Assert.Equal(400, result.StatusCode);
+        }
+
+        [Theory]
+        [InlineData()]
+        public async void Post_InvalidUser_Return400()
+        {
+            var mockRepo = new Mock<IUserRepository>();
+
+            var libraryUser = new User.Library.Models.User();
+            libraryUser.Address = null;
+            libraryUser.Email = "john@smith.com";
+            libraryUser.Gender = "M";
+            libraryUser.Location = null;
+            libraryUser.Name = new User.Library.Models.Name();
+            libraryUser.Name.First = "John";
+            libraryUser.Name.Middle = null;
+            libraryUser.Name.Last = "Smith";
+            libraryUser.Name.NameId = new Guid("22222222-2222-2222-2222-222222222222");
+            libraryUser.Type = "Associate";
+            libraryUser.UserId = new Guid("33333333-3333-3333-3333-333333333333");
+
+            TempUserController c = new TempUserController(mockRepo.Object);
+            var result = (BadRequestObjectResult)await c.Post(libraryUser);
+
             Assert.Equal(400, result.StatusCode);
         }
     }
