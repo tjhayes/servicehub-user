@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using ServiceHub.User.Context.Repositories;
 using ServiceHub.User.Context.Utilities;
 
@@ -18,6 +19,37 @@ namespace ServiceHub.User.Service.Controllers
           : base(loggerFactory)
         {
             _userStorage = new UserStorage(userRepository);
+        }
+
+        [HttpPost]
+        [Route("seed")]
+        public async Task<IActionResult> Post()
+        {
+            try
+            {
+                const string connectionString = @"mongodb://db";
+                IMongoCollection<User.Context.Models.User> mc =
+                    new MongoClient(connectionString)
+                        .GetDatabase("userdb")
+                        .GetCollection<User.Context.Models.User>("users");
+
+                UserStorage context = new UserStorage(new UserRepository(mc));
+                //string jsonStr = System.IO.File.ReadAllText("../MockUsers.json");
+                string jsonStr = DbSeeder.GetUsers();
+                List<User.Context.Models.User> users =
+                    DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
+
+                foreach (var user in users)
+                {
+                    await Task.Run(() => context.Insert(user));
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+            return Ok();
         }
 
         /// <summary>
@@ -217,6 +249,7 @@ namespace ServiceHub.User.Service.Controllers
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
             if (user == null) { return BadRequest("Invalid user: User is null"); }
+            user.UserId = Guid.NewGuid();
             var contextUser = UserModelMapper.LibraryToContext(user);
             if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
             _userStorage.Insert(contextUser);
