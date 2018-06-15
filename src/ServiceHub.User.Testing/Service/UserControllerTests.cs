@@ -310,6 +310,9 @@ namespace ServiceHub.User.Testing.Service
             Assert.Equal(400, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests to make sure a valid user Post results in a 202 response.
+        /// </summary>
         [Fact]
         public async void Post_ValidlUser_Returns202()
         {
@@ -342,6 +345,9 @@ namespace ServiceHub.User.Testing.Service
             Assert.Equal(202, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests toe make sure a null user Post results in a 400 response.
+        /// </summary>
         [Fact]
         public async void Post_NullUser_Return400()
         {
@@ -355,8 +361,10 @@ namespace ServiceHub.User.Testing.Service
             Assert.Equal(400, result.StatusCode);
         }
 
-        [Theory]
-        [InlineData()]
+        /// <summary>
+        /// Tests to make sure an invalid user Post results in a 400 response.
+        /// </summary>
+        [Fact]
         public async void Post_InvalidUser_Return400()
         {
             var mockRepo = new Mock<IUserRepository>();
