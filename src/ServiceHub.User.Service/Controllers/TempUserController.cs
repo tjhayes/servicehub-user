@@ -187,8 +187,7 @@ namespace ServiceHub.User.Service.Controllers
                     if(libraryUser == null) { return new StatusCodeResult(500); }
 
                     if(user.Location != null) { libraryUser.Location = user.Location; }
-                    if(user.Address != null) { libraryUser.Address = user.Address; }
-
+                    libraryUser.Address = user.Address;
                     contextUser = UserModelMapper.LibraryToContext(libraryUser);
                     if(contextUser == null) { return BadRequest("Invalid update of location or address."); }
                     _userStorage.Update(contextUser);
