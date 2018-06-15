@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using ServiceHub.User.Context.Repositories;
 using ServiceHub.User.Context.Utilities;
 
@@ -15,6 +18,63 @@ namespace ServiceHub.User.Service.Controllers
         public TempUserController(IUserRepository userRepository)
         {
             _userStorage = new UserStorage(userRepository);
+        }
+
+        [HttpPost]
+        [Route("seed")]
+        public async Task<IActionResult> Post()
+        {
+            try
+            {
+                const string connectionString = @"mongodb://db";
+                IMongoCollection<User.Context.Models.User> mc =
+                    new MongoClient(connectionString)
+                        .GetDatabase("userdb")
+                        .GetCollection<User.Context.Models.User>("users");
+
+                UserStorage context = new UserStorage(new UserRepository(mc));
+                //string jsonStr = System.IO.File.ReadAllText("../MockUsers.json");
+                string jsonStr = DbSeeder.GetUsers();
+                List<User.Context.Models.User> users = 
+                    Deserialize<List<User.Context.Models.User>>(jsonStr);
+
+                foreach (var user in users)
+                {
+                    await Task.Run(() => context.Insert(user));
+                }
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+
+            return Ok();
+        }
+
+        // Deserialize JSON string and return object.
+        private T Deserialize<T>(string jsonStr)
+        {
+            T obj = default(T);
+            MemoryStream ms = new MemoryStream();
+            try
+            {
+                DataContractJsonSerializer ser =
+                    new DataContractJsonSerializer(typeof(T));
+                StreamWriter writer = new StreamWriter(ms);
+                writer.Write(jsonStr);
+                writer.Flush();
+                ms.Position = 0;
+                obj = (T)ser.ReadObject(ms);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                ms.Close();
+            }
+            return obj;
         }
 
         /// <summary>
@@ -220,11 +280,5 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
         }
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    return await Task.Run(() => Ok());
-        //}
     }
 }

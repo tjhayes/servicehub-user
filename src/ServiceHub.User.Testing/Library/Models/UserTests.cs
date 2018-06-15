@@ -244,14 +244,8 @@ namespace ServiceHub.User.Testing.Library.Models
         [Trait("Type", "TruePositive")]
         [InlineData("M")]
         [InlineData("m")]
-        [InlineData("male")]
-        [InlineData("MALE")]
-        [InlineData("Male")]
         [InlineData("F")]
         [InlineData("f")]
-        [InlineData("female")]
-        [InlineData("FEMALE")]
-        [InlineData("Female")]
         public void ValidGenderPasses(string gender)
         {
             // Arrange
@@ -273,6 +267,12 @@ namespace ServiceHub.User.Testing.Library.Models
         [InlineData("X")]
         [InlineData("")]
         [InlineData("12345")]
+        [InlineData("male")]
+        [InlineData("MALE")]
+        [InlineData("Male")]
+        [InlineData("female")]
+        [InlineData("FEMALE")]
+        [InlineData("FeMaLe")]
         public void InvalidGenderFails(string gender)
         {
             // Arrange
