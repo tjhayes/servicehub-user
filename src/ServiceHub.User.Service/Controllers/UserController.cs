@@ -225,12 +225,6 @@ namespace ServiceHub.User.Service.Controllers
             return await Task.Run(() => Accepted());
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    return await Task.Run(() => Ok());
-        //}
-
         protected override void UseReceiver()
         {
             var messageHandlerOptions = new MessageHandlerOptions(ReceiverExceptionHandler)

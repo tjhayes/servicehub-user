@@ -284,11 +284,5 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
         }
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    return await Task.Run(() => Ok());
-        //}
     }
 }
