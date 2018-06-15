@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -36,7 +34,7 @@ namespace ServiceHub.User.Service.Controllers
                 //string jsonStr = System.IO.File.ReadAllText("../MockUsers.json");
                 string jsonStr = DbSeeder.GetUsers();
                 List<User.Context.Models.User> users = 
-                    Deserialize<List<User.Context.Models.User>>(jsonStr);
+                    DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
 
                 foreach (var user in users)
                 {
@@ -49,32 +47,6 @@ namespace ServiceHub.User.Service.Controllers
             }
 
             return Ok();
-        }
-
-        // Deserialize JSON string and return object.
-        private T Deserialize<T>(string jsonStr)
-        {
-            T obj = default(T);
-            MemoryStream ms = new MemoryStream();
-            try
-            {
-                DataContractJsonSerializer ser =
-                    new DataContractJsonSerializer(typeof(T));
-                StreamWriter writer = new StreamWriter(ms);
-                writer.Write(jsonStr);
-                writer.Flush();
-                ms.Position = 0;
-                obj = (T)ser.ReadObject(ms);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                ms.Close();
-            }
-            return obj;
         }
 
         /// <summary>
