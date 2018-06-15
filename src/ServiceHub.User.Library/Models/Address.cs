@@ -30,6 +30,7 @@ namespace ServiceHub.User.Library.Models
         /// <value> Maximum allowed length of a string for the class. </value>
         [IgnoreDataMember]
         public static readonly int MaxStringLength = 255;
+
         /// <value> All allowed Country codes</value>
         [IgnoreDataMember]
         private static readonly string[] CountryCodes = { "US" };
