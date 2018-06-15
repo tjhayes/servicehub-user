@@ -205,7 +205,7 @@ namespace ServiceHub.User.Testing.Service
         /// </summary>
         [Fact]
         [Trait("Type", "Controller")]
-        public async void InValidGender_Returns500()
+        public async void InValidGender_Returns400()
         {
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
@@ -250,6 +250,39 @@ namespace ServiceHub.User.Testing.Service
 
             Assert.Equal("The North Pole", user.Address.Address1);
             Assert.Equal(200, result.StatusCode);
+        }
+
+        /// <summary>
+        /// Tests that invalid put will fail
+        /// </summary>
+        [Fact]
+        [Trait("Type", "Controller")]
+        public async void InvalidPut_Returns400()
+        {
+            var mockRepo = new Mock<IUserRepository>();
+
+            mockRepo.Setup(r => r.Update(It.IsAny<User.Context.Models.User>()));
+
+            mockRepo.Setup(r => r.GetById(It.IsAny<Guid>()))
+                .Returns((Guid g) => contextUsers.First(u => u.UserId == g));
+
+            User.Library.Models.User user = new User.Library.Models.User();
+            user.UserId = contextUsers[0].UserId;
+            user.Address = new User.Library.Models.Address();
+            user.Address.AddressId = contextUsers[0].Address.AddressId;
+            user.Address.Address1 = null; 
+            user.Address.Address2 = contextUsers[0].Address.Address2;
+            user.Address.City = contextUsers[0].Address.City;
+            user.Address.State = contextUsers[0].Address.State;
+            user.Address.PostalCode = contextUsers[0].Address.PostalCode;
+            user.Address.Country = contextUsers[0].Address.Country;
+
+
+            TempUserController controller = new TempUserController(mockRepo.Object);
+            ObjectResult result = (ObjectResult)await controller.Put(user);
+
+            Assert.Equal("Apt 500, 100 Long Street", contextUsers[0].Address.Address1);
+            Assert.Equal(400, result.StatusCode);
         }
 
 
