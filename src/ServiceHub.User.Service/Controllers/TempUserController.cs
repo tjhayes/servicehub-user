@@ -274,6 +274,7 @@ namespace ServiceHub.User.Service.Controllers
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
             if(user == null) { return BadRequest("Invalid user: User is null"); }
+            user.UserId = Guid.NewGuid();
             var contextUser = UserModelMapper.LibraryToContext(user);
             if(contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
             _userStorage.Insert(contextUser);
