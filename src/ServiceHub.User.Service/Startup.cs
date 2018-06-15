@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ServiceHub.User.Context.Repositories;
 
@@ -29,12 +22,6 @@ namespace ServiceHub.User.Service
             const string connectionString = @"mongodb://db";
 
             services.AddMvc();
-            services.AddSingleton<IQueueClient>(qc =>
-              new QueueClient(
-                Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING"),
-                Environment.GetEnvironmentVariable("SERVICE_BUS_QUEUE_NAME")
-              )
-            );
 
             services.AddTransient<IUserRepository, UserRepository>();
 
