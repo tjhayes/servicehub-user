@@ -75,7 +75,7 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns>all users with the specified gender, or a 400 error
         /// if the gender isn't valid, or a 500 error if a database error
         /// occured.</returns>
-        [HttpGet("{gender}")]
+        [HttpGet("gender/{gender}")]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
@@ -158,7 +158,6 @@ namespace ServiceHub.User.Service.Controllers
             }
         }
 
-
         /// <summary>
         /// Updates the user's address and/or location
         /// </summary>
@@ -166,11 +165,11 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns>200 Ok if the update is successful, 400 Bad Request
         /// if the user id, location or address are invalid, or 500
         /// Internal Server Error if a database error occurs.</returns>
-        [HttpPut()]
+        [HttpPut]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> Put(ServiceHub.User.Library.Models.User user)
+        public async Task<IActionResult> Put([FromBody]ServiceHub.User.Library.Models.User user)
         {
             try
             {
