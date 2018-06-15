@@ -14,9 +14,8 @@ namespace ServiceHub.User.Service.Controllers
         private readonly UserStorage _userStorage;
 
         public UserController(IUserRepository userRepository,
-                              ILoggerFactory loggerFactory,
-                              IQueueClient queueClientSingleton)
-          : base(loggerFactory, queueClientSingleton)
+                              ILoggerFactory loggerFactory)
+          : base(loggerFactory)
         {
             _userStorage = new UserStorage(userRepository);
         }
@@ -222,23 +221,6 @@ namespace ServiceHub.User.Service.Controllers
             if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
-        }
-
-        protected override void UseReceiver()
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(ReceiverExceptionHandler)
-            {
-                AutoComplete = false
-            };
-
-            queueClient.RegisterMessageHandler(ReceiverMessageProcessAsync, messageHandlerOptions);
-        }
-
-        protected override void UseSender(Message message)
-        {
-            Task.Run(() =>
-              SenderMessageProcessAsync(message)
-            );
         }
     }
 }
