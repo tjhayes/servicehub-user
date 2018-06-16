@@ -57,11 +57,12 @@ namespace ServiceHub.User.Context.Repositories
         {
             try
             {
-                    await _userRepository.Update(user);
+                await _userRepository.Update(user);
             }
-            catch(Exception e)
+            catch
             {
-                string s = e.Message;
+                // squash exception
+                // TODO: fix error and stop squashing exception
             }
         }
 
