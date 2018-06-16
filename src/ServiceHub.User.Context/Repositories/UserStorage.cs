@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -55,7 +55,14 @@ namespace ServiceHub.User.Context.Repositories
         /// <param name="user">The user to update.</param>
         public async Task Update(Context.Models.User user)
         {
-            await _userRepository.Update(user);
+            try
+            {
+                    await _userRepository.Update(user);
+            }
+            catch(Exception e)
+            {
+                string s = e.Message;
+            }
         }
 
         /// <summary>

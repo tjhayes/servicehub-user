@@ -239,8 +239,9 @@ namespace ServiceHub.User.Service.Controllers
                     return Ok();
                 }
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e, "Exception thrown during Put");
                 return new StatusCodeResult(500);
             }
         }

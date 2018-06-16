@@ -8,6 +8,7 @@ using Xunit;
 using Moq;
 using ServiceHub.User.Context.Utilities;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ServiceHub.User.Testing.Service
 {
@@ -75,7 +76,7 @@ namespace ServiceHub.User.Testing.Service
         public async void ValidGet_ShouldReturn200_AndList()
         {
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -102,7 +103,7 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             // Make user list invalid
             contextUsers[0].Name = null;
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -119,7 +120,7 @@ namespace ServiceHub.User.Testing.Service
         public async void ValidGetById_Return200_And_Model()
         {
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(((Guid y) => contextUsers.First(z => z.UserId == y)));
+            mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).ReturnsAsync(((Guid y) => contextUsers.First(z => z.UserId == y)));
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -140,7 +141,7 @@ namespace ServiceHub.User.Testing.Service
         public async void InValidGetById_Return404()
         {
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(((Guid y) => contextUsers.First(z => z.UserId == y)));
+            mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).ReturnsAsync(((Guid y) => contextUsers.First(z => z.UserId == y)));
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -163,7 +164,7 @@ namespace ServiceHub.User.Testing.Service
             // Arrange
             var mockRepo = new Mock<IUserRepository>();
             // Act
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -189,7 +190,7 @@ namespace ServiceHub.User.Testing.Service
             // Arrange
             var mockRepo = new Mock<IUserRepository>();
             // Act
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -210,7 +211,7 @@ namespace ServiceHub.User.Testing.Service
         public async void InValidGender_Returns400()
         {
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
@@ -233,7 +234,7 @@ namespace ServiceHub.User.Testing.Service
                     => contextUsers.First(c => c.UserId == u.UserId).Address = u.Address);
 
             mockRepo.Setup(r => r.GetById(It.IsAny<Guid>()))
-                .Returns((Guid g) => contextUsers.First(u => u.UserId == g));
+                .ReturnsAsync((Guid g) => contextUsers.First(u => u.UserId == g));
 
             User.Library.Models.User user = new User.Library.Models.User();
             user.UserId = contextUsers[0].UserId;
@@ -266,7 +267,7 @@ namespace ServiceHub.User.Testing.Service
             mockRepo.Setup(r => r.Update(It.IsAny<User.Context.Models.User>()));
 
             mockRepo.Setup(r => r.GetById(It.IsAny<Guid>()))
-                .Returns((Guid g) => contextUsers.First(u => u.UserId == g));
+                .ReturnsAsync((Guid g) => contextUsers.First(u => u.UserId == g));
 
             User.Library.Models.User user = new User.Library.Models.User();
             user.UserId = contextUsers[0].UserId;
@@ -301,7 +302,7 @@ namespace ServiceHub.User.Testing.Service
         {
             // Arrange
             var mockRepo = new Mock<IUserRepository>();
-            mockRepo.Setup(x => x.Get()).Returns(contextUsers);
+            mockRepo.Setup(x => x.Get()).ReturnsAsync(contextUsers);
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             // Act
