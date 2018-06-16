@@ -47,14 +47,14 @@ namespace ServiceHub.User.Service.Controllers
                 {
                     await storage.Insert(user);
                 }
+
+                return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError(e, "Exception thrown during db seeding.");
                 return BadRequest(e);
             }
-
-            return Ok();
         }
 
         /// <summary>
@@ -126,37 +126,45 @@ namespace ServiceHub.User.Service.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetByGender(string gender)
         {
-            string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
-            string upperGender = gender.ToUpper();
-            bool validGender = false;
-
-            foreach (var x in genders)
+            try
             {
-                if (upperGender == x)
+                string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
+                string upperGender = gender.ToUpper();
+                bool validGender = false;
+
+                foreach (var x in genders)
                 {
-                    validGender = true;
-                }
-            }
-
-            if (!validGender)
-            {
-                return BadRequest($"Invalid gender: {gender}.");
-            }
-            else
-            {
-                var users = await _userStorage.Get();
-                var GUsers = new List<ServiceHub.User.Library.Models.User>();
-
-                foreach (var x in users)
-                {
-                    if (x.Gender.ToUpper() == upperGender)
+                    if (upperGender == x)
                     {
-                        var libraryUser = UserModelMapper.ContextToLibrary(x);
-                        if (libraryUser == null) { return new StatusCodeResult(500); }
-                        GUsers.Add(libraryUser);
+                        validGender = true;
                     }
                 }
-                return Ok(GUsers);
+
+                if (!validGender)
+                {
+                    return BadRequest($"Invalid gender: {gender}.");
+                }
+                else
+                {
+                    var users = await _userStorage.Get();
+                    var GUsers = new List<ServiceHub.User.Library.Models.User>();
+
+                    foreach (var x in users)
+                    {
+                        if (x.Gender.ToUpper() == upperGender)
+                        {
+                            var libraryUser = UserModelMapper.ContextToLibrary(x);
+                            if (libraryUser == null) { return new StatusCodeResult(500); }
+                            GUsers.Add(libraryUser);
+                        }
+                    }
+                    return Ok(GUsers);
+                }
+            }
+            catch(Exception e)
+            {
+                logger.LogError(e, "GetByGender threw exception");
+                return new StatusCodeResult(500);
             }
         }
 
@@ -175,16 +183,16 @@ namespace ServiceHub.User.Service.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetByType([FromBody] string type)
         {
-            if (type == null) { return BadRequest("Invalid type."); }
-            bool isValidType = false;
-            foreach (var validType in Library.Models.User.ValidUppercaseTypes)
-            {
-                if (type.ToUpper() == validType) { isValidType = true; }
-            }
-            if (!isValidType) { return BadRequest("Invalid type."); }
-
             try
             {
+                if (type == null) { return BadRequest("Invalid type."); }
+                bool isValidType = false;
+                foreach (var validType in Library.Models.User.ValidUppercaseTypes)
+                {
+                    if (type.ToUpper() == validType) { isValidType = true; }
+                }
+                if (!isValidType) { return BadRequest("Invalid type."); }
+
                 var users = await _userStorage.Get();
                 var contextUsers = new List<Context.Models.User>();
                 foreach (var contextUser in users)
@@ -259,12 +267,20 @@ namespace ServiceHub.User.Service.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            if (user == null) { return BadRequest("Invalid user: User is null"); }
-            user.UserId = Guid.NewGuid();
-            var contextUser = UserModelMapper.LibraryToContext(user);
-            if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
-            await _userStorage.Insert(contextUser);
-            return Accepted();
+            try
+            {
+                if (user == null) { return BadRequest("Invalid user: User is null"); }
+                user.UserId = Guid.NewGuid();
+                var contextUser = UserModelMapper.LibraryToContext(user);
+                if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
+                await _userStorage.Insert(contextUser);
+                return Accepted();
+            }
+            catch(Exception e)
+            {
+                logger.LogError(e, "Exception thrown during Post");
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
