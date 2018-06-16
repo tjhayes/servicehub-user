@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServiceHub.User.Context.Repositories
 {
@@ -8,11 +9,11 @@ namespace ServiceHub.User.Context.Repositories
     /// </summary>
     public interface IUserRepository
     {
-        void Insert(Context.Models.User user);
-        List<Context.Models.User> Get();
-        Context.Models.User GetById(Guid id);
-        void Update(Context.Models.User user);
-        void Delete(Guid id);
-        void DeleteAll();
+        Task Insert(Context.Models.User user);
+        Task<List<Context.Models.User>> Get();
+        Task<Context.Models.User> GetById(Guid id);
+        Task Update(Context.Models.User user);
+        Task Delete(Guid id);
+        Task DeleteAll();
     }
 }
