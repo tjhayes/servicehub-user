@@ -21,35 +21,39 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage = new UserStorage(userRepository);
         }
 
+        /// <summary>
+        /// Seeds the MongoDb with mock users
+        /// </summary>
+        /// <returns>200 Ok if the db seeding was successful or 400 Bad Request
+        /// if an exception was thrown</returns>
         [HttpPost]
         [Route("seed")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post()
         {
             try
             {
-                const string connectionString = @"mongodb://db";
-                IMongoCollection<User.Context.Models.User> mc =
-                    new MongoClient(connectionString)
+                IMongoCollection<User.Context.Models.User> userCollection =
+                    new MongoClient(@"mongodb://db")
                         .GetDatabase("userdb")
                         .GetCollection<User.Context.Models.User>("users");
 
-                UserStorage context = new UserStorage(new UserRepository(mc));
-                //string jsonStr = System.IO.File.ReadAllText("../MockUsers.json");
+                UserStorage storage = new UserStorage(new UserRepository(userCollection));
                 string jsonStr = DbSeeder.GetUsers();
-                List<User.Context.Models.User> users =
-                    DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
+                var users = DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
 
                 foreach (var user in users)
                 {
-                    await Task.Run(() => context.Insert(user));
+                    await Task.Run(() => storage.Insert(user));
                 }
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return await Task.Run(() => BadRequest(e));
             }
 
-            return Ok();
+            return await Task.Run(() => Ok());
         }
 
         /// <summary>
@@ -58,20 +62,21 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns>OkObjectResult with an IEnumerable of all users,
         /// or a 500 StatusCodeResult if an error occurs.</returns>
         [HttpGet]
-        [ProducesResponseType(500)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var contextUsers = _userStorage.Get();
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
-                if (libraryUsers == null) { return new StatusCodeResult(500); }
+                if (libraryUsers == null) { return await Task.Run(() => new StatusCodeResult(500)); }
                 return await Task.Run(() => Ok(libraryUsers));
             }
             catch
             {
-                return new StatusCodeResult(500);
+                return await Task.Run(() => new StatusCodeResult(500));
+
             }
         }
 
@@ -81,8 +86,8 @@ namespace ServiceHub.User.Service.Controllers
         /// <param name="id"></param>
         /// <returns>the user with matching Id, or a 404 error</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(Library.Models.User))]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get(Guid id)
         {
             try
@@ -90,7 +95,7 @@ namespace ServiceHub.User.Service.Controllers
                 var libraryUser = UserModelMapper.ContextToLibrary(_userStorage.GetById(id));
                 if (libraryUser == null)
                 {
-                    return NotFound();
+                    return await Task.Run(() => NotFound());
                 }
                 else
                 {
@@ -99,7 +104,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             catch (Exception e)
             {
-                return NotFound(e);
+                return await Task.Run(() => NotFound(e));
             }
         }
 
@@ -111,9 +116,9 @@ namespace ServiceHub.User.Service.Controllers
         /// if the gender isn't valid, or a 500 error if a database error
         /// occured.</returns>
         [HttpGet("gender/{gender}")]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetByGender(string gender)
         {
             string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
@@ -130,7 +135,7 @@ namespace ServiceHub.User.Service.Controllers
 
             if (!validGender)
             {
-                return BadRequest($"Invalid gender: {gender}.");
+                return await Task.Run(() => BadRequest($"Invalid gender: {gender}."));
             }
             else
             {
@@ -142,7 +147,7 @@ namespace ServiceHub.User.Service.Controllers
                     if (x.Gender.ToUpper() == upperGender)
                     {
                         var libraryUser = UserModelMapper.ContextToLibrary(x);
-                        if (libraryUser == null) { return new StatusCodeResult(500); }
+                        if (libraryUser == null) { return await Task.Run(() => new StatusCodeResult(500)); }
                         GUsers.Add(libraryUser);
                     }
                 }
@@ -160,18 +165,18 @@ namespace ServiceHub.User.Service.Controllers
         /// StatusCodeResut. Otherwise returns a list of validated Users. </returns>
         [HttpPost]
         [Route("type")]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetByType([FromBody] string type)
         {
-            if (type == null) { return BadRequest("Invalid type."); }
+            if (type == null) { return await Task.Run(() => BadRequest("Invalid type.")); }
             bool isValidType = false;
             foreach (var validType in Library.Models.User.ValidUppercaseTypes)
             {
                 if (type.ToUpper() == validType) { isValidType = true; }
             }
-            if (!isValidType) { return BadRequest("Invalid type."); }
+            if (!isValidType) { return await Task.Run(() => BadRequest("Invalid type.")); }
 
             try
             {
@@ -185,11 +190,11 @@ namespace ServiceHub.User.Service.Controllers
                     }
                 }
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
-                return Ok(libraryUsers);
+                return await Task.Run(() => Ok(libraryUsers));
             }
             catch
             {
-                return new StatusCodeResult(500);
+                return await Task.Run(() => new StatusCodeResult(500));
             }
         }
 
@@ -201,37 +206,37 @@ namespace ServiceHub.User.Service.Controllers
         /// if the user id, location or address are invalid, or 500
         /// Internal Server Error if a database error occurs.</returns>
         [HttpPut]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Put([FromBody]ServiceHub.User.Library.Models.User user)
         {
             try
             {
                 if (user == null)
                 {
-                    return BadRequest("Invalid user: object was null");
+                    return await Task.Run(() => BadRequest("Invalid user: object was null"));
                 }
                 else
                 {
                     var id = user.UserId;
-                    if (user.UserId == Guid.Empty) { return BadRequest("Invalid User Id"); }
+                    if (user.UserId == Guid.Empty) { return await Task.Run(() => BadRequest("Invalid User Id")); }
                     var contextUser = _userStorage.GetById(user.UserId);
-                    if (contextUser == null) { return BadRequest("User not found"); }
+                    if (contextUser == null) { return await Task.Run(() => BadRequest("User not found")); }
                     var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
-                    if (libraryUser == null) { return new StatusCodeResult(500); }
+                    if (libraryUser == null) { return await Task.Run(() => new StatusCodeResult(500)); }
 
                     if (user.Location != null) { libraryUser.Location = user.Location; }
                     libraryUser.Address = user.Address;
                     contextUser = UserModelMapper.LibraryToContext(libraryUser);
-                    if (contextUser == null) { return BadRequest("Invalid update of location or address."); }
+                    if (contextUser == null) { return await Task.Run(() => BadRequest("Invalid update of location or address.")); }
                     _userStorage.Update(contextUser);
                     return await Task.Run(() => Ok());
                 }
             }
             catch
             {
-                return new StatusCodeResult(500);
+                return await Task.Run(() => new StatusCodeResult(500));
             }
         }
 
@@ -244,14 +249,14 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns> If the user is accepted, it will return a 202, Accepted code.
         /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
-        [ProducesResponseType(400)]
         [ProducesResponseType(202)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
-            if (user == null) { return BadRequest("Invalid user: User is null"); }
+            if (user == null) { return await Task.Run(() => BadRequest("Invalid user: User is null")); }
             user.UserId = Guid.NewGuid();
             var contextUser = UserModelMapper.LibraryToContext(user);
-            if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
+            if (contextUser == null) { return await Task.Run(() => BadRequest("Invalid user: Validation failed")); }
             _userStorage.Insert(contextUser);
             return await Task.Run(() => Accepted());
         }
