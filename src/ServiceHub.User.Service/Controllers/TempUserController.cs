@@ -18,27 +18,31 @@ namespace ServiceHub.User.Service.Controllers
             _userStorage = new UserStorage(userRepository);
         }
 
+        /// <summary>
+        /// Seeds the MongoDb with mock users
+        /// </summary>
+        /// <returns>200 Ok if the db seeding was successful or 400 Bad Request
+        /// if an exception was thrown</returns>
         [HttpPost]
         [Route("seed")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post()
         {
             try
             {
-                const string connectionString = @"mongodb://db";
-                IMongoCollection<User.Context.Models.User> mc =
-                    new MongoClient(connectionString)
+                IMongoCollection<User.Context.Models.User> userCollection =
+                    new MongoClient(@"mongodb://db")
                         .GetDatabase("userdb")
                         .GetCollection<User.Context.Models.User>("users");
 
-                UserStorage context = new UserStorage(new UserRepository(mc));
-                //string jsonStr = System.IO.File.ReadAllText("../MockUsers.json");
+                UserStorage storage = new UserStorage(new UserRepository(userCollection));
                 string jsonStr = DbSeeder.GetUsers();
-                List<User.Context.Models.User> users = 
-                    DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
+                var users = DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
 
                 foreach (var user in users)
                 {
-                    await Task.Run(() => context.Insert(user));
+                    await Task.Run(() => storage.Insert(user));
                 }
             }
             catch(Exception e)
@@ -55,8 +59,8 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns>OkObjectResult with an IEnumerable of all users,
         /// or a 500 StatusCodeResult if an error occurs.</returns>
         [HttpGet]
-        [ProducesResponseType(500)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Get()
         {
             try
@@ -79,8 +83,8 @@ namespace ServiceHub.User.Service.Controllers
         /// <param name="id"></param>
         /// <returns>the user with matching Id, or a 404 error</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(404)]
         [ProducesResponseType(200, Type = typeof(Library.Models.User))]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get(Guid id)
         {
             try
@@ -109,9 +113,9 @@ namespace ServiceHub.User.Service.Controllers
         /// if the gender isn't valid, or a 500 error if a database error
         /// occured.</returns>
         [HttpGet("gender/{gender}")]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetByGender(string gender)
         {
             string[] genders = ServiceHub.User.Library.Models.User.ValidUppercaseGenders;
@@ -158,9 +162,9 @@ namespace ServiceHub.User.Service.Controllers
         /// StatusCodeResut. Otherwise returns a list of validated Users. </returns>
         [HttpPost]
         [Route("type")]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Library.Models.User>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> GetByType([FromBody] string type)
         {
             if(type == null) { return await Task.Run(() =>  BadRequest("Invalid type.")); }
@@ -199,9 +203,9 @@ namespace ServiceHub.User.Service.Controllers
         /// if the user id, location or address are invalid, or 500
         /// Internal Server Error if a database error occurs.</returns>
         [HttpPut]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Put([FromBody]ServiceHub.User.Library.Models.User user)
         {
             try
@@ -242,8 +246,8 @@ namespace ServiceHub.User.Service.Controllers
         /// <returns> If the user is accepted, it will return a 202, Accepted code.
         /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
-        [ProducesResponseType(400)]
         [ProducesResponseType(202)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
             if(user == null) { return await Task.Run(() => BadRequest("Invalid user: User is null")); }
