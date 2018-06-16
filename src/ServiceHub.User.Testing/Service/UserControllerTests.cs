@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using ServiceHub.User.Context.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceHub.User.Testing.Service
 {
@@ -76,7 +77,7 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            TempUserController c = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
             ObjectResult result = (ObjectResult) await c.Get();
             Assert.Equal(200, result.StatusCode);
@@ -103,7 +104,7 @@ namespace ServiceHub.User.Testing.Service
             contextUsers[0].Name = null;
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            TempUserController c = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
             StatusCodeResult result = (StatusCodeResult)await c.Get();
 
@@ -120,9 +121,9 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(((Guid y) => contextUsers.First(z => z.UserId == y)));
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult)await controller.Get(new Guid("33333333-3333-3333-3333-333333333333"));
+            ObjectResult result = (ObjectResult)await c.Get(new Guid("33333333-3333-3333-3333-333333333333"));
 
             Assert.Equal(200, result.StatusCode);
 
@@ -141,7 +142,7 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(((Guid y) => contextUsers.First(z => z.UserId == y)));
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             NotFoundObjectResult result = (NotFoundObjectResult) await controller.Get(new Guid());
 
@@ -164,7 +165,7 @@ namespace ServiceHub.User.Testing.Service
             // Act
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             ObjectResult result = (ObjectResult)await controller.GetByGender(gender);
             List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>)result.Value;
@@ -190,7 +191,7 @@ namespace ServiceHub.User.Testing.Service
             // Act
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             ObjectResult result = (ObjectResult)await controller.GetByType(type);
             List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>) result.Value;
@@ -211,7 +212,7 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             ObjectResult result = (ObjectResult)await controller.GetByGender("Pie");
 
@@ -246,7 +247,7 @@ namespace ServiceHub.User.Testing.Service
             user.Address.Country = contextUsers[0].Address.Country;
 
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
             StatusCodeResult result = (StatusCodeResult) await controller.Put(user);
 
             Assert.Equal("The North Pole", user.Address.Address1);
@@ -279,7 +280,7 @@ namespace ServiceHub.User.Testing.Service
             user.Address.Country = contextUsers[0].Address.Country;
 
 
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
             ObjectResult result = (ObjectResult)await controller.Put(user);
 
             Assert.Equal("Apt 500, 100 Long Street", contextUsers[0].Address.Address1);
@@ -301,7 +302,7 @@ namespace ServiceHub.User.Testing.Service
             // Arrange
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(x => x.Get()).Returns(contextUsers);
-            TempUserController controller = new TempUserController(mockRepo.Object);
+            UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             // Act
             var result = (ObjectResult) await controller.GetByType(type);
@@ -336,7 +337,7 @@ namespace ServiceHub.User.Testing.Service
             libraryUser.Name.NameId = new Guid("22222222-2222-2222-2222-222222222222");
             libraryUser.Type = "Associate";
             libraryUser.UserId = new Guid("33333333-3333-3333-3333-333333333333");
-            TempUserController c = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
             var contextUser = UserModelMapper.LibraryToContext(libraryUser);
             contextUser.UserId = libraryUser.UserId;
 
@@ -353,7 +354,7 @@ namespace ServiceHub.User.Testing.Service
         {
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(m => m.Insert(null));
-            TempUserController c = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
             var result = (BadRequestObjectResult)await c.Post(null);
 
 
@@ -382,7 +383,7 @@ namespace ServiceHub.User.Testing.Service
             libraryUser.Type = "Associate";
             libraryUser.UserId = new Guid("33333333-3333-3333-3333-333333333333");
 
-            TempUserController c = new TempUserController(mockRepo.Object);
+            UserController c = new UserController(mockRepo.Object, new LoggerFactory());
             var result = (BadRequestObjectResult)await c.Post(libraryUser);
 
             Assert.Equal(400, result.StatusCode);
