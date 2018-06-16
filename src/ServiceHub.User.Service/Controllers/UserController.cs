@@ -45,7 +45,7 @@ namespace ServiceHub.User.Service.Controllers
 
                 foreach (var user in users)
                 {
-                    storage.Insert(user);
+                    await storage.Insert(user);
                 }
             }
             catch (Exception e)
@@ -69,7 +69,7 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                var contextUsers = _userStorage.Get();
+                var contextUsers = await _userStorage.Get();
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
                 if (libraryUsers == null)
                 {
@@ -97,7 +97,7 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                var libraryUser = UserModelMapper.ContextToLibrary(_userStorage.GetById(id));
+                var libraryUser = UserModelMapper.ContextToLibrary(await _userStorage.GetById(id));
                 if (libraryUser == null)
                 {
                     return NotFound();
@@ -144,7 +144,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             else
             {
-                var users = _userStorage.Get();
+                var users = await _userStorage.Get();
                 var GUsers = new List<ServiceHub.User.Library.Models.User>();
 
                 foreach (var x in users)
@@ -185,7 +185,7 @@ namespace ServiceHub.User.Service.Controllers
 
             try
             {
-                var users = _userStorage.Get();
+                var users = await _userStorage.Get();
                 var contextUsers = new List<Context.Models.User>();
                 foreach (var contextUser in users)
                 {
@@ -226,7 +226,7 @@ namespace ServiceHub.User.Service.Controllers
                 {
                     var id = user.UserId;
                     if (user.UserId == Guid.Empty) { return BadRequest("Invalid User Id"); }
-                    var contextUser = _userStorage.GetById(user.UserId);
+                    var contextUser = await _userStorage.GetById(user.UserId);
                     if (contextUser == null) { return BadRequest("User not found"); }
                     var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
                     if (libraryUser == null) { return new StatusCodeResult(500); }
@@ -235,7 +235,7 @@ namespace ServiceHub.User.Service.Controllers
                     libraryUser.Address = user.Address;
                     contextUser = UserModelMapper.LibraryToContext(libraryUser);
                     if (contextUser == null) { return BadRequest("Invalid update of location or address."); }
-                    _userStorage.Update(contextUser);
+                    await _userStorage.Update(contextUser);
                     return Ok();
                 }
             }
@@ -262,7 +262,7 @@ namespace ServiceHub.User.Service.Controllers
             user.UserId = Guid.NewGuid();
             var contextUser = UserModelMapper.LibraryToContext(user);
             if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
-            _userStorage.Insert(contextUser);
+            await _userStorage.Insert(contextUser);
             return Accepted();
         }
     }
