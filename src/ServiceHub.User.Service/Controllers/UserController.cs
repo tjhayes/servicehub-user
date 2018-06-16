@@ -50,6 +50,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             catch (Exception e)
             {
+                logger.LogError(e, "Exception thrown during db seeding.");
                 return await Task.Run(() => BadRequest(e));
             }
 
@@ -70,7 +71,11 @@ namespace ServiceHub.User.Service.Controllers
             {
                 var contextUsers = _userStorage.Get();
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
-                if (libraryUsers == null) { return await Task.Run(() => new StatusCodeResult(500)); }
+                if (libraryUsers == null)
+                {
+                    logger.LogError("One or more users in the db were invalid.");
+                    return await Task.Run(() => new StatusCodeResult(500));
+                }
                 return await Task.Run(() => Ok(libraryUsers));
             }
             catch
