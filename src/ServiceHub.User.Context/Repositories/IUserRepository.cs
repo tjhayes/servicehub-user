@@ -9,11 +9,11 @@ namespace ServiceHub.User.Context.Repositories
     /// </summary>
     public interface IUserRepository
     {
-        Task Insert(Context.Models.User user);
-        Task<List<Context.Models.User>> Get();
-        Task<Context.Models.User> GetById(Guid id);
-        Task Update(Context.Models.User user);
-        Task Delete(Guid id);
-        Task DeleteAll();
+        Task InsertAsync(Context.Models.User user);
+        Task<List<Context.Models.User>> GetAsync();
+        Task<Context.Models.User> GetByIdAsync(Guid id);
+        Task UpdateAsync(Context.Models.User user);
+        Task DeleteAsync(Guid id);
+        Task DeleteAllAsync();
     }
 }
