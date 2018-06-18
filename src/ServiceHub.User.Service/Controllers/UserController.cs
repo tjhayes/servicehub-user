@@ -22,42 +22,6 @@ namespace ServiceHub.User.Service.Controllers
         }
 
         /// <summary>
-        /// Seeds the MongoDb with mock users
-        /// </summary>
-        /// <returns>200 Ok if the db seeding was successful or 400 Bad Request
-        /// if an exception was thrown</returns>
-        [HttpPost]
-        [Route("seed")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> Post()
-        {
-            try
-            {
-                IMongoCollection<User.Context.Models.User> userCollection =
-                    new MongoClient(@"mongodb://db")
-                        .GetDatabase("userdb")
-                        .GetCollection<User.Context.Models.User>("users");
-
-                UserRepository repository = new UserRepository(userCollection);
-                string jsonStr = DbSeeder.GetUsers();
-                var users = DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
-
-                foreach (var user in users)
-                {
-                    await repository.Insert(user);
-                }
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, "Exception thrown during db seeding.");
-                return BadRequest(e);
-            }
-        }
-
-        /// <summary>
         /// Get all users.
         /// </summary>
         /// <returns>OkObjectResult with an IEnumerable of all users,
