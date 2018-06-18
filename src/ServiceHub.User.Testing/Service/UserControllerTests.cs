@@ -80,10 +80,12 @@ namespace ServiceHub.User.Testing.Service
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult) await c.Get();
-            Assert.Equal(200, result.StatusCode);
+            ObjectResult result = await c.Get() as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(200, result?.StatusCode);
             List<User.Library.Models.User> usersResult =
-                (List<User.Library.Models.User>)result.Value;
+                (List<User.Library.Models.User>)result?.Value;
             Assert.Equal(2, usersResult.Count);
             var enumerator = usersResult.GetEnumerator();
             enumerator.MoveNext();
@@ -107,9 +109,10 @@ namespace ServiceHub.User.Testing.Service
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
-            StatusCodeResult result = (StatusCodeResult)await c.Get();
+            StatusCodeResult result = await c.Get() as StatusCodeResult;
 
-            Assert.Equal(500, result.StatusCode);
+            Assert.NotNull(result);
+            Assert.Equal(500, result?.StatusCode);
         }
 
         /// <summary>
@@ -124,9 +127,11 @@ namespace ServiceHub.User.Testing.Service
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult)await c.Get(new Guid("33333333-3333-3333-3333-333333333333"));
+            ObjectResult result = await c.Get(new Guid("33333333-3333-3333-3333-333333333333")) as ObjectResult;
 
-            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result);
+
+            Assert.Equal(200, result?.StatusCode);
 
             ServiceHub.User.Library.Models.User user = (ServiceHub.User.Library.Models.User) result.Value;
 
@@ -145,8 +150,9 @@ namespace ServiceHub.User.Testing.Service
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
-            NotFoundObjectResult result = (NotFoundObjectResult) await controller.Get(new Guid());
+            NotFoundObjectResult result = await controller.Get(new Guid()) as NotFoundObjectResult;
 
+            Assert.NotNull(result);
             Assert.Equal(404, result.StatusCode);
         }
 
@@ -168,9 +174,10 @@ namespace ServiceHub.User.Testing.Service
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult)await controller.GetByGender(gender);
-            List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>)result.Value;
+            ObjectResult result = await controller.GetByGender(gender) as ObjectResult;
+            List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>)result?.Value;
 
+            Assert.NotNull(result);
             Assert.Single(users);
             Assert.Equal(firstName, users[0].Name.First);
             Assert.Equal(200, result.StatusCode);
@@ -194,13 +201,14 @@ namespace ServiceHub.User.Testing.Service
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult)await controller.GetByType(type);
-            List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>) result.Value;
+            ObjectResult result = await controller.GetByType(type) as ObjectResult;
+            List<ServiceHub.User.Library.Models.User> users = (List<ServiceHub.User.Library.Models.User>) result?.Value;
 
+            Assert.NotNull(result);
             Assert.Equal(2, users.Count);
             Assert.Equal("John", users[0].Name.First);
             Assert.Equal("Sophie", users[1].Name.First);
-            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(200, result?.StatusCode);
         }
 
         /// <summary>
@@ -215,9 +223,10 @@ namespace ServiceHub.User.Testing.Service
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
-            ObjectResult result = (ObjectResult)await controller.GetByGender("Pie");
+            ObjectResult result = await controller.GetByGender("Pie") as ObjectResult;
 
-            Assert.Equal(400, result.StatusCode);
+            Assert.NotNull(result);
+            Assert.Equal(400, result?.StatusCode);
         }
 
         /// <summary>
@@ -249,9 +258,10 @@ namespace ServiceHub.User.Testing.Service
 
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
-            StatusCodeResult result = (StatusCodeResult) await controller.Put(user);
+            StatusCodeResult result = await controller.Put(user) as StatusCodeResult;
 
-            Assert.Equal("The North Pole", user.Address.Address1);
+            Assert.NotNull(result);
+            Assert.Equal("The North Pole", user?.Address?.Address1);
             Assert.Equal(200, result.StatusCode);
         }
 
@@ -282,10 +292,11 @@ namespace ServiceHub.User.Testing.Service
 
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
-            ObjectResult result = (ObjectResult)await controller.Put(user);
+            ObjectResult result = await controller.Put(user) as ObjectResult;
 
+            Assert.NotNull(result);
             Assert.Equal("Apt 500, 100 Long Street", contextUsers[0].Address.Address1);
-            Assert.Equal(400, result.StatusCode);
+            Assert.Equal(400, result?.StatusCode);
         }
 
 
@@ -306,10 +317,11 @@ namespace ServiceHub.User.Testing.Service
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
             // Act
-            var result = (ObjectResult) await controller.GetByType(type);
+            var result = await controller.GetByType(type) as ObjectResult;
 
             // Assert
-            Assert.Equal(400, result.StatusCode);
+            Assert.NotNull(result);
+            Assert.Equal(400, result?.StatusCode);
         }
 
         /// <summary>
@@ -342,9 +354,10 @@ namespace ServiceHub.User.Testing.Service
             var contextUser = UserModelMapper.LibraryToContext(libraryUser);
             contextUser.UserId = libraryUser.UserId;
 
-            var result = (AcceptedResult)await c.Post(libraryUser);
+            var result = await c.Post(libraryUser) as AcceptedResult;
 
-            Assert.Equal(202, result.StatusCode);
+            Assert.NotNull(result);
+            Assert.Equal(202, result?.StatusCode);
         }
 
         /// <summary>
@@ -356,10 +369,11 @@ namespace ServiceHub.User.Testing.Service
             var mockRepo = new Mock<IUserRepository>();
             mockRepo.Setup(m => m.Insert(null));
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
-            var result = (BadRequestObjectResult)await c.Post(null);
+            var result = await c.Post(null) as BadRequestObjectResult;
 
 
             mockRepo.Verify(m => m.Insert(null), Times.Never);
+            Assert.NotNull(result);
             Assert.Equal(400, result.StatusCode);
         }
 
@@ -385,9 +399,10 @@ namespace ServiceHub.User.Testing.Service
             libraryUser.UserId = new Guid("33333333-3333-3333-3333-333333333333");
 
             UserController c = new UserController(mockRepo.Object, new LoggerFactory());
-            var result = (BadRequestObjectResult)await c.Post(libraryUser);
+            var result = await c.Post(libraryUser) as BadRequestObjectResult;
 
-            Assert.Equal(400, result.StatusCode);
+            Assert.NotNull(result);
+            Assert.Equal(400, result?.StatusCode);
         }
     }
 }
