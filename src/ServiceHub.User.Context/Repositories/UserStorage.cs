@@ -55,15 +55,7 @@ namespace ServiceHub.User.Context.Repositories
         /// <param name="user">The user to update.</param>
         public async Task Update(Context.Models.User user)
         {
-            try
-            {
-                await _userRepository.Update(user);
-            }
-            catch
-            {
-                // squash exception
-                // TODO: fix error and stop squashing exception
-            }
+            await _userRepository.Update(user);
         }
 
         /// <summary>

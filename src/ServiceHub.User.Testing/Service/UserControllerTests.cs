@@ -231,7 +231,7 @@ namespace ServiceHub.User.Testing.Service
 
             mockRepo.Setup(r => r.Update(It.IsAny<User.Context.Models.User>()))
                 .Callback((User.Context.Models.User u)
-                    => contextUsers.First(c => c.UserId == u.UserId).Address = u.Address);
+                    => contextUsers.First(c => c.UserId == u.UserId).Address = u.Address).Returns(Task.CompletedTask);
 
             mockRepo.Setup(r => r.GetById(It.IsAny<Guid>()))
                 .ReturnsAsync((Guid g) => contextUsers.First(u => u.UserId == g));
