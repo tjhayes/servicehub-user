@@ -23,13 +23,21 @@ namespace ServiceHub.User.Service
 
             services.AddMvc();
 
-            services.AddTransient<IUserRepository, UserRepository>();
-
-            services.AddSingleton(mc =>
-                new MongoClient(connectionString)
+            services.AddSingleton<IUserRepository, UserRepository>(serviceProvider =>
+            {
+                return new UserRepository(
+                    new MongoClient(connectionString)
                     .GetDatabase("userdb")
-                    .GetCollection<User.Context.Models.User>("users")
-            );
+                    .GetCollection<Context.Models.User>("users"));
+            });
+
+            services.AddSingleton<UserRepository>(serviceProvider =>
+            {
+                return new UserRepository(
+                    new MongoClient(connectionString)
+                    .GetDatabase("userdb")
+                    .GetCollection<Context.Models.User>("users"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

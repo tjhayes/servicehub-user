@@ -1,11 +1,37 @@
+using Microsoft.Extensions.DependencyInjection;
+using ServiceHub.User.Context.Repositories;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Json;
+using System.Threading.Tasks;
 
 namespace ServiceHub.User.Service
 {
     public static class DbSeeder
     {
+        public static async void Initialize(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetRequiredService<UserRepository>();
+            if (context.Get() == null || !context.Get().Result.Any())
+            {
+                try
+                {
+                    string jsonStr = DbSeeder.GetUsers();
+                    var users = DbSeeder.Deserialize<List<User.Context.Models.User>>(jsonStr);
+
+                    foreach (var user in users)
+                    {
+                        await context.Insert(user);
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+
         // Deserialize JSON string and return object.
         public static T Deserialize<T>(string jsonStr)
         {
