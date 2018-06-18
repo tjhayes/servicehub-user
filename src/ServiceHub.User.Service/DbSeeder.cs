@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ServiceHub.User.Context.Repositories;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace ServiceHub.User.Service
                 }
                 catch (Exception e)
                 {
+                    ILogger logger = AppLoggerFactory.CreateLogger();
+                    logger.LogError(e, "Db seeding failed.");
                 }
             }
         }
