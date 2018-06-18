@@ -262,7 +262,11 @@ namespace ServiceHub.User.Service.Controllers
                         return BadRequest("User not found");
                     }
                     var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
-                    if (libraryUser == null) { return new StatusCodeResult(500); }
+                    if (libraryUser == null)
+                    {
+                        logger.LogError("Library User model is null.");
+                        return new StatusCodeResult(500);
+                    }
 
                     if (user.Location != null) { libraryUser.Location = user.Location; }
                     libraryUser.Address = user.Address;
@@ -298,10 +302,18 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                if (user == null) { return BadRequest("Invalid user: User is null"); }
+                if (user == null)
+                {
+                    logger.LogError("User is null.");
+                    return BadRequest("Invalid user: User is null");
+                }
                 user.UserId = Guid.NewGuid();
                 var contextUser = UserModelMapper.LibraryToContext(user);
-                if (contextUser == null) { return BadRequest("Invalid user: Validation failed"); }
+                if (contextUser == null)
+                {
+                    logger.LogError("Context User is null.");
+                    return BadRequest("Invalid user: Validation failed");
+                }
                 await _userStorage.Insert(contextUser);
                 return Accepted();
             }
