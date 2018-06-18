@@ -33,7 +33,7 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                var contextUsers = await _userRepository.Get();
+                var contextUsers = await _userRepository.GetAsync();
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
                 if (libraryUsers == null)
                 {
@@ -61,7 +61,7 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                var libraryUser = UserModelMapper.ContextToLibrary(await _userRepository.GetById(id));
+                var libraryUser = UserModelMapper.ContextToLibrary(await _userRepository.GetByIdAsync(id));
                 if (libraryUser == null)
                 {
                     logger.LogError("Library user model was null.");
@@ -113,7 +113,7 @@ namespace ServiceHub.User.Service.Controllers
                 }
                 else
                 {
-                    var users = await _userRepository.Get();
+                    var users = await _userRepository.GetAsync();
                     var GUsers = new List<ServiceHub.User.Library.Models.User>();
 
                     foreach (var x in users)
@@ -172,7 +172,7 @@ namespace ServiceHub.User.Service.Controllers
                     return BadRequest("Invalid type.");
                 }
 
-                var users = await _userRepository.Get();
+                var users = await _userRepository.GetAsync();
                 var contextUsers = new List<Context.Models.User>();
                 foreach (var contextUser in users)
                 {
@@ -220,7 +220,7 @@ namespace ServiceHub.User.Service.Controllers
                         logger.LogError("User ID does not exist.");
                         return BadRequest("Invalid User Id");
                     }
-                    var contextUser = await _userRepository.GetById(user.UserId);
+                    var contextUser = await _userRepository.GetByIdAsync(user.UserId);
                     if (contextUser == null)
                     {
                         logger.LogError("User does not exist");
@@ -243,7 +243,7 @@ namespace ServiceHub.User.Service.Controllers
                         logger.LogError("Invalid update of location or address.");
                         return BadRequest("Invalid update of location or address.");
                     }
-                    await _userRepository.Update(contextUser);
+                    await _userRepository.UpdateAsync(contextUser);
                     return NoContent();
 
                 }
@@ -283,7 +283,7 @@ namespace ServiceHub.User.Service.Controllers
                     logger.LogError("Context User is null.");
                     return BadRequest("Invalid user: Validation failed");
                 }
-                await _userRepository.Insert(contextUser);
+                await _userRepository.InsertAsync(contextUser);
 
                 return CreatedAtRoute("GetById", new { id = user.UserId }, user);
             }

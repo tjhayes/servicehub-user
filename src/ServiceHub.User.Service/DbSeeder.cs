@@ -15,7 +15,7 @@ namespace ServiceHub.User.Service
         public static async void Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<UserRepository>();
-            if (context.Get() == null || !context.Get().Result.Any())
+            if (context.GetAsync() == null || !context.GetAsync().Result.Any())
             {
                 try
                 {
@@ -24,7 +24,7 @@ namespace ServiceHub.User.Service
 
                     foreach (var user in users)
                     {
-                        await context.Insert(user);
+                        await context.InsertAsync(user);
                     }
                 }
                 catch (Exception e)
