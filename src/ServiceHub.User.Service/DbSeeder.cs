@@ -15,7 +15,8 @@ namespace ServiceHub.User.Service
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<IUserRepository>();
-            if ((await context.GetAsync()) == null || (await context.GetAsync()).Any() == false)
+            var currentUsers = await context.GetAsync();
+            if (currentUsers == null || currentUsers.Count == 0)
             {
                 try
                 {
