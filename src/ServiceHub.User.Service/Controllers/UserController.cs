@@ -256,7 +256,7 @@ namespace ServiceHub.User.Service.Controllers
                         logger.LogError("User ID does not exist.");
                         return BadRequest("Invalid User Id");
                     }
-                    var contextUser = await _userStorage.GetById(user.UserId);
+                    var contextUser = await _userRepository.GetById(user.UserId);
                     if (contextUser == null)
                     {
                         logger.LogError("User does not exist");
@@ -279,7 +279,7 @@ namespace ServiceHub.User.Service.Controllers
                         logger.LogError("Invalid update of location or address.");
                         return BadRequest("Invalid update of location or address.");
                     }
-                    await _userStorage.Update(contextUser);
+                    await _userRepository.Update(contextUser);
                     return Ok();
 
                 }
@@ -319,7 +319,7 @@ namespace ServiceHub.User.Service.Controllers
                     logger.LogError("Context User is null.");
                     return BadRequest("Invalid user: Validation failed");
                 }
-                await _userStorage.Insert(contextUser);
+                await _userRepository.Insert(contextUser);
 
                 return Accepted();
             }
