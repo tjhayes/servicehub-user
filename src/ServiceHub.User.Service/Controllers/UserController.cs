@@ -78,10 +78,10 @@ namespace ServiceHub.User.Service.Controllers
                 }
                 return Ok(libraryUsers);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e, "Status Code result of 500, failed to get users");
                 return new StatusCodeResult(500);
-
             }
         }
 
@@ -109,6 +109,7 @@ namespace ServiceHub.User.Service.Controllers
             }
             catch (Exception e)
             {
+                logger.LogError(e, "Resource was not found in database.");
                 return NotFound(e);
             }
         }
@@ -142,6 +143,7 @@ namespace ServiceHub.User.Service.Controllers
 
                 if (!validGender)
                 {
+                    logger.LogError("Invalid Gender was input.");
                     return BadRequest($"Invalid gender: {gender}.");
                 }
                 else
@@ -185,13 +187,21 @@ namespace ServiceHub.User.Service.Controllers
         {
             try
             {
-                if (type == null) { return BadRequest("Invalid type."); }
+                if (type == null)
+                {
+                    logger.LogError("Null Type was input");
+                    return BadRequest("Invalid type.");
+                }
                 bool isValidType = false;
                 foreach (var validType in Library.Models.User.ValidUppercaseTypes)
                 {
                     if (type.ToUpper() == validType) { isValidType = true; }
                 }
-                if (!isValidType) { return BadRequest("Invalid type."); }
+                if (!isValidType)
+                {
+                    logger.LogError("Invalid Type was input");
+                    return BadRequest("Invalid type.");
+                }
 
                 var users = await _userStorage.Get();
                 var contextUsers = new List<Context.Models.User>();
@@ -205,8 +215,9 @@ namespace ServiceHub.User.Service.Controllers
                 var libraryUsers = UserModelMapper.List_ContextToLibrary(contextUsers);
                 return Ok(libraryUsers);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e, "Failed to access users by Type");
                 return new StatusCodeResult(500);
             }
         }
