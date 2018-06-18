@@ -12,7 +12,7 @@ namespace ServiceHub.User.Service
 {
     public static class DbSeeder
     {
-        public static async void Initialize(IServiceProvider serviceProvider)
+        public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<IUserRepository>();
             if ((await context.GetAsync()) == null || (await context.GetAsync()).Any() == false)
