@@ -100,6 +100,7 @@ namespace ServiceHub.User.Service.Controllers
                 var libraryUser = UserModelMapper.ContextToLibrary(await _userStorage.GetById(id));
                 if (libraryUser == null)
                 {
+                    logger.LogError("Library user model was null.");
                     return NotFound();
                 }
                 else
@@ -143,7 +144,7 @@ namespace ServiceHub.User.Service.Controllers
 
                 if (!validGender)
                 {
-                    logger.LogError("Invalid Gender was input.");
+                    logger.LogError($"Invalid Gender was input, {gender}.  ");
                     return BadRequest($"Invalid gender: {gender}.");
                 }
                 else
@@ -156,7 +157,11 @@ namespace ServiceHub.User.Service.Controllers
                         if (x.Gender.ToUpper() == upperGender)
                         {
                             var libraryUser = UserModelMapper.ContextToLibrary(x);
-                            if (libraryUser == null) { return new StatusCodeResult(500); }
+                            if (libraryUser == null)
+                            {
+                                logger.LogError("Library User model was null.");
+                                return new StatusCodeResult(500);
+                            }
                             GUsers.Add(libraryUser);
                         }
                     }
@@ -239,21 +244,34 @@ namespace ServiceHub.User.Service.Controllers
             {
                 if (user == null)
                 {
+                    logger.LogError("User model was null");
                     return BadRequest("Invalid user: object was null");
                 }
                 else
                 {
                     var id = user.UserId;
-                    if (user.UserId == Guid.Empty) { return BadRequest("Invalid User Id"); }
+                    if (user.UserId == Guid.Empty)
+                    {
+                        logger.LogError("User ID does not exist.");
+                        return BadRequest("Invalid User Id");
+                    }
                     var contextUser = await _userStorage.GetById(user.UserId);
-                    if (contextUser == null) { return BadRequest("User not found"); }
+                    if (contextUser == null)
+                    {
+                        logger.LogError("User does not exist");
+                        return BadRequest("User not found");
+                    }
                     var libraryUser = UserModelMapper.ContextToLibrary(contextUser);
                     if (libraryUser == null) { return new StatusCodeResult(500); }
 
                     if (user.Location != null) { libraryUser.Location = user.Location; }
                     libraryUser.Address = user.Address;
                     contextUser = UserModelMapper.LibraryToContext(libraryUser);
-                    if (contextUser == null) { return BadRequest("Invalid update of location or address."); }
+                    if (contextUser == null)
+                    {
+                        logger.LogError("Invalid update of location or address.");
+                        return BadRequest("Invalid update of location or address.");
+                    }
                     await _userStorage.Update(contextUser);
                     return Ok();
                 }
