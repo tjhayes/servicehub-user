@@ -23,20 +23,13 @@ namespace ServiceHub.User.Service
 
             services.AddMvc();
 
-            services.AddSingleton<IUserRepository, UserRepository>(serviceProvider =>
-            {
-                return new UserRepository(
-                    new MongoClient(connectionString)
-                    .GetDatabase("userdb")
-                    .GetCollection<Context.Models.User>("users"));
-            });
+            services.AddSingleton<IUserRepository, UserRepository>();
 
-            services.AddSingleton<UserRepository>(serviceProvider =>
+            services.AddSingleton<IMongoCollection<Context.Models.User>>(mongoCollection =>
             {
-                return new UserRepository(
-                    new MongoClient(connectionString)
-                    .GetDatabase("userdb")
-                    .GetCollection<Context.Models.User>("users"));
+                return new MongoClient(connectionString)
+                .GetDatabase("userdb")
+                .GetCollection<Context.Models.User>("users");
             });
         }
 
