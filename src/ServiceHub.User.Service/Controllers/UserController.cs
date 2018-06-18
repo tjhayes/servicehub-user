@@ -90,7 +90,7 @@ namespace ServiceHub.User.Service.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>the user with matching Id, or a 404 error</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetById")]
         [ProducesResponseType(200, Type = typeof(Library.Models.User))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(Guid id)
@@ -231,7 +231,7 @@ namespace ServiceHub.User.Service.Controllers
         /// Updates the user's address and/or location
         /// </summary>
         /// <param name="user">the user to update</param>
-        /// <returns>200 Ok if the update is successful, 400 Bad Request
+        /// <returns>204 NoContent if the update is successful, 400 Bad Request
         /// if the user id, location or address are invalid, or 500
         /// Internal Server Error if a database error occurs.</returns>
         [HttpPut]
@@ -280,7 +280,7 @@ namespace ServiceHub.User.Service.Controllers
                         return BadRequest("Invalid update of location or address.");
                     }
                     await _userRepository.Update(contextUser);
-                    return Ok();
+                    return NoContent();
 
                 }
             }
@@ -297,10 +297,10 @@ namespace ServiceHub.User.Service.Controllers
         /// <param name="user"> A User model to be provided from an external source
         /// via JSON.  If the model is a valid model, it will be cast to a db-ready model
         /// and stored in the database. </param>
-        /// <returns> If the user is accepted, it will return a 202, Accepted code.
+        /// <returns> If the user is accepted, it will return a 201, Created code.
         /// Otherwise, it will return a 400, client-error code. </returns>
         [HttpPost]
-        [ProducesResponseType(202)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] User.Library.Models.User user)
         {
@@ -321,7 +321,7 @@ namespace ServiceHub.User.Service.Controllers
                 }
                 await _userRepository.Insert(contextUser);
 
-                return Accepted();
+                return CreatedAtRoute("GetById", new { id = user.UserId }, user);
             }
             catch(Exception e)
             {
