@@ -15,7 +15,7 @@ namespace ServiceHub.User.Service
         public static async void Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<IUserRepository>();
-            if (context.GetAsync() == null || !context.GetAsync().Result.Any())
+            if ((await context.GetAsync()) == null || (await context.GetAsync()).Any() == false)
             {
                 try
                 {
