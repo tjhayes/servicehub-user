@@ -219,7 +219,7 @@ namespace ServiceHub.User.Service.Controllers
         /// if the user id, location or address are invalid, or 500
         /// Internal Server Error if a database error occurs.</returns>
         [HttpPut]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Put([FromBody]ServiceHub.User.Library.Models.User user)
@@ -244,7 +244,7 @@ namespace ServiceHub.User.Service.Controllers
                     contextUser = UserModelMapper.LibraryToContext(libraryUser);
                     if (contextUser == null) { return BadRequest("Invalid update of location or address."); }
                     await _userStorage.Update(contextUser);
-                    return Ok();
+                    return NoContent();
                 }
             }
             catch(Exception e)
