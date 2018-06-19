@@ -14,7 +14,7 @@ namespace ServiceHub.User.Testing.Service
 {
     public class UserControllerTests
     {
-        private List<User.Context.Models.User> contextUsers;
+        private readonly List<User.Context.Models.User> contextUsers;
 
         /// <summary>
         /// Set up test users
@@ -150,7 +150,7 @@ namespace ServiceHub.User.Testing.Service
 
             UserController controller = new UserController(mockRepo.Object, new LoggerFactory());
 
-            NotFoundObjectResult result = await controller.Get(new Guid()) as NotFoundObjectResult;
+            NotFoundObjectResult result = await controller.Get(Guid.Empty) as NotFoundObjectResult;
 
             Assert.NotNull(result);
             Assert.Equal(404, result.StatusCode);
